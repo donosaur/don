@@ -878,13 +878,15 @@
     }
 
     /* Per-card accent colors on hover */
-    a.work-card[href="case-study-looking-glass.html"]:hover {
-      border-color: #8B5CF6;
-      box-shadow: 0 4px 32px rgba(139, 92, 246, 0.15);
+    a.work-card[href="case-study-looking-glass.html"]:hover,
+    #card-lookingglass:hover {
+      border-color: #8B5CF6 !important;
+      box-shadow: 0 4px 32px rgba(139, 92, 246, 0.15) !important;
     }
 
-    a.work-card[href="case-study-looking-glass.html"]:hover .work-card-type {
-      color: #8B5CF6;
+    a.work-card[href="case-study-looking-glass.html"]:hover .work-card-type,
+    #card-lookingglass:hover .work-card-type {
+      color: #8B5CF6 !important;
     }
 
     .work-grid .work-card:nth-child(3):hover {
@@ -1864,6 +1866,13 @@
         </div>
       </div>
 
+    </div>
+
+    <div style="text-align: center; margin-top: 56px;">
+      <a href="don-polistico-resume.pdf" download class="contact-link"
+        style="display: inline-flex; width: 100%; justify-content: space-between;">
+        <span class="contact-label">Download resume</span><span class="contact-icon">📄</span>
+      </a>
     </div>
   </section>
 
