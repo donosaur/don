@@ -1471,8 +1471,8 @@
   <!-- NAV -->
   <nav>
     <div class="nav-logo">
-      <a href="https://polisti.co" target="_blank" rel="noopener noreferrer"><img src="images/avatar.gif"
-          alt="Don Polistico" class="nav-avatar"></a>
+      <img src="images/avatar.gif" alt="Don Polistico" class="nav-avatar" id="navAvatar" style="cursor: pointer;"
+        onclick="toggleJapanese()">
       <a href="#"
         style="font-family:'Playfair Display',serif;font-size:18px;font-weight:600;color:var(--ink);text-decoration:none;">don
         polistico</a>
@@ -2090,6 +2090,144 @@
       style.textContent = `.clover-hover { cursor: url("${url}") 16 16, auto !important; }`;
       document.head.appendChild(style);
     })();
+
+    // ── Japanese Translation Easter Egg ──
+    let isJapanese = false;
+    const jpMap = [
+      // Nav
+      { sel: '.nav-links a[href="#work"]', jp: '作品' },
+      { sel: '.nav-links a[href="#about"]', jp: '紹介' },
+      { sel: '.nav-links a[href="#career"]', jp: '経歴' },
+      { sel: '.nav-links a[href="#contact"]', jp: '連絡' },
+      // Mobile menu
+      { sel: '.mobile-menu a[href="#about"]', jp: '紹介' },
+      { sel: '.mobile-menu a[href="#career"]', jp: '経歴' },
+      { sel: '.mobile-menu a[href="#work"]', jp: '作品' },
+      { sel: '.mobile-menu a[href="#contact"]', jp: '連絡' },
+      // Hero
+      { sel: '.hero-label', jp: 'プロダクトデザイナー · ブルックリン、ニューヨーク' },
+      { sel: '.h1-line:nth-child(1) .h1-line-inner', jp: '15年以上にわたり' },
+      { sel: '.h1-line:nth-child(2) .h1-line-inner', jp: '人々の映像体験を' },
+      { sel: '.hero-title-em', jp: '創造する。' },
+      { sel: '.hero-cta-text', jp: '次のステージへ、話しましょう！' },
+      { sel: '.hero-stat:nth-child(1) .hero-stat-label', jp: 'クロスプラットフォーム専門家' },
+      { sel: '.hero-stat:nth-child(2) .hero-stat-label', jp: '買収された企業' },
+      { sel: '.hero-stat:nth-child(2) .hero-stat-num', jp: '2回' },
+      { sel: '.hero-stat:nth-child(3) .hero-stat-label', jp: '世界中の視聴者数' },
+      { sel: '.hero-stat:nth-child(3) .hero-stat-num', jp: '数百万' },
+      { sel: '.hero-stat:nth-child(4) .hero-stat-label', jp: '開いたまま閉じてないFigmaフレーム' },
+      // Work section
+      { sel: '#work > .section-label', jp: '作品集' },
+      { sel: '#work > h2', html: 'ケーススタディと<br>ハイライト。' },
+      { sel: '.work-intro', jp: '各プロジェクトは独自のデザイン課題を表しています — 新しいプラットフォーム向けのUXパターンの創造から、変革期の企業におけるデザインシステムの拡張まで。' },
+      // Vimeo card
+      { sel: '#card-vimeo .work-card-type', jp: 'プラットフォームデザイン · Vimeo' },
+      { sel: '#card-vimeo .work-card-title', jp: 'Vimeo ストリーミング' },
+      { sel: '#card-vimeo .work-card-desc', jp: 'Vimeo OTT配信プロダクトのエンドツーエンドデザインを設計 — クリエイターに、独自のストリーミングチャンネルの立ち上げと運営を可能にするツールを提供。' },
+      { sel: '#card-vimeo .work-card-stat:nth-child(1) span', jp: '年間クリエイター収益' },
+      { sel: '#card-vimeo .work-card-stat:nth-child(2) span', jp: 'プラットフォーム' },
+      { sel: '#card-vimeo .work-card-stat:nth-child(3) span', jp: 'チャンネル数' },
+      // Looking Glass card
+      { sel: '#card-lookingglass .work-card-type', jp: '新技術 · Looking Glass' },
+      { sel: '#card-lookingglass .work-card-title', jp: 'Looking Glass Go モバイルアプリ' },
+      { sel: '#card-lookingglass .work-card-desc', jp: 'ホログラフィックディスプレイ用iOSコンパニオンアプリのデザイン — 奥行き、AI生成3D、ハードウェア状態管理について根本から考える、まったく新しい領域。' },
+      { sel: '#card-lookingglass .work-card-stat:nth-child(1) span', jp: 'モバイルアプリ' },
+      { sel: '#card-lookingglass .work-card-stat:nth-child(2) span', jp: 'AI変換' },
+      { sel: '#card-lookingglass .work-card-stat:nth-child(3) span', jp: '出荷済み' },
+      // Boxee card
+      { sel: '#card-boxee .work-card-type', jp: '0→1 プロダクト · Boxee' },
+      { sel: '#card-boxee .work-card-title', jp: 'クラウドDVR体験' },
+      { sel: '#card-boxee .work-card-desc', jp: 'Boxeeでのクラウド DVR UXの先駆け — 録画フロー、スケジュールインターフェース、ソーシャルTV機能をデザイン。時代を先取りしたリビングルーム向けプロダクト。Samsung による買収に至る。' },
+      { sel: '#card-boxee .work-card-stat:nth-child(1) span', jp: 'クラウドDVR UX' },
+      { sel: '#card-boxee .work-card-stat:nth-child(1) strong', jp: '初' },
+      { sel: '#card-boxee .work-card-stat:nth-child(2) span', jp: 'テレビUI' },
+      { sel: '#card-boxee .work-card-stat:nth-child(3) span', jp: 'Samsung買収' },
+      // VHX card
+      { sel: '#card-vhx .work-card-type', jp: 'D2Cプラットフォーム · VHX' },
+      { sel: '#card-vhx .work-card-title', jp: 'クリエイター収益化ツール' },
+      { sel: '#card-vhx .work-card-desc', jp: 'VHXの決済・視聴者管理フローのデザイン — インディー映画制作者やクリエイターが独自のストリーミングビジネスを運営するためのインフラ。後にVimeoプラットフォームに統合。' },
+      { sel: '#card-vhx .work-card-stat:nth-child(1) span', jp: '動画コマース' },
+      { sel: '#card-vhx .work-card-stat:nth-child(2) span', jp: 'Vimeo買収' },
+      { sel: '#card-vhx .work-card-stat:nth-child(3) span', jp: '出荷済み' },
+      // Script thesis card
+      { sel: '.work-grid .work-card:nth-child(5) .work-card-type', jp: '卒業制作 · MICA 2009' },
+      { sel: '.work-grid .work-card:nth-child(5) .work-card-title', jp: 'Script' },
+      { sel: '.work-grid .work-card:nth-child(5) .work-card-desc', jp: 'シュテンペル論文賞受賞：優れた卒業制作を発表したMICA4年生に毎年授与される奨学金。' },
+      { sel: '.work-grid .work-card:nth-child(5) .work-card-stat span', jp: 'Vimeo.com' },
+      // About section
+      { sel: '#about > .section-label', jp: '紹介' },
+      { sel: '#about h2', html: '映像と<br>プラットフォームの深い技。' },
+      { sel: '.pull-quote', jp: '「映像が私の出発点でした。プラットフォーム思考こそが刺激を与えてくれるものです。画面、ヘッドセット、ホログラム — 表面は常に変わり続け、私はその先端にいたいと思っています。」' },
+      { sel: '.about-text > p', jp: 'こんにちは、ドンです。ブルックリンを拠点とするプロダクトデザイナーで、キャリアのほとんどをストリーミングビデオに費やしてきました。Boxeeの初期のTVボックスから始まり、Vimeoのクリエイタープラットフォームの構築に携わりました。その過程で2つのスタートアップが買収され、プロダクトの成長と新チームへの移行を支援する貴重な経験を得ました。最近は3Dホログラム（Looking Glass）や分散型Webプロジェクトにも取り組んでいます。' },
+      { sel: '.about-tools h3:first-of-type', jp: 'スキルと技術' },
+      { sel: '.about-tools h3:last-of-type', jp: 'コア・ストレングス' },
+      { sel: '.about-tools > p', jp: '次の役割では、複雑なデザイン課題を解決するチームを探しています。OTT/動画プラットフォームのデザイン、クロスプラットフォームエコシステムの開発、デザインシステムの構築、スタートアップ買収とプロダクト統合、新しいハードウェアと空間デザインの分野で15年の経験があります。' },
+      // Skill tags
+      { sel: '.tool-tag:nth-child(1)', jp: 'デザインシステム' },
+      { sel: '.tool-tag:nth-child(2)', jp: '収益化フロー' },
+      { sel: '.tool-tag:nth-child(3)', jp: 'プロトタイピング' },
+      { sel: '.tool-tag:nth-child(4)', jp: 'クロスプラットフォーム' },
+      { sel: '.tool-tag:nth-child(5)', jp: '10フィートUI' },
+      { sel: '.tool-tag:nth-child(6)', jp: '新技術' },
+      { sel: '.tool-tag:nth-child(7)', jp: '0→1' },
+      { sel: '.tool-tag:nth-child(8)', jp: 'ライガーを描く' },
+      // Career section
+      { sel: '#career > .section-label', jp: 'キャリア物語' },
+      { sel: '#career > h2', jp: 'ここに至るまで。' },
+      { sel: '.career-intro', jp: '私のデザインの旅は小さなハードウェアスタートアップから始まり、大規模なストリーミングプラットフォームへと発展しました。すべてのステップで多くを学びました。2度の買収を経ても、プロダクトと共に歩み、私たちの仕事が人々に届き続けるようにしました。' },
+      // Download resume
+      { sel: '.contact-label', jp: '履歴書をダウンロード', all: true },
+      // Contact section
+      { sel: '#contact .section-label', jp: '連絡先' },
+      { sel: '#contact h2', jp: '話しましょう。' },
+      { sel: '.contact-sub', jp: '新しい分野の難しい問題に最もやりがいを感じます。動画プラットフォーム、新技術プロダクト、またはまだデザインのプレイブックが存在しないものを作っているなら — ぜひお話ししましょう。' },
+      // Footer
+      { sel: 'footer span:first-child', html: 'ドン・ポリスティコ · プロダクトデザイナー · ブルックリン、NY · <a href="mailto:don@polisti.co">don@polisti.co</a>' },
+      { sel: 'footer span:last-child', jp: 'BFA, MICA · AI for UXデザイン認定 2025' },
+    ];
+
+    // store originals on first run
+    let originals = null;
+    function storeOriginals() {
+      originals = jpMap.map(entry => {
+        const el = document.querySelector(entry.sel);
+        if (!el) return null;
+        return entry.html ? el.innerHTML : el.textContent;
+      });
+    }
+
+    function toggleJapanese() {
+      const avatar = document.getElementById('navAvatar');
+      if (!isJapanese) {
+        // Switch to Japanese
+        if (!originals) storeOriginals();
+        avatar.src = 'images/avatar-taiko.gif';
+        document.documentElement.lang = 'ja';
+        jpMap.forEach(entry => {
+          const el = document.querySelector(entry.sel);
+          if (!el) return;
+          if (entry.html) { el.innerHTML = entry.html; }
+          else { el.textContent = entry.jp; }
+        });
+        // also translate the nav name
+        const navName = document.querySelector('.nav-logo a[href="#"]');
+        if (navName) { navName._origText = navName.textContent; navName.textContent = 'ドン・ポリスティコ'; }
+        isJapanese = true;
+      } else {
+        // Switch back to English
+        avatar.src = 'images/avatar.gif';
+        document.documentElement.lang = 'en';
+        jpMap.forEach((entry, i) => {
+          const el = document.querySelector(entry.sel);
+          if (!el || originals[i] === null) return;
+          if (entry.html) { el.innerHTML = originals[i]; }
+          else { el.textContent = originals[i]; }
+        });
+        const navName = document.querySelector('.nav-logo a[href="#"]');
+        if (navName && navName._origText) { navName.textContent = navName._origText; }
+        isJapanese = false;
+      }
+    }
 
     // ── Interactive Tag Jumping ──
     function highlightCard(cardId) {
