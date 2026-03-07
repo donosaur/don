@@ -1508,7 +1508,7 @@
         <span class="h1-line"><span class="h1-line-inner">how people</span></span>
         <span class="h1-line"><span class="h1-line-inner"><span class="hero-title-em">watch video.</span></span></span>
       </h1>
-      <a href="#work" class="hero-cta">
+      <a href="#contact" class="hero-cta">
         <span class="hero-cta-glow" aria-hidden="true">
           <span class="hero-cta-bg" aria-hidden="true">
             <span class="hero-cta-blob"></span>
@@ -1521,7 +1521,7 @@
           <span class="hero-cta-blob"></span>
           <span class="hero-cta-blob"></span>
         </span>
-        <span class="hero-cta-text">view selected work</span>
+        <span class="hero-cta-text">Looking for my next role, let's talk!</span>
         <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5">
           <path d="M3 8h10M8 3l5 5-5 5" />
         </svg>
@@ -2117,7 +2117,9 @@
     // Error 153 happens when viewing a YouTube iframe via file:/// protocol.
     // If the iframe fails to load (no message event from YT API), we show the fallback image.
     if (window.location.protocol === 'file:') {
-      console.warn("Viewing via file:// protocol. YouTube background may be blocked (Error 153). Showing fallback image just in case.");
+      console.warn("Viewing via file:// protocol. YouTube background will be blocked (Error 153). Removing iframe and showing fallback image.");
+      const ytFrame = document.getElementById('heroYoutube');
+      if (ytFrame) ytFrame.remove();
     } else {
       // If on a real server, hide the fallback image once we assume it's working
       setTimeout(() => {
