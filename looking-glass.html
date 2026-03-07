@@ -1,0 +1,1372 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Looking Glass — Don Polistico</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,600;1,400;1,600&display=swap" rel="stylesheet" />
+  <script src="https://mcp.figma.com/mcp/html-to-design/capture.js" async></script>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --ink: #0d0d0d;
+      --ink-2: #2e2e2e;
+      --ink-3: #6b6b6b;
+      --line: #e0e0e0;
+      --bg: #f9f9f7;
+      --white: #ffffff;
+      --lkg: #8B5CF6;          /* Looking Glass purple */
+      --lkg-dk: #6D3FD4;
+      --lkg-light: rgba(139,92,246,0.12);
+      --lkg-border: rgba(139,92,246,0.25);
+      --gold: #c9a96e;
+      --gold-light: #f5ede0;
+      --dark: #0f1115;
+      --dark-2: #181c23;
+      --dark-3: #222730;
+      --red: #e05252;
+      --amber: #d48b3a;
+      --green: #4caf7d;
+      --teal: #2DD4BF;
+    }
+    body {
+      font-family: 'Inter', sans-serif;
+      background: #111;
+      -webkit-font-smoothing: antialiased;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 4px;
+    }
+    .slide {
+      width: 1440px;
+      height: 810px;
+      position: relative;
+      overflow: hidden;
+      flex-shrink: 0;
+      display: flex;
+    }
+    .slide-num {
+      position: absolute;
+      bottom: 44px;
+      right: 72px;
+      font-size: 11px;
+      font-weight: 500;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      opacity: 0.25;
+      z-index: 10;
+    }
+    .byline {
+      position: absolute;
+      bottom: 44px;
+      left: 72px;
+      font-size: 11px;
+      font-weight: 500;
+      letter-spacing: 0.08em;
+      opacity: 0.25;
+      z-index: 10;
+    }
+    .eyebrow {
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--lkg);
+      margin-bottom: 18px;
+    }
+    .eyebrow.gold { color: var(--gold); }
+    .eyebrow.teal { color: var(--teal); }
+
+    /* ══════════════════════════════════════
+       SLIDE 10 · HOOK
+    ══════════════════════════════════════ */
+    .s10 {
+      background: var(--dark);
+      flex-direction: column;
+    }
+    .s10-noise {
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(ellipse 1000px 700px at 108% -5%, rgba(139,92,246,0.18) 0%, transparent 55%),
+        radial-gradient(ellipse 700px 500px at -8% 105%, rgba(45,212,191,0.10) 0%, transparent 50%);
+    }
+    .s10-grid {
+      position: absolute;
+      inset: 0;
+      background-image:
+        linear-gradient(rgba(255,255,255,0.025) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,0.025) 1px, transparent 1px);
+      background-size: 72px 72px;
+    }
+    .s10-inner {
+      position: relative;
+      z-index: 1;
+      display: grid;
+      grid-template-columns: 1fr 420px;
+      flex: 1;
+    }
+    .s10-left {
+      padding: 88px 72px 80px 72px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      border-right: 1px solid rgba(255,255,255,0.07);
+    }
+    .s10-left h1 {
+      font-family: 'Playfair Display', serif;
+      font-size: 74px;
+      font-weight: 400;
+      line-height: 1.02;
+      letter-spacing: -0.03em;
+      color: var(--white);
+      margin-bottom: 28px;
+    }
+    .s10-left h1 em { font-style: italic; color: var(--lkg); }
+    .s10-left p {
+      font-size: 17px;
+      line-height: 1.75;
+      color: rgba(255,255,255,0.5);
+      max-width: 540px;
+      margin-bottom: 44px;
+    }
+    .s10-role-block {
+      padding-top: 28px;
+      border-top: 1px solid rgba(255,255,255,0.08);
+      display: flex;
+      flex-direction: column;
+      gap: 5px;
+    }
+    .s10-role-block strong {
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--white);
+    }
+    .s10-role-block span {
+      font-size: 12px;
+      color: rgba(255,255,255,0.3);
+      letter-spacing: 0.06em;
+    }
+    .s10-right {
+      padding: 88px 72px 80px 60px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+    .s10-stat {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      padding: 24px 0;
+      border-bottom: 1px solid rgba(255,255,255,0.07);
+    }
+    .s10-stat:first-child { border-top: 1px solid rgba(255,255,255,0.07); }
+    .s10-stat-num {
+      font-family: 'Playfair Display', serif;
+      font-size: 48px;
+      font-weight: 600;
+      line-height: 1;
+      color: var(--white);
+      margin-bottom: 5px;
+    }
+    .s10-stat-num.purple { color: var(--lkg); }
+    .s10-stat-num.teal { color: var(--teal); }
+    .s10-stat-num.gold { color: var(--gold); }
+    .s10-stat-label {
+      font-size: 12px;
+      font-weight: 500;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.3);
+    }
+
+    /* ══════════════════════════════════════
+       SLIDE 11 · CONSTRAINTS
+    ══════════════════════════════════════ */
+    .s11 {
+      background: var(--bg);
+      flex-direction: column;
+      padding: 72px 72px 68px;
+    }
+    .s11-header { margin-bottom: 48px; }
+    .s11 h2 {
+      font-family: 'Playfair Display', serif;
+      font-size: 46px;
+      font-weight: 400;
+      line-height: 1.1;
+      letter-spacing: -0.02em;
+      color: var(--ink);
+      margin-top: 14px;
+    }
+    .s11 h2 em { font-style: italic; color: var(--lkg); }
+
+    /* system diagram */
+    .constraint-layout {
+      display: grid;
+      grid-template-columns: 1fr 340px;
+      gap: 40px;
+      flex: 1;
+      align-items: start;
+    }
+
+    .system-diagram {
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+    }
+    .sys-row {
+      display: flex;
+      align-items: center;
+      gap: 0;
+      height: 72px;
+    }
+    .sys-node {
+      flex-shrink: 0;
+      padding: 14px 20px;
+      background: var(--white);
+      border: 1px solid var(--line);
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      min-width: 180px;
+    }
+    .sys-node.primary { border-left: 3px solid var(--lkg); }
+    .sys-node.secondary { border-left: 3px solid var(--gold); }
+    .sys-node.tertiary { border-left: 3px solid var(--teal); }
+    .sys-node strong {
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--ink);
+      margin-bottom: 2px;
+    }
+    .sys-node span {
+      font-size: 11px;
+      color: var(--ink-3);
+      letter-spacing: 0.04em;
+    }
+    .sys-arrow {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 3px;
+      padding: 0 12px;
+      min-width: 80px;
+    }
+    .sys-arrow-line {
+      width: 100%;
+      height: 1px;
+      background: var(--line);
+      position: relative;
+    }
+    .sys-arrow-line::after {
+      content: '›';
+      position: absolute;
+      right: -4px;
+      top: -9px;
+      font-size: 18px;
+      color: var(--ink-3);
+      opacity: 0.4;
+    }
+    .sys-arrow-label {
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--ink-3);
+      opacity: 0.6;
+      white-space: nowrap;
+    }
+    .sys-spacer { height: 8px; }
+
+    /* constraint cards */
+    .constraint-cards {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+    .constraint-card {
+      padding: 18px 20px;
+      background: var(--white);
+      border: 1px solid var(--line);
+      display: flex;
+      gap: 14px;
+      align-items: flex-start;
+    }
+    .constraint-icon {
+      font-size: 18px;
+      flex-shrink: 0;
+      margin-top: 1px;
+    }
+    .constraint-body strong {
+      display: block;
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--ink);
+      margin-bottom: 3px;
+    }
+    .constraint-body span {
+      font-size: 12px;
+      line-height: 1.6;
+      color: var(--ink-3);
+    }
+    .collab-strip {
+      margin-top: 20px;
+      padding: 14px 18px;
+      background: var(--lkg-light);
+      border: 1px solid var(--lkg-border);
+      border-radius: 2px;
+    }
+    .collab-strip strong {
+      display: block;
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--lkg);
+      margin-bottom: 5px;
+    }
+    .collab-strip p {
+      font-size: 12px;
+      line-height: 1.6;
+      color: var(--ink-2);
+    }
+
+    /* ══════════════════════════════════════
+       SLIDE 12 · AI LATENCY TRADE-OFFS
+    ══════════════════════════════════════ */
+    .s12 {
+      background: var(--dark-2);
+      flex-direction: column;
+      padding: 68px 72px 60px;
+    }
+    .s12 h2 {
+      font-family: 'Playfair Display', serif;
+      font-size: 44px;
+      font-weight: 400;
+      color: var(--white);
+      letter-spacing: -0.02em;
+      margin-bottom: 44px;
+      line-height: 1.1;
+    }
+    .s12 h2 em { font-style: italic; color: var(--lkg); }
+
+    .tradeoff-cols {
+      display: grid;
+      grid-template-columns: 1fr 64px 1fr;
+      gap: 0;
+      flex: 1;
+      align-items: stretch;
+    }
+    .tradeoff-col {
+      background: rgba(255,255,255,0.03);
+      border: 1px solid rgba(255,255,255,0.08);
+      padding: 32px;
+      display: flex;
+      flex-direction: column;
+      position: relative;
+    }
+    .tradeoff-col::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 3px;
+    }
+    .tradeoff-col.problem::before { background: rgba(224,82,82,0.6); }
+    .tradeoff-col.solution::before { background: var(--lkg); }
+    .tradeoff-dir {
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      margin-bottom: 10px;
+    }
+    .tradeoff-dir.p { color: var(--red); }
+    .tradeoff-dir.s { color: var(--lkg); }
+    .tradeoff-col h3 {
+      font-family: 'Playfair Display', serif;
+      font-size: 24px;
+      font-weight: 400;
+      color: var(--white);
+      margin-bottom: 8px;
+      line-height: 1.2;
+    }
+    .tradeoff-col > p {
+      font-size: 13px;
+      line-height: 1.65;
+      color: rgba(255,255,255,0.45);
+      margin-bottom: 20px;
+    }
+
+    /* phone mockup */
+    .phone-mock {
+      width: 140px;
+      height: 240px;
+      background: #1a1a2e;
+      border-radius: 16px;
+      border: 2px solid rgba(255,255,255,0.12);
+      margin: 0 auto 20px;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+      position: relative;
+      flex-shrink: 0;
+    }
+    .phone-notch {
+      height: 16px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+    .phone-notch-pill {
+      width: 40px;
+      height: 5px;
+      background: rgba(255,255,255,0.1);
+      border-radius: 3px;
+    }
+    .phone-screen {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      padding: 8px;
+      gap: 6px;
+    }
+
+    /* problem state: spinning hidden */
+    .prob-header { height: 16px; background: rgba(255,255,255,0.06); border-radius: 2px; }
+    .prob-img { flex: 1; background: rgba(255,255,255,0.03); border-radius: 3px; border: 1px dashed rgba(255,255,255,0.08); display: flex; align-items: center; justify-content: center; }
+    .prob-spinner { width: 20px; height: 20px; border: 2px solid rgba(255,255,255,0.08); border-top-color: rgba(255,255,255,0.3); border-radius: 50%; }
+    .prob-footer { height: 20px; background: rgba(255,255,255,0.04); border-radius: 2px; display: flex; align-items: center; justify-content: center; }
+    .prob-footer-text { font-size: 7px; color: rgba(255,255,255,0.2); font-weight: 500; letter-spacing: 0.06em; }
+
+    /* solution state: transparent progress */
+    .sol-header { height: 16px; background: rgba(255,255,255,0.06); border-radius: 2px; }
+    .sol-progress-wrap { padding: 8px; background: rgba(139,92,246,0.1); border: 1px solid rgba(139,92,246,0.2); border-radius: 3px; display: flex; flex-direction: column; gap: 5px; }
+    .sol-step { display: flex; align-items: center; gap: 5px; }
+    .sol-step-dot { width: 5px; height: 5px; border-radius: 50%; flex-shrink: 0; }
+    .sol-step-dot.done { background: var(--lkg); }
+    .sol-step-dot.active { background: var(--teal); }
+    .sol-step-dot.pending { background: rgba(255,255,255,0.15); }
+    .sol-step-label { font-size: 7px; color: rgba(255,255,255,0.5); font-weight: 500; }
+    .sol-step-label.done-text { color: rgba(139,92,246,0.8); }
+    .sol-depth-preview { flex: 1; background: rgba(0,0,0,0.4); border-radius: 3px; display: flex; align-items: center; justify-content: center; position: relative; overflow: hidden; }
+    .sol-depth-gradient { position: absolute; inset: 0; background: linear-gradient(135deg, rgba(139,92,246,0.3) 0%, rgba(45,212,191,0.2) 50%, rgba(0,0,0,0.8) 100%); }
+    .sol-depth-label { position: relative; font-size: 7px; font-weight: 600; color: rgba(255,255,255,0.5); letter-spacing: 0.08em; text-transform: uppercase; }
+    .sol-bar { height: 6px; background: rgba(255,255,255,0.06); border-radius: 2px; overflow: hidden; flex-shrink: 0; }
+    .sol-bar-fill { height: 100%; width: 68%; background: linear-gradient(90deg, var(--lkg), var(--teal)); border-radius: 2px; }
+
+    .tradeoff-verdict {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      padding: 12px 14px;
+      border-radius: 2px;
+      margin-top: auto;
+    }
+    .tradeoff-verdict.bad { background: rgba(224,82,82,0.08); border: 1px solid rgba(224,82,82,0.2); }
+    .tradeoff-verdict.good { background: var(--lkg-light); border: 1px solid var(--lkg-border); }
+    .tv-icon { font-size: 13px; flex-shrink: 0; margin-top: 1px; }
+    .tv-text strong { display: block; font-size: 10px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 3px; }
+    .tv-text.bad strong { color: var(--red); }
+    .tv-text.good strong { color: var(--lkg); }
+    .tv-text span { font-size: 12px; line-height: 1.5; color: rgba(255,255,255,0.4); }
+
+    /* middle arrow */
+    .tradeoff-pivot {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+      gap: 8px;
+    }
+    .pivot-arrow {
+      width: 1px;
+      flex: 1;
+      background: rgba(255,255,255,0.08);
+      position: relative;
+    }
+    .pivot-label {
+      font-size: 9px;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.2);
+      writing-mode: vertical-rl;
+      text-orientation: mixed;
+    }
+
+    /* ══════════════════════════════════════
+       SLIDE 13 · HARDWARE STATES
+    ══════════════════════════════════════ */
+    .s13 {
+      background: var(--bg);
+      display: grid;
+      grid-template-columns: 480px 1fr;
+    }
+    .s13-left {
+      padding: 80px 60px 80px 72px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      border-right: 1px solid var(--line);
+    }
+    .s13-left h2 {
+      font-family: 'Playfair Display', serif;
+      font-size: 44px;
+      font-weight: 400;
+      line-height: 1.1;
+      letter-spacing: -0.02em;
+      color: var(--ink);
+      margin-bottom: 24px;
+    }
+    .s13-left h2 em { font-style: italic; color: var(--lkg); }
+    .s13-left > p {
+      font-size: 15px;
+      line-height: 1.8;
+      color: var(--ink-2);
+      margin-bottom: 32px;
+    }
+    .design-principle {
+      padding: 18px 22px;
+      background: var(--white);
+      border: 1px solid var(--line);
+      border-left: 3px solid var(--lkg);
+      margin-bottom: 20px;
+    }
+    .design-principle strong {
+      display: block;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--lkg);
+      margin-bottom: 7px;
+    }
+    .design-principle p {
+      font-size: 13px;
+      line-height: 1.65;
+      color: var(--ink-2);
+    }
+    .audience-note {
+      padding: 14px 18px;
+      background: #fff9ef;
+      border: 1px solid #e8d5b0;
+      border-left: 3px solid var(--gold);
+      font-size: 13px;
+      line-height: 1.6;
+      color: var(--ink-2);
+    }
+    .audience-note strong { color: var(--gold); font-weight: 700; }
+
+    /* hardware state strip */
+    .s13-right {
+      padding: 72px 72px 72px 60px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+    .hw-states-label {
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--lkg);
+      margin-bottom: 28px;
+    }
+    .hw-states {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 14px;
+    }
+    .hw-state-card {
+      background: var(--white);
+      border: 1px solid var(--line);
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+    }
+    .hw-state-card.active-state { border-color: var(--lkg); }
+    .hw-phone-mini {
+      background: #1a1a2e;
+      padding: 12px 10px;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      align-items: center;
+    }
+    .hw-phone-mini-screen {
+      width: 72px;
+      height: 120px;
+      background: #0d1020;
+      border-radius: 8px;
+      border: 1.5px solid rgba(255,255,255,0.1);
+      display: flex;
+      flex-direction: column;
+      padding: 8px 6px;
+      gap: 5px;
+      overflow: hidden;
+    }
+    .hw-topbar-mini { height: 5px; background: rgba(255,255,255,0.08); border-radius: 1px; }
+    .hw-device-icon {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+      gap: 4px;
+    }
+    .hw-device-shape {
+      width: 28px;
+      height: 20px;
+      border-radius: 3px;
+      border: 1.5px solid rgba(255,255,255,0.15);
+      position: relative;
+    }
+    /* pulsing dot for connecting state */
+    .hw-pulse-ring {
+      width: 14px; height: 14px;
+      border-radius: 50%;
+      border: 1.5px solid rgba(139,92,246,0.5);
+      position: absolute;
+      top: 50%; left: 50%;
+      transform: translate(-50%, -50%);
+    }
+    .hw-pulse-dot { width: 5px; height: 5px; border-radius: 50%; background: var(--lkg); position: absolute; top: 50%; left: 50%; transform: translate(-50%,-50%); }
+    /* progress bar for syncing */
+    .hw-sync-bar { height: 4px; background: rgba(255,255,255,0.06); border-radius: 2px; overflow: hidden; }
+    .hw-sync-fill { height: 100%; border-radius: 2px; }
+    .hw-sync-fill.pct60 { width: 60%; background: var(--lkg); }
+    .hw-sync-fill.pct90 { width: 90%; background: var(--teal); }
+    .hw-sync-fill.pct100 { width: 100%; background: var(--green); }
+    /* firmware update */
+    .hw-update-rows { display: flex; flex-direction: column; gap: 3px; }
+    .hw-update-row { height: 4px; background: rgba(255,255,255,0.06); border-radius: 1px; }
+    .hw-update-row.lit { background: rgba(212,139,58,0.5); }
+    /* ready check */
+    .hw-check { font-size: 14px; line-height: 1; }
+    .hw-mini-label { font-size: 8px; font-weight: 600; color: rgba(255,255,255,0.3); letter-spacing: 0.06em; text-transform: uppercase; }
+
+    .hw-state-info { padding: 14px 14px 16px; display: flex; flex-direction: column; gap: 5px; }
+    .hw-state-name {
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--ink);
+    }
+    .hw-state-desc {
+      font-size: 11px;
+      line-height: 1.55;
+      color: var(--ink-3);
+    }
+    .hw-state-tag {
+      margin-top: 4px;
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: 0.06em;
+    }
+    .hw-state-tag.purple { color: var(--lkg); }
+    .hw-state-tag.amber { color: var(--amber); }
+    .hw-state-tag.green { color: var(--green); }
+    .hw-state-tag.teal { color: var(--teal); }
+
+    .hw-design-note {
+      margin-top: 20px;
+      padding: 14px 18px;
+      background: var(--lkg-light);
+      border: 1px solid var(--lkg-border);
+      border-radius: 2px;
+      font-size: 13px;
+      line-height: 1.6;
+      color: var(--ink-2);
+    }
+    .hw-design-note strong { color: var(--lkg); font-weight: 600; }
+
+    /* ══════════════════════════════════════
+       SLIDE 14 · RESULTS & RETROSPECTIVE
+    ══════════════════════════════════════ */
+    .s14 {
+      background: var(--dark);
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      position: relative;
+      overflow: hidden;
+    }
+    .s14-bg {
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(ellipse 900px 600px at 110% 50%, rgba(139,92,246,0.09) 0%, transparent 60%),
+        radial-gradient(ellipse 600px 500px at -10% 60%, rgba(45,212,191,0.06) 0%, transparent 50%);
+    }
+    .s14-left {
+      padding: 72px 60px 80px 72px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      border-right: 1px solid rgba(255,255,255,0.07);
+      position: relative;
+      z-index: 1;
+    }
+    .s14-left-top h2 {
+      font-family: 'Playfair Display', serif;
+      font-size: 44px;
+      font-weight: 400;
+      line-height: 1.1;
+      letter-spacing: -0.02em;
+      color: var(--white);
+      margin-top: 14px;
+      margin-bottom: 40px;
+    }
+    .s14-left-top h2 em { font-style: italic; color: var(--lkg); }
+    .metrics-list { display: flex; flex-direction: column; gap: 0; }
+    .metric-row {
+      display: grid;
+      grid-template-columns: 100px 1fr;
+      gap: 24px;
+      padding: 16px 0;
+      border-bottom: 1px solid rgba(255,255,255,0.06);
+      align-items: center;
+    }
+    .metric-row:first-child { border-top: 1px solid rgba(255,255,255,0.06); }
+    .metric-val {
+      font-family: 'Playfair Display', serif;
+      font-size: 34px;
+      font-weight: 600;
+      line-height: 1;
+      color: var(--white);
+    }
+    .metric-val.purple { color: var(--lkg); }
+    .metric-val.teal { color: var(--teal); }
+    .metric-val.gold { color: var(--gold); }
+    .metric-body strong { display: block; font-size: 13px; font-weight: 600; color: var(--white); margin-bottom: 2px; }
+    .metric-body span { font-size: 12px; color: rgba(255,255,255,0.3); line-height: 1.4; }
+    .transition-teaser {
+      padding: 18px 20px;
+      background: rgba(255,255,255,0.03);
+      border: 1px solid rgba(255,255,255,0.08);
+      border-left: 3px solid var(--gold);
+      display: flex;
+      align-items: flex-start;
+      gap: 14px;
+    }
+    .transition-teaser strong { display: block; font-size: 11px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--gold); margin-bottom: 5px; }
+    .transition-teaser p { font-size: 13px; line-height: 1.6; color: rgba(255,255,255,0.45); }
+    .s14-right {
+      padding: 72px 72px 80px 60px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      position: relative;
+      z-index: 1;
+    }
+    .retro-label { font-size: 11px; font-weight: 600; letter-spacing: 0.16em; text-transform: uppercase; color: var(--gold); margin-bottom: 16px; }
+    .retro-title { font-family: 'Playfair Display', serif; font-size: 26px; font-weight: 400; color: var(--white); margin-bottom: 28px; line-height: 1.3; }
+    .retro-items { display: flex; flex-direction: column; gap: 0; }
+    .retro-item {
+      display: grid;
+      grid-template-columns: 28px 1fr;
+      gap: 14px;
+      padding: 16px 0;
+      border-bottom: 1px solid rgba(255,255,255,0.06);
+      align-items: start;
+    }
+    .retro-item:first-child { border-top: 1px solid rgba(255,255,255,0.06); }
+    .retro-icon { font-size: 14px; margin-top: 1px; }
+    .retro-body strong { display: block; font-size: 13px; font-weight: 600; color: var(--white); margin-bottom: 4px; }
+    .retro-body span { font-size: 12px; line-height: 1.6; color: rgba(255,255,255,0.38); }
+    .retro-item.honest .retro-body strong { color: rgba(255,255,255,0.65); }
+
+    /* ══════════════════════════════════════
+       SLIDE 15 · THANK YOU / Q&A
+    ══════════════════════════════════════ */
+    .s15 {
+      background: var(--dark);
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      overflow: hidden;
+    }
+    .s15-bg {
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(ellipse 1000px 700px at 50% 50%, rgba(139,92,246,0.1) 0%, transparent 60%),
+        radial-gradient(ellipse 600px 400px at 20% 100%, rgba(26,183,234,0.06) 0%, transparent 50%),
+        radial-gradient(ellipse 600px 400px at 80% 0%, rgba(45,212,191,0.05) 0%, transparent 50%);
+    }
+    .s15-grid {
+      position: absolute;
+      inset: 0;
+      background-image:
+        linear-gradient(rgba(255,255,255,0.02) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,0.02) 1px, transparent 1px);
+      background-size: 72px 72px;
+    }
+    .s15-content {
+      position: relative;
+      z-index: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      gap: 0;
+      width: 900px;
+    }
+    .s15-eyebrow {
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.3);
+      margin-bottom: 32px;
+    }
+    .s15 h2 {
+      font-family: 'Playfair Display', serif;
+      font-size: 64px;
+      font-weight: 400;
+      line-height: 1.08;
+      letter-spacing: -0.025em;
+      color: var(--white);
+      margin-bottom: 40px;
+    }
+    .s15 h2 em { font-style: italic; color: var(--lkg); }
+
+    /* bridge statement */
+    .s15-bridge {
+      max-width: 760px;
+      text-align: center;
+      padding: 28px 40px;
+      background: rgba(255,255,255,0.03);
+      border: 1px solid rgba(255,255,255,0.08);
+      margin-bottom: 48px;
+    }
+    .s15-bridge p {
+      font-size: 16px;
+      line-height: 1.8;
+      color: rgba(255,255,255,0.55);
+    }
+    .s15-bridge p strong { color: var(--white); font-weight: 600; }
+
+    /* case study pills */
+    .s15-case-pills {
+      display: flex;
+      gap: 16px;
+      margin-bottom: 48px;
+      align-items: center;
+    }
+    .s15-pill {
+      padding: 10px 22px;
+      border-radius: 2px;
+      font-size: 12px;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .s15-pill.vimeo {
+      background: rgba(26,183,234,0.1);
+      border: 1px solid rgba(26,183,234,0.25);
+      color: #1ab7ea;
+    }
+    .s15-pill.lkg {
+      background: var(--lkg-light);
+      border: 1px solid var(--lkg-border);
+      color: var(--lkg);
+    }
+    .s15-pill-sep { width: 24px; height: 1px; background: rgba(255,255,255,0.12); }
+
+    /* contact row */
+    .s15-contact {
+      display: flex;
+      gap: 36px;
+      align-items: center;
+    }
+    .s15-contact-item strong { display: block; font-size: 15px; font-weight: 500; color: var(--white); margin-bottom: 2px; }
+    .s15-contact-item span { font-size: 11px; color: rgba(255,255,255,0.3); letter-spacing: 0.06em; text-transform: uppercase; }
+    .s15-sep { width: 1px; height: 36px; background: rgba(255,255,255,0.1); }
+  </style>
+</head>
+<body>
+
+  <!-- ═══════════════════════════════════════
+       SLIDE 10 · LOOKING GLASS HOOK
+  ════════════════════════════════════════ -->
+  <div class="slide s10">
+    <div class="s10-noise"></div>
+    <div class="s10-grid"></div>
+    <div class="s10-inner">
+      <div class="s10-left">
+        <div>
+          <p class="eyebrow">Case Study 2 — Looking Glass Go · 2022–2024</p>
+          <h1>Holograms in<br>your pocket.<br><em>No Unity required.</em></h1>
+          <p>
+            The Looking Glass Go is a holographic display anyone can own. My job was to design the iOS companion app that turns a standard 2D photo into a 3D hologram in seconds — powered by AI, connected over Wi-Fi, no technical knowledge needed.
+          </p>
+        </div>
+        <div class="s10-role-block">
+          <strong>Contract Product Designer · Looking Glass Factory · Brooklyn, NY</strong>
+          <span>iOS App &nbsp;·&nbsp; AI/ML collaboration &nbsp;·&nbsp; Hardware/Software integration</span>
+        </div>
+      </div>
+      <div class="s10-right">
+        <div class="s10-stat">
+          <div class="s10-stat-num purple">0→1</div>
+          <div class="s10-stat-label">Consumer product launch</div>
+        </div>
+        <div class="s10-stat">
+          <div class="s10-stat-num">2D→3D</div>
+          <div class="s10-stat-label">Core user experience</div>
+        </div>
+        <div class="s10-stat">
+          <div class="s10-stat-num teal">AI</div>
+          <div class="s10-stat-label">Depth generation pipeline</div>
+        </div>
+        <div class="s10-stat">
+          <div class="s10-stat-num gold">v1</div>
+          <div class="s10-stat-label">Hardware launch shipped</div>
+        </div>
+      </div>
+    </div>
+    <span class="byline" style="color:white;">Don Polistico</span>
+    <span class="slide-num" style="color:white;">10 / 15</span>
+  </div>
+
+  <!-- ═══════════════════════════════════════
+       SLIDE 11 · HARDWARE/SOFTWARE CONSTRAINTS
+  ════════════════════════════════════════ -->
+  <div class="slide s11">
+    <div class="s11-header">
+      <p class="eyebrow">Hardware / Software Constraints</p>
+      <h2>Designing a 2D app for<br>a <em>3D physical world.</em></h2>
+    </div>
+    <div class="constraint-layout">
+
+      <!-- system diagram -->
+      <div>
+        <p style="font-size:11px;font-weight:600;letter-spacing:0.12em;text-transform:uppercase;color:var(--ink-3);margin-bottom:20px;">The technical stack I designed across</p>
+        <div class="system-diagram">
+          <div class="sys-row">
+            <div class="sys-node primary">
+              <strong>iOS App</strong>
+              <span>2D interface · Swift UI</span>
+            </div>
+            <div class="sys-arrow">
+              <div class="sys-arrow-line"></div>
+              <div class="sys-arrow-label">Wi-Fi</div>
+            </div>
+            <div class="sys-node secondary">
+              <strong>Looking Glass Go</strong>
+              <span>Holographic display hardware</span>
+            </div>
+          </div>
+          <div class="sys-spacer"></div>
+          <div class="sys-row">
+            <div class="sys-node primary">
+              <strong>iOS Camera / Photos</strong>
+              <span>2D image capture</span>
+            </div>
+            <div class="sys-arrow">
+              <div class="sys-arrow-line"></div>
+              <div class="sys-arrow-label">HTTPS upload</div>
+            </div>
+            <div class="sys-node tertiary">
+              <strong>Cloud AI Pipeline</strong>
+              <span>Depth map generation · GPU compute</span>
+            </div>
+          </div>
+          <div class="sys-spacer"></div>
+          <div class="sys-row">
+            <div class="sys-node tertiary">
+              <strong>Depth Map + RGB</strong>
+              <span>Stitched 3D asset (RGBD)</span>
+            </div>
+            <div class="sys-arrow">
+              <div class="sys-arrow-line"></div>
+              <div class="sys-arrow-label">Wi-Fi push</div>
+            </div>
+            <div class="sys-node secondary">
+              <strong>Hologram rendered</strong>
+              <span>Displayed on Looking Glass Go</span>
+            </div>
+          </div>
+        </div>
+        <div class="collab-strip" style="margin-top:20px;">
+          <strong>Cross-functional collaboration</strong>
+          <p>Tight daily loops with ML engineers (depth model accuracy), firmware teams (Wi-Fi sync protocol & device states), and hardware (display calibration constraints).</p>
+        </div>
+      </div>
+
+      <!-- constraint cards -->
+      <div class="constraint-cards">
+        <div class="constraint-card">
+          <span class="constraint-icon">📶</span>
+          <div class="constraint-body">
+            <strong>Consumer Wi-Fi is unpredictable</strong>
+            <span>Pushing heavy spatial files over home networks caused bottlenecks — not a bug, a physical reality I had to design around.</span>
+          </div>
+        </div>
+        <div class="constraint-card">
+          <span class="constraint-icon">⏱</span>
+          <div class="constraint-body">
+            <strong>AI compute has real latency</strong>
+            <span>Cloud depth generation isn't instant. Designing for a 10–30 second wait on frontier hardware without losing the user was the central challenge.</span>
+          </div>
+        </div>
+        <div class="constraint-card">
+          <span class="constraint-icon">🔧</span>
+          <div class="constraint-body">
+            <strong>v1 firmware had rough edges</strong>
+            <span>Connecting, updating, and syncing to a physical device added states and failure modes no purely digital product has to handle.</span>
+          </div>
+        </div>
+        <div class="constraint-card">
+          <span class="constraint-icon">👤</span>
+          <div class="constraint-body">
+            <strong>Non-technical consumer audience</strong>
+            <span>Every technical concept — depth maps, firmware, RGBD files — had to be invisible or translated into language anyone could understand.</span>
+          </div>
+        </div>
+      </div>
+
+    </div>
+    <span class="byline">Don Polistico</span>
+    <span class="slide-num" style="color:var(--ink-3);">11 / 15</span>
+  </div>
+
+  <!-- ═══════════════════════════════════════
+       SLIDE 12 · AI LATENCY TRADE-OFFS
+  ════════════════════════════════════════ -->
+  <div class="slide s12">
+    <p class="eyebrow">Design Challenge — AI Latency</p>
+    <h2>Hiding the wait<br>vs. <em>showing the work.</em></h2>
+    <div class="tradeoff-cols">
+
+      <!-- PROBLEM -->
+      <div class="tradeoff-col problem">
+        <p class="tradeoff-dir p">Initial Approach — Rejected</p>
+        <h3>Hide the process in the background</h3>
+
+        <div class="phone-mock">
+          <div class="phone-notch"><div class="phone-notch-pill"></div></div>
+          <div class="phone-screen">
+            <div class="prob-header"></div>
+            <div class="prob-img">
+              <div class="prob-spinner"></div>
+            </div>
+            <div class="prob-footer">
+              <span class="prob-footer-text">Processing...</span>
+            </div>
+          </div>
+        </div>
+
+        <p>Designed a flow where the AI pipeline ran silently in the background — users would see a minimal spinner while the depth map generated, with no visibility into what was happening or how long it would take.</p>
+        <div class="tradeoff-verdict bad">
+          <span class="tv-icon">✕</span>
+          <div class="tv-text bad">
+            <strong>Caused user drop-off</strong>
+            <span>Frontier tech users expected instant results. With no feedback, they assumed the app was broken and abandoned during the loading phase. The wait time hadn't changed — but the experience felt like a failure.</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- PIVOT ARROW -->
+      <div class="tradeoff-pivot">
+        <div class="pivot-arrow"></div>
+        <div class="pivot-label">pivot</div>
+        <div class="pivot-arrow"></div>
+      </div>
+
+      <!-- SOLUTION -->
+      <div class="tradeoff-col solution">
+        <p class="tradeoff-dir s">Shipped Solution</p>
+        <h3>Expose the AI work in real time</h3>
+
+        <div class="phone-mock">
+          <div class="phone-notch"><div class="phone-notch-pill"></div></div>
+          <div class="phone-screen">
+            <div class="sol-header"></div>
+            <div class="sol-progress-wrap">
+              <div class="sol-step">
+                <div class="sol-step-dot done"></div>
+                <span class="sol-step-label done-text">Image uploaded ✓</span>
+              </div>
+              <div class="sol-step">
+                <div class="sol-step-dot active"></div>
+                <span class="sol-step-label">Generating depth map…</span>
+              </div>
+              <div class="sol-step">
+                <div class="sol-step-dot pending"></div>
+                <span class="sol-step-label" style="opacity:0.4;">Stitching RGBD file</span>
+              </div>
+            </div>
+            <div class="sol-depth-preview">
+              <div class="sol-depth-gradient"></div>
+              <span class="sol-depth-label">Depth Preview</span>
+            </div>
+            <div class="sol-bar"><div class="sol-bar-fill"></div></div>
+          </div>
+        </div>
+
+        <p>Redesigned the loading state to visually expose each step of the AI pipeline — upload confirmed, depth generation live preview, stitching progress. Users could see the AI doing the work in real time.</p>
+        <div class="tradeoff-verdict good">
+          <span class="tv-icon">✓</span>
+          <div class="tv-text good">
+            <strong>Eliminated drop-off during load</strong>
+            <span>By making the latency legible — and the depth map visually compelling — the wait became part of the experience. Users stayed engaged because they understood what was happening and it felt like magic.</span>
+          </div>
+        </div>
+      </div>
+
+    </div>
+    <span class="byline" style="color:white;">Don Polistico</span>
+    <span class="slide-num" style="color:white;">12 / 15</span>
+  </div>
+
+  <!-- ═══════════════════════════════════════
+       SLIDE 13 · HARDWARE STATES / SYNCING
+  ════════════════════════════════════════ -->
+  <div class="slide s13">
+    <div class="s13-left">
+      <p class="eyebrow">Visual Craft — Hardware States</p>
+      <h2>The device is<br>part of the <em>UX.</em></h2>
+      <p>Pushing spatial files over home Wi-Fi to v1 hardware introduced failure modes that purely digital products never encounter. Every state of the physical device had to be surfaced explicitly — in language a non-technical consumer could act on.</p>
+      <div class="design-principle">
+        <strong>Design principle</strong>
+        <p>A dropped Wi-Fi handshake is just as much a UX problem as a confusing button. If the user can't tell what the device is doing, they'll blame the app — or return the hardware.</p>
+      </div>
+      <div class="audience-note">
+        <strong>Audience constraint:</strong> No engineering manuals. Every state label, icon, and progress indicator had to be self-explanatory for a consumer who had never owned spatial computing hardware before.
+      </div>
+    </div>
+
+    <div class="s13-right">
+      <p class="hw-states-label">Hardware state UI — 4 explicit device states</p>
+      <div class="hw-states">
+
+        <!-- Connecting -->
+        <div class="hw-state-card">
+          <div class="hw-phone-mini">
+            <div class="hw-phone-mini-screen">
+              <div class="hw-topbar-mini"></div>
+              <div class="hw-device-icon">
+                <div class="hw-device-shape">
+                  <div class="hw-pulse-ring"></div>
+                  <div class="hw-pulse-dot"></div>
+                </div>
+              </div>
+              <div class="hw-sync-bar"><div class="hw-sync-fill" style="width:30%;background:var(--lkg);animation:none;"></div></div>
+            </div>
+            <div class="hw-mini-label">Connecting</div>
+          </div>
+          <div class="hw-state-info">
+            <div class="hw-state-name">Connecting</div>
+            <div class="hw-state-desc">Searching for device on local network. Pulsing ring communicates active search.</div>
+            <div class="hw-state-tag purple">→ Wi-Fi discovery</div>
+          </div>
+        </div>
+
+        <!-- Syncing -->
+        <div class="hw-state-card active-state">
+          <div class="hw-phone-mini">
+            <div class="hw-phone-mini-screen">
+              <div class="hw-topbar-mini"></div>
+              <div class="hw-device-icon">
+                <div class="hw-device-shape" style="border-color:rgba(45,212,191,0.4);">
+                  <div class="hw-pulse-dot" style="background:var(--teal);"></div>
+                </div>
+              </div>
+              <div class="hw-sync-bar"><div class="hw-sync-fill pct60" style="background:var(--teal);"></div></div>
+            </div>
+            <div class="hw-mini-label">Syncing</div>
+          </div>
+          <div class="hw-state-info">
+            <div class="hw-state-name">Syncing file</div>
+            <div class="hw-state-desc">Spatial file transferring to display. Progress bar with percentage — no guessing.</div>
+            <div class="hw-state-tag teal">→ File transfer</div>
+          </div>
+        </div>
+
+        <!-- Firmware Update -->
+        <div class="hw-state-card">
+          <div class="hw-phone-mini">
+            <div class="hw-phone-mini-screen">
+              <div class="hw-topbar-mini"></div>
+              <div class="hw-device-icon">
+                <div class="hw-update-rows">
+                  <div class="hw-update-row lit"></div>
+                  <div class="hw-update-row lit"></div>
+                  <div class="hw-update-row"></div>
+                  <div class="hw-update-row"></div>
+                </div>
+              </div>
+              <div class="hw-sync-bar"><div class="hw-sync-fill" style="width:45%;background:var(--amber);"></div></div>
+            </div>
+            <div class="hw-mini-label">Updating</div>
+          </div>
+          <div class="hw-state-info">
+            <div class="hw-state-name">Firmware update</div>
+            <div class="hw-state-desc">Required before use. Explicit messaging: do not unplug. Estimated time shown.</div>
+            <div class="hw-state-tag amber">→ Don't interrupt</div>
+          </div>
+        </div>
+
+        <!-- Ready -->
+        <div class="hw-state-card">
+          <div class="hw-phone-mini">
+            <div class="hw-phone-mini-screen">
+              <div class="hw-topbar-mini"></div>
+              <div class="hw-device-icon">
+                <div class="hw-device-shape" style="border-color:rgba(76,175,125,0.4);display:flex;align-items:center;justify-content:center;">
+                  <span class="hw-check" style="color:var(--green);font-size:12px;">✓</span>
+                </div>
+              </div>
+              <div class="hw-sync-bar"><div class="hw-sync-fill pct100" style="background:var(--green);"></div></div>
+            </div>
+            <div class="hw-mini-label">Ready</div>
+          </div>
+          <div class="hw-state-info">
+            <div class="hw-state-name">Display ready</div>
+            <div class="hw-state-desc">Device fully connected, hologram rendered. Clear green confirmation before handoff.</div>
+            <div class="hw-state-tag green">→ Cast hologram</div>
+          </div>
+        </div>
+
+      </div>
+      <div class="hw-design-note">
+        <strong>The key decision:</strong> Each state is explicit and actionable — not a generic spinner. Users always know what the device is doing, what to do next, and what not to do (e.g., don't unplug during firmware update).
+      </div>
+    </div>
+
+    <span class="byline">Don Polistico</span>
+    <span class="slide-num" style="color:var(--ink-3);">13 / 15</span>
+  </div>
+
+  <!-- ═══════════════════════════════════════
+       SLIDE 14 · RESULTS & RETROSPECTIVE
+  ════════════════════════════════════════ -->
+  <div class="slide s14">
+    <div class="s14-bg"></div>
+    <div class="s14-left">
+      <div class="s14-left-top">
+        <p class="eyebrow">Results</p>
+        <h2>What shipped.<br><em>What I learned.</em></h2>
+        <div class="metrics-list">
+          <div class="metric-row">
+            <div class="metric-val purple">0→1</div>
+            <div class="metric-body">
+              <strong>App shipped alongside hardware launch</strong>
+              <span>Delivered complete iOS companion app in time for the Looking Glass Go launch.</span>
+            </div>
+          </div>
+          <div class="metric-row">
+            <div class="metric-val teal">2D→3D</div>
+            <div class="metric-body">
+              <strong>In seconds, on any smartphone</strong>
+              <span>Fundamentally lowered the barrier to entry for spatial photography — no Unity, no Blender, no technical knowledge.</span>
+            </div>
+          </div>
+          <div class="metric-row">
+            <div class="metric-val gold">0</div>
+            <div class="metric-body">
+              <strong>Drop-off during AI loading after redesign</strong>
+              <span>The transparent loading state eliminated abandonment during the depth-generation phase.</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="transition-teaser">
+        <span style="font-size:18px;flex-shrink:0;">→</span>
+        <div>
+          <strong>Wrapping up</strong>
+          <p>From enterprise streaming infrastructure to 0-to-1 spatial computing — the through-line is the same design challenge.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="s14-right">
+      <p class="retro-label">Honest Retrospective</p>
+      <p class="retro-title">What designing for hardware taught me —</p>
+      <div class="retro-items">
+        <div class="retro-item">
+          <span class="retro-icon">↑</span>
+          <div class="retro-body">
+            <strong>Physical failure modes are UX problems</strong>
+            <span>A dropped Bluetooth handshake, a slow Wi-Fi transfer, a mid-update power cut — all of these are as much a design problem as a confusing button. Hardware adds an entirely new class of edge case.</span>
+          </div>
+        </div>
+        <div class="retro-item">
+          <span class="retro-icon">↑</span>
+          <div class="retro-body">
+            <strong>Latency on frontier tech requires honesty, not hiding</strong>
+            <span>The instinct was to hide the wait. The correct move was to make it legible and compelling. Transparency about AI processing built trust instead of eroding it.</span>
+          </div>
+        </div>
+        <div class="retro-item honest">
+          <span class="retro-icon">→</span>
+          <div class="retro-body">
+            <strong>I'd have pushed for more user testing on the hardware states earlier</strong>
+            <span>We got the device state language right — but largely through iteration after internal feedback. Earlier consumer testing would have accelerated it.</span>
+          </div>
+        </div>
+        <div class="retro-item honest">
+          <span class="retro-icon">→</span>
+          <div class="retro-body">
+            <strong>v1 hardware constraints shaped design decisions that may not age well</strong>
+            <span>Some UX choices were workarounds for hardware limitations that will be solved in v2. Worth documenting what's a design decision vs. a hardware constraint.</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <span class="byline" style="color:white;">Don Polistico</span>
+    <span class="slide-num" style="color:white;">14 / 15</span>
+  </div>
+
+  <!-- ═══════════════════════════════════════
+       SLIDE 15 · THANK YOU / Q&A
+  ════════════════════════════════════════ -->
+  <div class="slide s15">
+    <div class="s15-bg"></div>
+    <div class="s15-grid"></div>
+    <div class="s15-content">
+      <p class="s15-eyebrow">Don Polistico · Senior Product Designer · Brooklyn, NY</p>
+      <h2>Complex systems.<br><em>Human experiences.</em></h2>
+      <div class="s15-bridge">
+        <p>Between scaling <strong>global streaming infrastructure at Vimeo</strong> and designing <strong>0-to-1 AI spatial tools at Looking Glass</strong>, my core focus remains the same: taking highly complex, technical systems and translating them into elegant, accessible human experiences.</p>
+      </div>
+      <div class="s15-case-pills">
+        <div class="s15-pill vimeo">Vimeo Streaming · 9 years · Enterprise streaming</div>
+        <div class="s15-pill-sep"></div>
+        <div class="s15-pill lkg">Looking Glass · 0→1 · Spatial AI</div>
+      </div>
+      <div class="s15-contact">
+        <div class="s15-contact-item">
+          <strong>don@polisti.co</strong>
+          <span>Email</span>
+        </div>
+        <div class="s15-sep"></div>
+        <div class="s15-contact-item">
+          <strong>929-969-4242</strong>
+          <span>Phone</span>
+        </div>
+        <div class="s15-sep"></div>
+        <div class="s15-contact-item">
+          <strong>Brooklyn, NY</strong>
+          <span>Location</span>
+        </div>
+      </div>
+    </div>
+    <span class="byline" style="color:white;">Don Polistico</span>
+    <span class="slide-num" style="color:white;">15 / 15</span>
+  </div>
+
+</body>
+</html>

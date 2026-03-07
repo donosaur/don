@@ -1,0 +1,852 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>looking glass go</title>
+  <link rel="icon" type="image/png" href="images/avatar.png" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Playfair+Display:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg: #0f1115;
+      --bg-2: #13101e;
+      --bg-3: #1a1430;
+      --purple: #8B5CF6;
+      --purple-dim: rgba(139,92,246,0.12);
+      --teal: #2DD4BF;
+      --teal-dim: rgba(45,212,191,0.12);
+      --white: #ffffff;
+      --muted: rgba(255,255,255,0.55);
+      --border: rgba(255,255,255,0.08);
+      --gold: #D8983E;
+    }
+
+    html { scroll-behavior: smooth; cursor: crosshair; }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background: var(--bg);
+      color: var(--white);
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* ── NAV ── */
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 20px 56px;
+      background: rgba(15,17,21,0.92);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border);
+    }
+    .nav-back {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 13px;
+      font-weight: 500;
+      letter-spacing: 0.06em;
+      text-transform: lowercase;
+      color: var(--muted);
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+    .nav-back:hover { color: var(--purple); }
+    .nav-back svg { width: 14px; height: 14px; }
+    .nav-title { font-size: 13px; font-weight: 500; color: var(--muted); }
+    .nav-cta {
+      font-size: 13px;
+      font-weight: 500;
+      letter-spacing: 0.06em;
+      text-transform: lowercase;
+      color: var(--purple);
+      text-decoration: none;
+    }
+    .nav-cta:hover { opacity: 0.7; }
+
+    /* ── HERO ── */
+    .hero {
+      padding: 140px 56px 96px;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+    .hero-eyebrow {
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.16em;
+      text-transform: lowercase;
+      color: var(--purple);
+      margin-bottom: 28px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .hero-eyebrow::before {
+      content: '';
+      width: 32px;
+      height: 1px;
+      background: var(--purple);
+      display: block;
+    }
+    .hero h1 {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(48px, 5.5vw, 72px);
+      font-weight: 400;
+      line-height: 1.1;
+      letter-spacing: -0.02em;
+      margin-bottom: 32px;
+      max-width: 820px;
+    }
+    .hero h1 em { font-style: italic; color: var(--teal); }
+    .hero-sub {
+      font-size: 18px;
+      line-height: 1.75;
+      color: var(--muted);
+      max-width: 620px;
+      margin-bottom: 64px;
+    }
+    .hero-stats {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 1px;
+      background: var(--border);
+      border-radius: 4px;
+      overflow: hidden;
+    }
+    .stat-item {
+      padding: 32px 28px;
+      background: var(--bg-2);
+    }
+    .stat-num {
+      font-family: 'Playfair Display', serif;
+      font-size: 40px;
+      font-weight: 600;
+      color: var(--white);
+      line-height: 1;
+      margin-bottom: 10px;
+    }
+    .stat-num em { color: var(--teal); font-style: normal; }
+    .stat-num.purple em { color: var(--purple); }
+    .stat-label {
+      font-size: 12px;
+      font-weight: 500;
+      letter-spacing: 0.08em;
+      text-transform: lowercase;
+      color: var(--muted);
+    }
+
+    /* ── SECTION ── */
+    .section {
+      padding: 96px 56px;
+      border-bottom: 1px solid var(--border);
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+    .section-label {
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.16em;
+      text-transform: lowercase;
+      color: var(--purple);
+      margin-bottom: 48px;
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+    .section-label::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: var(--border);
+    }
+    h2 {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(32px, 3.5vw, 48px);
+      font-weight: 400;
+      line-height: 1.15;
+      letter-spacing: -0.02em;
+      margin-bottom: 24px;
+    }
+    .lead {
+      font-size: 18px;
+      line-height: 1.75;
+      color: var(--muted);
+      max-width: 680px;
+      margin-bottom: 56px;
+    }
+
+    /* ── CONSTRAINTS ── */
+    .constraint-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 2px;
+      background: var(--border);
+      border-radius: 4px;
+      overflow: hidden;
+    }
+    .constraint-card {
+      padding: 40px;
+      background: var(--bg-2);
+    }
+    .constraint-icon {
+      font-size: 24px;
+      margin-bottom: 16px;
+    }
+    .constraint-card h3 {
+      font-size: 16px;
+      font-weight: 600;
+      margin-bottom: 10px;
+      color: var(--teal);
+    }
+    .constraint-card p {
+      font-size: 14px;
+      line-height: 1.7;
+      color: var(--muted);
+    }
+
+    /* ── TRADEOFF COMPARE ── */
+    .compare-grid {
+      display: grid;
+      grid-template-columns: 1fr auto 1fr;
+      gap: 2px;
+      background: var(--border);
+      border-radius: 4px;
+      overflow: hidden;
+      align-items: stretch;
+    }
+    .compare-card {
+      padding: 40px;
+      background: var(--bg-2);
+    }
+    .compare-pivot {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 40px 24px;
+      background: var(--bg-3);
+      font-size: 28px;
+      writing-mode: horizontal-tb;
+    }
+    .compare-label {
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      text-transform: lowercase;
+      margin-bottom: 16px;
+    }
+    .compare-label.rejected { color: #f87171; }
+    .compare-label.shipped { color: #4ade80; }
+    .compare-card h3 {
+      font-family: 'Playfair Display', serif;
+      font-size: 22px;
+      font-weight: 400;
+      margin-bottom: 16px;
+    }
+    .compare-card p {
+      font-size: 14px;
+      line-height: 1.7;
+      color: var(--muted);
+      margin-bottom: 16px;
+    }
+    .compare-card ul {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+    .compare-card li {
+      font-size: 13px;
+      color: var(--muted);
+      display: flex;
+      gap: 10px;
+    }
+    .compare-card li.pro::before { content: '✓'; color: #4ade80; flex-shrink: 0; font-weight: 600; }
+    .compare-card li.con::before { content: '✗'; color: #f87171; flex-shrink: 0; font-weight: 600; }
+
+    /* ── HARDWARE STATES ── */
+    .states-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 2px;
+      background: var(--border);
+      border-radius: 4px;
+      overflow: hidden;
+    }
+    .state-card {
+      padding: 32px 28px;
+      background: var(--bg-2);
+    }
+    .state-icon {
+      width: 48px;
+      height: 48px;
+      border-radius: 12px;
+      background: var(--purple-dim);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 22px;
+      margin-bottom: 20px;
+    }
+    .state-card h3 {
+      font-size: 16px;
+      font-weight: 600;
+      margin-bottom: 10px;
+      color: var(--purple);
+    }
+    .state-card p {
+      font-size: 13px;
+      line-height: 1.65;
+      color: var(--muted);
+    }
+    .state-badge {
+      display: inline-block;
+      margin-top: 14px;
+      padding: 4px 10px;
+      background: var(--teal-dim);
+      color: var(--teal);
+      border-radius: 2px;
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      text-transform: lowercase;
+    }
+
+    /* ── RESULTS ── */
+    .results-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 48px;
+    }
+    .metric-row {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+    .metric-item {
+      border-left: 2px solid var(--purple);
+      padding-left: 20px;
+    }
+    .metric-num {
+      font-family: 'Playfair Display', serif;
+      font-size: 36px;
+      font-weight: 600;
+      color: var(--white);
+      margin-bottom: 6px;
+    }
+    .metric-label {
+      font-size: 13px;
+      color: var(--muted);
+      line-height: 1.5;
+    }
+    .retro-list {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+    .retro-item {
+      padding: 24px;
+      background: var(--bg-2);
+      border-radius: 4px;
+      border-left: 2px solid var(--teal);
+    }
+    .retro-item h4 {
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--teal);
+      margin-bottom: 8px;
+    }
+    .retro-item p {
+      font-size: 14px;
+      line-height: 1.6;
+      color: var(--muted);
+    }
+
+    /* ── PULL QUOTE ── */
+    .pull-quote {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(20px, 2.2vw, 28px);
+      font-style: italic;
+      line-height: 1.5;
+      color: var(--white);
+      border-left: 3px solid var(--purple);
+      padding-left: 32px;
+      max-width: 700px;
+      margin: 48px 0;
+    }
+
+    /* ── FOOTER NAV ── */
+    .footer-nav {
+      padding: 64px 56px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+    .footer-nav a {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 14px;
+      font-weight: 500;
+      color: var(--muted);
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+    .footer-nav a:hover { color: var(--purple); }
+    footer {
+      padding: 28px 56px;
+      border-top: 1px solid var(--border);
+      display: flex;
+      justify-content: space-between;
+      font-size: 12px;
+      color: var(--muted);
+    }
+    footer a { color: var(--muted); text-decoration: none; }
+    footer a:hover { color: var(--purple); }
+
+    /* ── dither grain on hover ── */
+    @keyframes dither-roll {
+      0%   { background-position:   0px    0px }
+      17%  { background-position: -67px   43px }
+      33%  { background-position:  89px  -57px }
+      50%  { background-position: -43px  -97px }
+      67%  { background-position: 113px   71px }
+      83%  { background-position: -89px  113px }
+    }
+    .nav-back   { position: relative; overflow: hidden; }
+    .nav-cta    { position: relative; overflow: hidden; }
+    .screen-thumb { position: relative; overflow: hidden; }
+    .nav-back::after, .nav-cta::after, .screen-thumb::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)'/%3E%3C/svg%3E");
+      background-size: 300px 300px;
+      mix-blend-mode: overlay;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.15s;
+      z-index: 10;
+    }
+    .nav-back:hover::after, .nav-cta:hover::after, .screen-thumb:hover::after {
+      opacity: 0.35;
+      animation: dither-roll 0.5s steps(6) infinite;
+    }
+
+    /* ── SCREENS GRID ── */
+    .screens-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+    }
+    .screen-thumb {
+      cursor: pointer;
+      overflow: hidden;
+      border-radius: 4px;
+      border: 1px solid var(--border);
+      aspect-ratio: 16/10;
+      background: var(--bg-2);
+    }
+    .screen-thumb img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+      transition: transform 0.3s ease, opacity 0.2s;
+    }
+    .screen-thumb:hover img { transform: scale(1.03); opacity: 0.85; }
+
+    /* ── LIGHTBOX ── */
+    .lightbox {
+      display: none;
+      position: fixed;
+      inset: 0;
+      z-index: 1000;
+      background: rgba(0,0,0,0.92);
+      backdrop-filter: blur(8px);
+      align-items: center;
+      justify-content: center;
+    }
+    .lightbox.open { display: flex; }
+    .lightbox-img {
+      max-width: 90vw;
+      max-height: 88vh;
+      object-fit: contain;
+      border-radius: 4px;
+      box-shadow: 0 32px 80px rgba(0,0,0,0.6);
+    }
+    .lightbox-close {
+      position: fixed;
+      top: 24px; right: 32px;
+      font-size: 28px;
+      color: rgba(255,255,255,0.5);
+      cursor: pointer;
+      line-height: 1;
+      transition: color 0.2s;
+      background: none; border: none;
+    }
+    .lightbox-close:hover { color: #fff; }
+    .lightbox-arrow {
+      position: fixed;
+      top: 50%; transform: translateY(-50%);
+      font-size: 32px;
+      color: rgba(255,255,255,0.4);
+      cursor: pointer;
+      padding: 16px;
+      background: none; border: none;
+      transition: color 0.2s;
+      line-height: 1;
+    }
+    .lightbox-arrow:hover { color: #fff; }
+    .lightbox-arrow.prev { left: 16px; }
+    .lightbox-arrow.next { right: 16px; }
+    .lightbox-counter {
+      position: fixed;
+      bottom: 24px; left: 50%; transform: translateX(-50%);
+      font-size: 13px;
+      font-weight: 500;
+      color: rgba(255,255,255,0.4);
+      letter-spacing: 0.08em;
+    }
+
+    @media (max-width: 768px) {
+      nav { padding: 16px 24px; }
+      .hero { padding: 120px 24px 64px; }
+      .hero h1 { font-size: clamp(36px, 9vw, 56px); }
+      .hero-sub { font-size: 16px; }
+      .hero-stats { grid-template-columns: 1fr 1fr; }
+      .stat-item { padding: 24px 20px; }
+      .stat-num { font-size: 32px; }
+      .section { padding: 64px 24px; }
+      .section-label { margin-bottom: 32px; }
+      h2 { font-size: clamp(28px, 7vw, 40px); }
+      .lead { font-size: 16px; margin-bottom: 40px; }
+      .constraint-grid { grid-template-columns: 1fr; }
+      .constraint-card { padding: 28px 24px; }
+      .states-grid { grid-template-columns: 1fr 1fr; }
+      .state-card { padding: 24px 20px; }
+      .compare-grid { grid-template-columns: 1fr; }
+      .compare-pivot { display: none; }
+      .compare-card { padding: 28px 24px; }
+      .results-grid { grid-template-columns: 1fr; }
+      .screens-grid { grid-template-columns: 1fr; }
+      .screen-thumb { aspect-ratio: 16/9; }
+      .pull-quote { font-size: clamp(18px, 4.5vw, 24px); padding-left: 20px; margin: 32px 0; }
+      .retro-item { padding: 20px; }
+      .metric-num { font-size: 28px; }
+      .footer-nav { padding: 48px 24px; flex-direction: column; gap: 24px; }
+      footer { padding: 24px; flex-direction: column; gap: 8px; }
+      .lightbox-arrow.prev { left: 8px; }
+      .lightbox-arrow.next { right: 8px; }
+    }
+
+    @media (max-width: 480px) {
+      nav { padding: 14px 20px; }
+      .nav-title { display: none; }
+      .hero { padding: 100px 20px 56px; }
+      .hero-stats { grid-template-columns: 1fr 1fr; gap: 1px; }
+      .section { padding: 56px 20px; }
+      .states-grid { grid-template-columns: 1fr; }
+      .state-card { padding: 24px 20px; }
+      .footer-nav { padding: 40px 20px; }
+      footer { padding: 20px; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- NAV -->
+  <nav>
+    <a href="index.html" class="nav-back">
+      <svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M11 7H3M6 3L2 7l4 4"/></svg>
+      Portfolio
+    </a>
+    <span class="nav-title">Looking Glass Go</span>
+    <a href="index.html#contact" class="nav-cta">Contact →</a>
+  </nav>
+
+  <!-- HERO -->
+  <div style="background:var(--bg);border-bottom:1px solid var(--border);">
+    <div class="hero">
+      <div class="hero-eyebrow">Emerging tech · Looking Glass · 2023–2024</div>
+      <h1>Designing for a display<br>that shows <em>depth</em> —<br>not just pixels.</h1>
+      <p class="hero-sub">
+        The Looking Glass Go is a holographic display that sits on your desk. My job was to design the mobile companion app that bridges a phone camera to a 3D lenticular screen — a problem with no existing playbook.
+      </p>
+      <div class="hero-stats">
+        <div class="stat-item">
+          <div class="stat-num purple"><em>0→1</em></div>
+          <div class="stat-label"><a href="https://apps.apple.com/us/app/looking-glass-go/id6479449767" target="_blank" rel="noopener" style="color: inherit; text-decoration: underline;">Mobile app</a> built from scratch</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-num"><em>2D</em>→3D</div>
+          <div class="stat-label">AI-powered depth conversion</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-num purple"><em>AI</em></div>
+          <div class="stat-label">Depth map generation in cloud</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-num"><em>v1</em></div>
+          <div class="stat-label"><a href="https://www.kickstarter.com/projects/lookingglass/looking-glass-go" target="_blank" rel="noopener" style="color: inherit; text-decoration: underline;">Shipped to hardware customers</a></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- VIDEO -->
+  <div style="background:#000;border-bottom:1px solid var(--border);">
+    <div style="max-width:1200px;margin:0 auto;padding:64px 56px;">
+      <div style="position:relative;padding-bottom:56.25%;height:0;overflow:hidden;border-radius:4px;background:#000;">
+        <iframe
+          src="https://www.youtube.com/embed/wefvzabaxvY"
+          style="position:absolute;top:0;left:0;width:100%;height:100%;border:0;"
+          allow="autoplay; fullscreen; picture-in-picture"
+          allowfullscreen
+          title="Looking Glass Go">
+        </iframe>
+      </div>
+    </div>
+  </div>
+
+  <!-- CONSTRAINTS -->
+  <div style="background:var(--bg-2);border-bottom:1px solid var(--border);">
+    <div class="section">
+      <div class="section-label">Design constraints</div>
+      <h2>Design constraints that<br>didn't exist in any playbook.</h2>
+      <p class="lead">
+        This wasn't a standard mobile app. Every design decision had to account for four constraints simultaneously — hardware, network, AI processing, and a completely unfamiliar output format.
+      </p>
+      <div class="constraint-grid">
+        <div class="constraint-card">
+          <div class="constraint-icon">📡</div>
+          <h3>Wi-Fi only architecture</h3>
+          <p>The display connects over local Wi-Fi — not Bluetooth, not USB. The app had to make an invisible connection feel reliable. Any latency in the setup flow would read as broken hardware.</p>
+        </div>
+        <div class="constraint-card">
+          <div class="constraint-icon">🧠</div>
+          <h3>AI processing latency</h3>
+          <p>Converting a 2D photo into a 3D holographic depth map requires cloud inference. That takes 3–8 seconds. The design had to make that wait feel productive, not frustrating.</p>
+        </div>
+        <div class="constraint-card">
+          <div class="constraint-icon">📺</div>
+          <h3>Unfamiliar output</h3>
+          <p>Users had never seen their photos as holograms before. The first "wow" moment was also the moment they needed to understand how to control the display — an onboarding challenge unlike any I'd faced.</p>
+        </div>
+        <div class="constraint-card">
+          <div class="constraint-icon">⚡</div>
+          <h3>Hardware state complexity</h3>
+          <p>The device had multiple distinct states — searching, connecting, syncing, firmware updating, ready — each requiring explicit design treatment. One vague "loading" state would destroy trust.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- AI LATENCY TRADEOFFS -->
+  <div style="background:var(--bg);border-bottom:1px solid var(--border);">
+    <div class="section">
+      <div class="section-label">Key trade-off</div>
+      <h2>The AI wait problem:<br>hide it or explain it?</h2>
+      <p class="lead">
+        The most consequential design decision was how to handle 3–8 seconds of cloud AI processing. Two fundamentally different philosophies — and only one that actually built user trust.
+      </p>
+      <div class="compare-grid">
+        <div class="compare-card">
+          <div class="compare-label rejected">✕ Direction 1 — Rejected</div>
+          <h3>Hidden processing</h3>
+          <p>A spinner with "Processing your photo…" — no progress indication, no preview of what's being created.</p>
+          <ul>
+            <li class="pro">Simple to build</li>
+            <li class="pro">Less UI surface area</li>
+            <li class="con">Users assumed it crashed after ~3 seconds</li>
+            <li class="con">No sense of what they'd receive</li>
+            <li class="con">Support tickets spiked in testing</li>
+          </ul>
+        </div>
+        <div class="compare-pivot">→</div>
+        <div class="compare-card">
+          <div class="compare-label shipped">✓ Direction 2 — Shipped</div>
+          <h3>Transparent progress + preview</h3>
+          <p>A progress indicator with a real-time 2D depth preview — showing the AI's work before the hologram renders on the display.</p>
+          <ul>
+            <li class="pro">Users understood what was happening</li>
+            <li class="pro">Preview set correct expectations for depth</li>
+            <li class="pro">Wait felt like value being created</li>
+            <li class="con">More complex state management</li>
+            <li class="con">Preview could mislead if depth was wrong</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="pull-quote">
+        "The wait isn't dead time — it's the moment users form their mental model of how holographic conversion works. Design for the understanding, not just the outcome."
+      </div>
+    </div>
+  </div>
+
+  <!-- HARDWARE STATES -->
+  <div style="background:var(--bg-2);border-bottom:1px solid var(--border);">
+    <div class="section">
+      <div class="section-label">Hardware state design</div>
+      <h2>Every state named.<br>Every state designed.</h2>
+      <p class="lead">
+        Hardware products punish vague loading states. I defined four explicit device states, each with distinct visual treatment and clear user guidance.
+      </p>
+      <div class="states-grid">
+        <div class="state-card">
+          <div class="state-icon">🔍</div>
+          <h3>Connecting</h3>
+          <p>Animated Wi-Fi scan with device illustration. Step-by-step guidance visible — not hidden behind a loading indicator.</p>
+          <span class="state-badge">Setup flow</span>
+        </div>
+        <div class="state-card">
+          <div class="state-icon">⚡</div>
+          <h3>Syncing</h3>
+          <p>Progress bar with file count. User knows exactly how long and why — content is being transferred to the display's local storage.</p>
+          <span class="state-badge">Active</span>
+        </div>
+        <div class="state-card">
+          <div class="state-icon">🔄</div>
+          <h3>Firmware update</h3>
+          <p>Full-screen interrupt with critical messaging: don't unplug the display. High-stakes state treated with appropriate visual weight.</p>
+          <span class="state-badge">Critical</span>
+        </div>
+        <div class="state-card">
+          <div class="state-icon">✓</div>
+          <h3>Ready</h3>
+          <p>Clean confirmation with display preview. Transition into the main experience is intentional — celebrate the connection, then get out of the way.</p>
+          <span class="state-badge">Complete</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SCREENS -->
+  <div style="background:var(--bg);border-bottom:1px solid var(--border);">
+    <div class="section">
+      <div class="section-label">Product screens</div>
+      <h2>The app,<br>in detail.</h2>
+      <p class="lead">A look at the shipped iOS interface for the Looking Glass Go companion app.</p>
+      <div class="screens-grid">
+        <div class="screen-thumb" onclick="openLightbox(0)"><img src="images/LKG 04A.png" alt="Looking Glass screen 1"></div>
+        <div class="screen-thumb" onclick="openLightbox(1)"><img src="images/LKG 04B.png" alt="Looking Glass screen 2"></div>
+        <div class="screen-thumb" onclick="openLightbox(2)"><img src="images/LKG 04C.png" alt="Looking Glass screen 3"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- RESULTS -->
+  <div style="background:var(--bg);border-bottom:1px solid var(--border);">
+    <div class="section">
+      <div class="section-label">Results &amp; retrospective</div>
+      <h2>What shipped. What I<br>carried forward.</h2>
+      <div class="results-grid">
+        <div class="metric-row">
+          <div class="metric-item">
+            <div class="metric-num">0→1</div>
+            <div class="metric-label">Mobile app designed and shipped with no prior design system or iOS pattern library to reference</div>
+          </div>
+          <div class="metric-item">
+            <div class="metric-num">v1</div>
+            <div class="metric-label">Shipped to hardware customers alongside Looking Glass Go launch</div>
+          </div>
+          <div class="metric-item">
+            <div class="metric-num">4</div>
+            <div class="metric-label">Explicit hardware states designed — no ambiguous loading screens</div>
+          </div>
+          <div class="metric-item">
+            <div class="metric-num">↑</div>
+            <div class="metric-label">Setup completion rate improved significantly after shifting from hidden to transparent AI progress</div>
+          </div>
+        </div>
+        <div class="retro-list">
+          <div class="retro-item">
+            <h4>What worked</h4>
+            <p>Naming every hardware state explicitly and designing each one deliberately. Hardware users are already anxious — specificity calms them.</p>
+          </div>
+          <div class="retro-item">
+            <h4>What I'd do differently</h4>
+            <p>I'd involve hardware engineers earlier on the state machine definition. Some states I designed for were never reachable in practice; others I missed entirely showed up in QA.</p>
+          </div>
+          <div class="retro-item">
+            <h4>Biggest surprise</h4>
+            <p>The "wow" moment wasn't the hologram — it was the depth preview during AI processing. Users were more engaged watching their photo get parsed than watching it render on the display.</p>
+          </div>
+          <div class="retro-item">
+            <h4>What I'm taking with me</h4>
+            <p>Designing for physical hardware teaches you that the app is only half the product. The connection experience, the power cable, the physical placement — it all shapes the UX.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- FOOTER NAV -->
+  <div class="footer-nav">
+    <a href="case-study-vimeo.html">
+      <svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M11 7H3M6 3L2 7l4 4"/></svg>
+      Previous: Vimeo Streaming
+    </a>
+    <a href="index.html">
+      Back to portfolio →
+    </a>
+  </div>
+
+  <footer>
+    <span>Don Polistico · Senior Product Designer · <a href="mailto:don@polisti.co">don@polisti.co</a></span>
+    <span>© 2025</span>
+  </footer>
+
+  <!-- LIGHTBOX -->
+  <div class="lightbox" id="lightbox" onclick="handleLightboxClick(event)">
+    <button class="lightbox-close" onclick="closeLightbox()">✕</button>
+    <button class="lightbox-arrow prev" onclick="event.stopPropagation(); stepLightbox(-1)">&#8592;</button>
+    <img class="lightbox-img" id="lightbox-img" src="" alt="">
+    <button class="lightbox-arrow next" onclick="event.stopPropagation(); stepLightbox(1)">&#8594;</button>
+    <div class="lightbox-counter" id="lightbox-counter"></div>
+  </div>
+
+  <script>
+    const images = [
+      'images/LKG 04A.png',
+      'images/LKG 04B.png',
+      'images/LKG 04C.png'
+    ];
+    let current = 0;
+
+    function openLightbox(index) {
+      current = index;
+      document.getElementById('lightbox-img').src = images[current];
+      document.getElementById('lightbox-counter').textContent = (current + 1) + ' / ' + images.length;
+      document.getElementById('lightbox').classList.add('open');
+      document.body.style.overflow = 'hidden';
+    }
+    function closeLightbox() {
+      document.getElementById('lightbox').classList.remove('open');
+      document.body.style.overflow = '';
+    }
+    function stepLightbox(dir) {
+      current = (current + dir + images.length) % images.length;
+      document.getElementById('lightbox-img').src = images[current];
+      document.getElementById('lightbox-counter').textContent = (current + 1) + ' / ' + images.length;
+    }
+    function handleLightboxClick(e) {
+      if (e.target === document.getElementById('lightbox')) closeLightbox();
+    }
+    document.addEventListener('keydown', function(e) {
+      if (!document.getElementById('lightbox').classList.contains('open')) return;
+      if (e.key === 'ArrowRight') stepLightbox(1);
+      if (e.key === 'ArrowLeft') stepLightbox(-1);
+      if (e.key === 'Escape') closeLightbox();
+    });
+  </script>
+
+</body>
+</html>

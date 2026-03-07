@@ -1,0 +1,1589 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>don polistico</title>
+  <link rel="icon" type="image/png" href="images/avatar.png" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Playfair+Display:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet" />
+  <script src="https://mcp.figma.com/mcp/html-to-design/capture.js" async></script>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --ink: #0f0f0f;
+      --ink-2: #3a3a3a;
+      --ink-3: #6b6b6b;
+      --line: #e4e4e4;
+      --bg: #fafaf8;
+      --accent: #D8983E;
+      --accent-light: #f5ede0;
+      --white: #ffffff;
+    }
+
+    html { scroll-behavior: smooth; cursor: crosshair; }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background: var(--bg);
+      color: var(--ink);
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* ── NAV ── */
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 20px 56px;
+      background: rgba(250, 250, 248, 0.88);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--line);
+    }
+    .nav-logo {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-family: 'Playfair Display', serif;
+      font-size: 18px;
+      font-weight: 600;
+      color: var(--ink);
+      text-decoration: none;
+    }
+    .nav-avatar {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      object-fit: cover;
+      flex-shrink: 0;
+    }
+    .nav-links {
+      display: flex;
+      gap: 36px;
+      list-style: none;
+    }
+    .nav-links a {
+      font-size: 13px;
+      font-weight: 500;
+      letter-spacing: 0.01em;
+      text-transform: lowercase;
+      color: var(--ink-2);
+      text-decoration: none;
+    }
+    .nav-links a:hover { color: var(--accent); }
+
+    /* ── NAV scroll state ── */
+    nav { transition: background 0.3s, border-color 0.3s; }
+    nav.at-top {
+      background: rgba(0,0,0,0.2);
+      border-bottom-color: rgba(255,255,255,0.1);
+    }
+    nav.at-top .nav-links a { color: rgba(255,255,255,0.75); }
+    nav.at-top .nav-links a:hover { color: var(--accent); }
+    nav.at-top .nav-logo a { color: #fff !important; }
+
+    /* ── HERO ── */
+    .hero {
+      position: relative;
+      overflow: hidden;
+      padding: 160px 56px 100px;
+      display: grid;
+      grid-template-columns: 1fr 420px;
+      gap: 80px;
+      align-items: center;
+      border-bottom: none;
+      background: #000;
+      margin-bottom: -2px;
+    }
+    /* video layer */
+    .hero-video-bg {
+      position: absolute;
+      inset: -3%;
+      z-index: 0;
+      overflow: hidden;
+      pointer-events: none;
+      will-change: transform;
+    }
+    .hero-video-bg iframe {
+      position: absolute;
+      top: 50%; left: 50%;
+      transform: translate(-50%, -50%);
+      width: 100vw;
+      height: 56.25vw;
+      min-height: 100%;
+      min-width: 177.78vh;
+      pointer-events: none;
+      border: 0;
+    }
+    /* dither grain overlay */
+    .hero-grain {
+      position: absolute;
+      inset: 0;
+      z-index: 1;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      opacity: 0.22;
+      mix-blend-mode: overlay;
+      image-rendering: pixelated;
+    }
+    /* gradient overlay */
+    .hero-overlay {
+      position: absolute;
+      inset: 0;
+      z-index: 1;
+      pointer-events: none;
+      background:
+        linear-gradient(to bottom,
+          rgba(5,6,10,0.72) 0%,
+          rgba(5,6,10,0.45) 45%,
+          rgba(5,6,10,0.82) 85%,
+          rgba(5,6,10,1.0) 100%);
+    }
+    /* content sits above video + overlay */
+    .hero-content {
+      position: relative;
+      z-index: 2;
+    }
+    .hero-label {
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.16em;
+      text-transform: lowercase;
+      color: var(--accent);
+      margin-bottom: 24px;
+    }
+    .hero h1 {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(52px, 6vw, 80px);
+      font-weight: 400;
+      line-height: 1.08;
+      letter-spacing: -0.02em;
+      color: #fff;
+      margin-bottom: 28px;
+    }
+
+    /* kinetic typography */
+    .h1-line {
+      display: block;
+      overflow: hidden;
+      padding-bottom: 0.22em;
+      margin-bottom: -0.22em;
+    }
+    .h1-line-inner {
+      display: block;
+      opacity: 0;
+      transform: translateY(110%);
+      animation: revealLine 1.1s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+      will-change: transform;
+    }
+    .h1-line:nth-child(1) .h1-line-inner { animation-delay: 0.1s; }
+    .h1-line:nth-child(2) .h1-line-inner { animation-delay: 0.25s; }
+    .h1-line:nth-child(3) .h1-line-inner { animation-delay: 0.42s; }
+
+    @keyframes revealLine {
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* shimmer sweep on "watch video." */
+    .hero-title-em {
+      font-style: italic;
+      background: linear-gradient(
+        90deg,
+        var(--accent) 0%,
+        #f5c97a 38%,
+        #fff0c0 50%,
+        #f5c97a 62%,
+        var(--accent) 100%
+      );
+      background-size: 280% auto;
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      animation: shimmerGold 4s linear infinite;
+      animation-delay: 1.4s;
+    }
+
+    @keyframes shimmerGold {
+      0%   { background-position: 200% center; }
+      100% { background-position: -200% center; }
+    }
+    .hero-sub {
+      font-size: 18px;
+      line-height: 1.7;
+      color: rgba(255,255,255,0.82);
+      max-width: 560px;
+    }
+    .hero-meta {
+      display: flex;
+      flex-direction: column;
+      gap: 24px;
+      padding-bottom: 8px;
+    }
+    .hero-stat {
+      border-top: 1px solid rgba(255,255,255,0.18);
+      padding-top: 24px;
+    }
+    .hero-stat-num {
+      font-family: 'Playfair Display', serif;
+      font-size: 40px;
+      font-weight: 600;
+      color: #fff;
+    }
+    .hero-stat-label {
+      font-size: 13px;
+      font-weight: 500;
+      letter-spacing: 0.08em;
+      text-transform: lowercase;
+      color: rgba(255,255,255,0.5);
+      margin-top: 4px;
+    }
+    .hero-cta {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      margin-top: 40px;
+      padding: 14px 28px;
+      background: transparent;
+      color: #fff;
+      font-size: 13px;
+      font-weight: 500;
+      letter-spacing: 0.06em;
+      text-transform: lowercase;
+      text-decoration: none;
+      border-radius: 9999px;
+      position: relative;
+      overflow: visible;
+      cursor: pointer;
+    }
+    /* text + icon float above the gooey bg layer */
+    .hero-cta-text,
+    .hero-cta svg { position: relative; z-index: 1; }
+    .hero-cta svg { width: 16px; height: 16px; transition: transform 0.4s ease; }
+    .hero-cta:hover svg { transform: translateX(10px) rotate(30deg); transition: transform 1.5s cubic-bezier(0.34, 1.56, 0.64, 1); }
+    .hero-cta-text { font-size: 13px; font-weight: 500; letter-spacing: 0.06em; transition: font-size 0.4s ease; }
+    .hero-cta:hover .hero-cta-text { font-size: 15px; transition: font-size 1.8s cubic-bezier(0.34, 1.56, 0.64, 1); }
+    /* gooey bg wrapper: filter isolated here, extends beyond button for blobs */
+    .hero-cta-glow {
+      position: absolute;
+      inset: 0;
+      animation: ctaGlow 8s linear infinite;
+    }
+    @keyframes ctaGlow {
+      0%   { filter: drop-shadow(0 0 6px rgba(216, 152, 62, 0.2))  drop-shadow(0 0 18px rgba(216, 152, 62, 0.08)); }
+      50%  { filter: drop-shadow(0 0 18px rgba(216, 152, 62, 0.65)) drop-shadow(0 0 44px rgba(216, 152, 62, 0.3)) drop-shadow(0 0 64px rgba(245, 180, 80, 0.15)); }
+      100% { filter: drop-shadow(0 0 6px rgba(216, 152, 62, 0.2))  drop-shadow(0 0 18px rgba(216, 152, 62, 0.08)); }
+    }
+    .hero-cta-bg {
+      position: absolute;
+      inset: -18px;
+      filter: url('#hero-goo');
+      opacity: 0.5;
+    }
+    .hero-cta-stroke {
+      position: absolute;
+      inset: -18px;
+      filter: url('#hero-goo-stroke');
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.6s ease;
+    }
+    .hero-cta:hover .hero-cta-stroke {
+      opacity: 0.3;
+    }
+    .hero-cta-stroke::before {
+      content: '';
+      position: absolute;
+      top: 18px; bottom: 18px; left: 18px; right: 18px;
+      border-radius: 9999px;
+      background: white;
+    }
+    .hero-cta-stroke .hero-cta-blob { background: white; }
+    /* frosted glass pill — outside gooey filter so backdrop-filter works */
+    /* pill inside gooey layer — blobs merge into this */
+    .hero-cta-bg::before {
+      content: '';
+      position: absolute;
+      top: 18px; bottom: 18px; left: 18px; right: 18px;
+      border-radius: 9999px;
+      background: linear-gradient(90deg, var(--accent) 0%, #f5c97a 38%, #fff0c0 50%, #f5c97a 62%, var(--accent) 100%);
+      background-size: 280% auto;
+      animation: shimmerGold 20s linear infinite;
+    }
+    /* blob spans inside .hero-cta-bg */
+    .hero-cta-blob {
+      position: absolute;
+      border-radius: 50%;
+      background: var(--accent);
+      transform: scale(0);
+      transition: transform 0.4s ease;
+      transition-delay: 0s;
+    }
+    /* top-left bump */
+    .hero-cta-blob:nth-child(1) {
+      width: 72px; height: 72px;
+      top: 1px; left: 22%;
+    }
+    /* right-center bump — slightly below center */
+    .hero-cta-blob:nth-child(2) {
+      width: 32px; height: 32px;
+      top: 50%; right: 6px;
+      margin-top: -12px;
+    }
+    /* bottom bump */
+    .hero-cta-blob:nth-child(3) {
+      width: 58px; height: 58px;
+      bottom: 4px; left: 55%;
+    }
+    .hero-cta:hover .hero-cta-blob {
+      transform: scale(1);
+    }
+    .hero-cta:hover .hero-cta-blob:nth-child(1) { transition: transform 3.3s cubic-bezier(0.34, 1.56, 0.64, 1); transition-delay: 0s; }
+    .hero-cta:hover .hero-cta-blob:nth-child(2) { transition: transform 3.3s cubic-bezier(0.34, 1.56, 0.64, 1); transition-delay: 0.45s; }
+    .hero-cta:hover .hero-cta-blob:nth-child(3) { transition: transform 3.3s cubic-bezier(0.34, 1.56, 0.64, 1); transition-delay: 0.9s; }
+
+    /* ── SECTION BASE ── */
+    section { padding: 96px 56px; border-bottom: 1px solid var(--line); }
+    .section-label {
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.16em;
+      text-transform: lowercase;
+      color: var(--accent);
+      margin-bottom: 48px;
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+    .section-label::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: var(--line);
+    }
+    h2 {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(32px, 3.5vw, 48px);
+      font-weight: 400;
+      line-height: 1.15;
+      letter-spacing: -0.02em;
+      margin-bottom: 24px;
+    }
+
+    /* ── ABOUT ── */
+    .about-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 80px;
+      align-items: start;
+    }
+    .about-text p {
+      font-size: 16px;
+      line-height: 1.8;
+      color: var(--ink-2);
+      margin-bottom: 20px;
+    }
+    .about-text p:last-child { margin-bottom: 0; }
+    .about-text .pull-quote {
+      font-family: 'Playfair Display', serif;
+      font-size: 24px;
+      font-style: italic;
+      line-height: 1.5;
+      color: var(--ink);
+      border-left: 3px solid var(--accent);
+      padding-left: 28px;
+      margin: 40px 0;
+    }
+    .about-tools h3 {
+      font-size: 13px;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      text-transform: lowercase;
+      color: var(--ink-3);
+      margin-bottom: 20px;
+    }
+    .tools-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+      margin-bottom: 40px;
+    }
+    .tool-tag {
+      padding: 10px 16px;
+      background: var(--white);
+      border: 1px solid var(--line);
+      border-radius: 2px;
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--ink-2);
+    }
+    .strength-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+    .strength-list li {
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      font-size: 14px;
+      line-height: 1.6;
+      color: var(--ink-2);
+    }
+    .strength-list li::before {
+      content: '→';
+      color: var(--accent);
+      flex-shrink: 0;
+      font-weight: 600;
+    }
+
+    /* ── CAREER ── */
+    .career-intro {
+      font-size: 18px;
+      line-height: 1.75;
+      color: var(--ink-2);
+      max-width: 720px;
+      margin-bottom: 72px;
+    }
+    .timeline {
+      position: relative;
+      padding-left: 44px;
+    }
+    .timeline::before {
+      content: '';
+      position: absolute;
+      left: 7px;
+      top: 22px;
+      bottom: 0;
+      width: 0;
+      border-left: 3px dashed var(--accent);
+      opacity: 0.5;
+    }
+    .timeline-item {
+      position: relative;
+      padding-bottom: 64px;
+    }
+    .timeline-item:last-child { padding-bottom: 0; }
+    .timeline-header {
+      display: flex;
+      align-items: center;
+      gap: 28px;
+      margin-left: -44px;
+      margin-bottom: 12px;
+    }
+    .timeline-dot {
+      width: 16px;
+      height: 16px;
+      border-radius: 50%;
+      background: var(--accent);
+      border: 3px solid var(--bg);
+      box-shadow: 0 0 0 2px var(--accent);
+      flex-shrink: 0;
+    }
+    .timeline-period {
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      text-transform: none;
+      color: var(--accent);
+      margin-bottom: 0;
+    }
+    .timeline-company {
+      font-family: 'Playfair Display', serif;
+      font-size: 36px;
+      font-weight: 400;
+      color: var(--ink);
+      margin-bottom: 6px;
+      line-height: 1.1;
+    }
+    .timeline-role {
+      font-size: 14px;
+      font-weight: 500;
+      color: var(--ink-3);
+      margin-bottom: 20px;
+    }
+    .timeline-desc {
+      font-size: 16px;
+      line-height: 1.75;
+      color: var(--ink-2);
+      max-width: 680px;
+      margin-bottom: 20px;
+    }
+    .timeline-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+    .tag {
+      padding: 5px 12px;
+      background: var(--accent-light);
+      border-radius: 2px;
+      font-size: 12px;
+      font-weight: 500;
+      color: var(--accent);
+    }
+
+    /* ── CONTRACT TIMELINE ITEMS ── */
+    .timeline-item--contract {
+      padding-bottom: 20px;
+    }
+    .timeline-item--contract.is-open {
+      padding-bottom: 48px;
+    }
+    .timeline-item--contract .timeline-header {
+      margin-left: -41px;
+      gap: 31px;
+    }
+    .timeline-dot--contract {
+      width: 10px;
+      height: 10px;
+      background: #888;
+      border: 2px solid var(--bg);
+      box-shadow: 0 0 0 2px #888;
+      cursor: pointer;
+      transition: background 0.2s, box-shadow 0.2s;
+      position: relative;
+    }
+    .timeline-dot--contract:hover,
+    .timeline-item--contract.is-open .timeline-dot--contract {
+      background: var(--accent);
+      box-shadow: 0 0 0 2px var(--accent);
+    }
+    .timeline-dot--contract::after {
+      content: attr(data-tooltip);
+      position: absolute;
+      left: 22px;
+      top: 50%;
+      transform: translateY(-50%);
+      background: #2a2520;
+      color: #f5f0e8;
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.05em;
+      padding: 5px 9px;
+      border-radius: 3px;
+      white-space: nowrap;
+      pointer-events: none;
+      opacity: 0;
+      transition: opacity 0.15s;
+      z-index: 20;
+    }
+    .timeline-dot--contract:hover::after { opacity: 1; }
+    .timeline-item--contract .timeline-period {
+      color: #888;
+      opacity: 0.7;
+    }
+    .timeline-contract-body {
+      overflow: hidden;
+      max-height: 0;
+      opacity: 0;
+      transition: max-height 0.35s ease, opacity 0.25s ease;
+    }
+    .timeline-item--contract.is-open .timeline-contract-body {
+      max-height: 300px;
+      opacity: 1;
+    }
+    .timeline-contract-company {
+      font-family: 'Playfair Display', serif;
+      font-size: 22px;
+      font-weight: 400;
+      color: var(--ink);
+      margin-bottom: 4px;
+      margin-top: 8px;
+    }
+    .timeline-contract-role {
+      font-size: 13px;
+      color: var(--ink-3);
+      margin-bottom: 12px;
+    }
+    .timeline-contract-desc {
+      font-size: 14px;
+      line-height: 1.7;
+      color: var(--ink-2);
+      max-width: 560px;
+    }
+
+    /* ── WORK ── */
+    .work-intro {
+      font-size: 18px;
+      line-height: 1.75;
+      color: var(--ink-2);
+      max-width: 680px;
+      margin-bottom: 64px;
+    }
+    .work-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 2px;
+    }
+    .work-card {
+      position: relative;
+      overflow: hidden;
+      background: var(--white);
+      border: 1px solid var(--line);
+      text-decoration: none;
+      color: inherit;
+      display: block;
+      transition: border-color 0.2s, box-shadow 0.2s;
+    }
+    /* Dark bg via opacity (GPU-composited) instead of background-color transition */
+    .work-card::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: #0f1115;
+      opacity: 0;
+      transition: opacity 0.3s;
+      pointer-events: none;
+      z-index: 0;
+    }
+    .work-card:hover::before { opacity: 1; }
+    .work-card:hover {
+      border-color: #17D5FF;
+      box-shadow: 0 4px 32px rgba(23,213,255,0.12);
+    }
+    .work-card:hover .work-card-type { color: #17D5FF; }
+    .work-card:hover .work-card-title { color: #ffffff; }
+    .work-card:hover .work-card-desc { color: rgba(255,255,255,0.6); }
+    .work-card:hover .work-card-stat strong { color: #ffffff; }
+    .work-card:hover .work-card-stat span { color: rgba(255,255,255,0.45); }
+    /* Per-card accent colors on hover */
+    a.work-card[href="case-study-looking-glass.html"]:hover { border-color: #8B5CF6; box-shadow: 0 4px 32px rgba(139,92,246,0.15); }
+    a.work-card[href="case-study-looking-glass.html"]:hover .work-card-type { color: #8B5CF6; }
+    .work-grid .work-card:nth-child(3):hover { border-color: #4ade80; box-shadow: 0 4px 32px rgba(74,222,128,0.12); }
+    .work-grid .work-card:nth-child(3):hover .work-card-type { color: #4ade80; }
+    .work-grid .work-card:nth-child(4):hover { border-color: #facc15; box-shadow: 0 4px 32px rgba(250,204,21,0.12); }
+    .work-grid .work-card:nth-child(4):hover .work-card-type { color: #facc15; }
+    .work-grid .work-card:nth-child(5):hover { border-color: #f87171; box-shadow: 0 4px 32px rgba(248,113,113,0.12); }
+    .work-grid .work-card:nth-child(5):hover .work-card-type { color: #f87171; }
+    .work-card-img {
+      width: 100%;
+      aspect-ratio: 16/10;
+      background: linear-gradient(135deg, var(--accent-light) 0%, #e8e0f0 50%, #d4e8f0 100%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: 'Playfair Display', serif;
+      font-size: 40px;
+      color: rgba(0,0,0,0.12);
+      overflow: hidden;
+      position: relative;
+      z-index: 1;
+    }
+    .work-card-img img {
+      transition: transform 0.35s ease, opacity 0.2s;
+      will-change: transform;
+    }
+    .work-card:hover .work-card-img img { transform: scale(1.04); opacity: 0.88; }
+    .work-card:nth-child(2) .work-card-img { background: linear-gradient(135deg, #d4e8f0 0%, var(--accent-light) 100%); }
+    .work-card:nth-child(3) .work-card-img { background: linear-gradient(135deg, #e0f0e4 0%, #f0e8d4 100%); }
+    .work-card:nth-child(4) .work-card-img { background: linear-gradient(135deg, #f0d4e8 0%, #d4e0f0 100%); }
+    .work-card-body {
+      padding: 28px 32px 32px;
+      position: relative;
+      z-index: 1;
+    }
+    .work-card-type {
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      text-transform: lowercase;
+      color: var(--accent);
+      margin-bottom: 10px;
+      transition: color 0.2s;
+    }
+    .work-card-title {
+      font-family: 'Playfair Display', serif;
+      font-size: 22px;
+      font-weight: 400;
+      color: var(--ink);
+      margin-bottom: 10px;
+      transition: color 0.2s;
+    }
+    .work-card-desc {
+      font-size: 14px;
+      line-height: 1.7;
+      color: var(--ink-3);
+      margin-bottom: 20px;
+      transition: color 0.2s;
+    }
+    .work-card-meta {
+      display: flex;
+      gap: 20px;
+    }
+    .work-card-stat strong {
+      display: block;
+      font-size: 18px;
+      font-family: 'Playfair Display', serif;
+      color: var(--ink);
+      transition: color 0.2s;
+    }
+    .work-card-stat span {
+      font-size: 11px;
+      font-weight: 500;
+      letter-spacing: 0.06em;
+      text-transform: lowercase;
+      color: var(--ink-3);
+      transition: color 0.2s;
+    }
+
+    /* ── PHILOSOPHY ── */
+    .philosophy {
+      background: var(--ink);
+      color: var(--white);
+    }
+    .philosophy .section-label { color: var(--accent); }
+    .philosophy .section-label::after { background: rgba(255,255,255,0.12); }
+    .philosophy h2 { color: var(--white); }
+    .philosophy-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 2px;
+      margin-top: 64px;
+    }
+    .philosophy-card {
+      padding: 40px;
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(255,255,255,0.08);
+    }
+    .philosophy-num {
+      font-family: 'Playfair Display', serif;
+      font-size: 48px;
+      font-style: italic;
+      color: var(--accent);
+      line-height: 1;
+      margin-bottom: 20px;
+    }
+    .philosophy-card h3 {
+      font-family: 'Playfair Display', serif;
+      font-size: 22px;
+      font-weight: 400;
+      color: var(--white);
+      margin-bottom: 14px;
+    }
+    .philosophy-card p {
+      font-size: 14px;
+      line-height: 1.75;
+      color: rgba(255,255,255,0.55);
+    }
+
+    /* ── CONTACT ── */
+    .contact-inner {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 80px;
+      align-items: center;
+    }
+    .contact h2 { margin-bottom: 16px; }
+    .contact-sub {
+      font-size: 16px;
+      line-height: 1.7;
+      color: var(--ink-2);
+      max-width: 480px;
+      margin-bottom: 40px;
+    }
+    .contact-links {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      min-width: 240px;
+    }
+    .contact-link {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 16px 20px;
+      background: var(--white);
+      border: 1px solid var(--line);
+      border-radius: 2px;
+      text-decoration: none;
+      color: var(--ink);
+      font-size: 14px;
+      font-weight: 500;
+      transition: border-color 0.2s, background 0.2s;
+    }
+    .contact-link:hover { border-color: var(--accent); background: var(--accent-light); }
+    .contact-icon { font-size: 18px; margin-left: auto; }
+
+    /* ── FOOTER ── */
+    footer {
+      padding: 32px 56px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      font-size: 12px;
+      color: var(--ink-3);
+    }
+    footer a { color: var(--ink-3); text-decoration: none; }
+    footer a:hover { color: var(--accent); }
+
+    /* ── dither grain on hover ── */
+
+    /* Buttons/links: background-position shift with overlay blend */
+    @keyframes dither-roll {
+      0%   { background-position:   0px    0px }
+      17%  { background-position: -67px   43px }
+      33%  { background-position:  89px  -57px }
+      50%  { background-position: -43px  -97px }
+      67%  { background-position: 113px   71px }
+      83%  { background-position: -89px  113px }
+    }
+    .nav-links a { position: relative; }
+    .contact-link { position: relative; overflow: hidden; }
+    .contact-link::after,
+    .nav-links a::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)'/%3E%3C/svg%3E");
+      background-size: 300px 300px;
+      mix-blend-mode: overlay;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.15s;
+      z-index: 10;
+    }
+    .contact-link:hover::after,
+    .nav-links a:hover::after {
+      opacity: 0.35;
+      animation: dither-roll 0.5s steps(6) infinite;
+    }
+
+    /* Work cards: GPU-composited transform shift, no mix-blend-mode */
+    @keyframes dither-move {
+      0%   { transform: translate(  0px,    0px) }
+      17%  { transform: translate(-67px,   43px) }
+      33%  { transform: translate( 89px,  -57px) }
+      50%  { transform: translate(-43px,  -97px) }
+      67%  { transform: translate(113px,   71px) }
+      83%  { transform: translate(-89px,  113px) }
+    }
+    .work-card::after {
+      content: '';
+      position: absolute;
+      inset: -120px;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)'/%3E%3C/svg%3E");
+      background-size: 300px 300px;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.15s;
+      will-change: transform;
+      z-index: 2;
+    }
+    .work-card:hover::after {
+      opacity: 0.08;
+      animation: dither-move 0.5s steps(6) infinite;
+    }
+
+    /* ── HAMBURGER ── */
+    .nav-hamburger {
+      display: none;
+      flex-direction: column;
+      gap: 5px;
+      cursor: crosshair;
+      background: none;
+      border: none;
+      padding: 4px;
+    }
+    .nav-hamburger span {
+      display: block;
+      width: 22px;
+      height: 1.5px;
+      background: var(--ink);
+      transition: transform 0.25s, opacity 0.25s;
+    }
+    nav.at-top .nav-hamburger span { background: #fff; }
+    .nav-hamburger.open span:nth-child(1) { transform: translateY(6.5px) rotate(45deg); }
+    .nav-hamburger.open span:nth-child(2) { opacity: 0; }
+    .nav-hamburger.open span:nth-child(3) { transform: translateY(-6.5px) rotate(-45deg); }
+
+    /* ── MOBILE MENU OVERLAY ── */
+    .mobile-menu {
+      display: none;
+      position: fixed;
+      inset: 0;
+      z-index: 99;
+      background: rgba(250,250,248,0.97);
+      backdrop-filter: blur(12px);
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 40px;
+    }
+    .mobile-menu.open { display: flex; }
+    .mobile-menu a {
+      font-family: 'Playfair Display', serif;
+      font-size: 36px;
+      font-weight: 400;
+      color: var(--ink);
+      text-decoration: none;
+      letter-spacing: -0.01em;
+      text-transform: lowercase;
+      transition: color 0.2s;
+    }
+    .mobile-menu a:hover { color: var(--accent); }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 768px) {
+      nav { padding: 16px 24px; }
+      .nav-hamburger { display: flex; }
+      .nav-links { display: none; }
+
+      .hero {
+        padding: 120px 24px 72px;
+        grid-template-columns: 1fr;
+        gap: 48px;
+        min-height: auto;
+      }
+      .hero h1 { font-size: clamp(40px, 11vw, 60px); }
+      .hero-sub { font-size: 16px; max-width: 100%; }
+      .hero-meta {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 0;
+      }
+      .hero-stat { padding: 16px 0; }
+      .hero-stat-num { font-size: 22px; }
+      .hero-stat-label { font-size: 11px; }
+
+      section { padding: 64px 24px; }
+
+      .about-grid { grid-template-columns: 1fr; gap: 48px; }
+      .tools-grid { grid-template-columns: 1fr 1fr; }
+
+      .work-grid { grid-template-columns: 1fr; gap: 2px; }
+
+      .philosophy-grid { grid-template-columns: 1fr; }
+      .philosophy-card { padding: 32px 24px; }
+
+      .contact-inner { grid-template-columns: 1fr; gap: 40px; }
+      .contact-links { min-width: auto; }
+
+      footer { padding: 28px 24px; flex-direction: column; gap: 8px; font-size: 12px; }
+
+      .h1-line-inner { animation: none !important; opacity: 1 !important; transform: none !important; }
+    }
+
+    @media (max-width: 480px) {
+      .hero { padding: 100px 20px 64px; }
+      .hero-meta { grid-template-columns: 1fr 1fr; }
+      .hero-stat-num { font-size: 15px; }
+      .hero-stat-label { font-size: 11px; }
+      .hero-stat { padding-top: 16px; }
+      section { padding: 56px 20px; }
+      .tools-grid { grid-template-columns: 1fr; }
+      .work-card-body { padding: 20px 24px 24px; }
+      .philosophy-card { padding: 28px 20px; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- gooey SVG filter for hero CTA -->
+  <svg style="display:none" aria-hidden="true">
+    <defs>
+      <filter id="hero-goo" x="-20%" y="-50%" width="140%" height="200%">
+        <feGaussianBlur in="SourceGraphic" stdDeviation="10" result="blur" />
+        <feColorMatrix in="blur" mode="matrix" values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 20 -7" result="goo" />
+      </filter>
+      <filter id="hero-goo-stroke" x="-20%" y="-50%" width="140%" height="200%">
+        <feGaussianBlur in="SourceGraphic" stdDeviation="10" result="blur" />
+        <feColorMatrix in="blur" mode="matrix" values="0 0 0 0 1  0 0 0 0 1  0 0 0 0 1  0 0 0 20 -7" result="outer" />
+        <feColorMatrix in="blur" mode="matrix" values="0 0 0 0 1  0 0 0 0 1  0 0 0 0 1  0 0 0 20 -8" result="inner" />
+        <feComposite in="outer" in2="inner" operator="out" />
+      </filter>
+    </defs>
+  </svg>
+
+
+  <!-- MOBILE MENU -->
+  <div class="mobile-menu" id="mobileMenu">
+    <a href="#about"   onclick="closeMobileMenu()">About</a>
+    <a href="#career"  onclick="closeMobileMenu()">Career</a>
+    <a href="#work"    onclick="closeMobileMenu()">Work</a>
+    <a href="#contact" onclick="closeMobileMenu()">Contact</a>
+  </div>
+
+  <!-- NAV -->
+  <nav>
+    <div class="nav-logo">
+      <a href="https://polisti.co" target="_blank" rel="noopener noreferrer"><img src="images/avatar.gif" alt="Don Polistico" class="nav-avatar"></a>
+      <a href="#" style="font-family:'Playfair Display',serif;font-size:18px;font-weight:600;color:var(--ink);text-decoration:none;">don polistico</a>
+    </div>
+    <ul class="nav-links">
+      <li><a href="#about">About</a></li>
+      <li><a href="#career">Career</a></li>
+      <li><a href="#work">Work</a></li>
+      <li><a href="#contact">Contact</a></li>
+    </ul>
+    <button class="nav-hamburger" id="hamburger" onclick="toggleMobileMenu()" aria-label="Menu">
+      <span></span><span></span><span></span>
+    </button>
+  </nav>
+
+  <!-- HERO -->
+  <section class="hero">
+    <!-- video background -->
+    <div class="hero-video-bg">
+      <iframe src="https://www.youtube.com/embed/Jox6R5-rIH0?autoplay=1&mute=1&loop=1&controls=0&playsinline=1&disablekb=1&rel=0&showinfo=0&modestbranding=1&playlist=Jox6R5-rIH0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+    </div>
+    <canvas class="hero-grain" id="heroGrain"></canvas>
+    <div class="hero-overlay"></div>
+
+    <div class="hero-content">
+      <p class="hero-label">Product Designer · Brooklyn, NY</p>
+      <h1>
+        <span class="h1-line"><span class="h1-line-inner">15+ years shaping</span></span>
+        <span class="h1-line"><span class="h1-line-inner">how people</span></span>
+        <span class="h1-line"><span class="h1-line-inner"><span class="hero-title-em">watch video.</span></span></span>
+      </h1>
+<a href="#work" class="hero-cta">
+        <span class="hero-cta-glow" aria-hidden="true">
+        <span class="hero-cta-bg" aria-hidden="true">
+          <span class="hero-cta-blob"></span>
+          <span class="hero-cta-blob"></span>
+          <span class="hero-cta-blob"></span>
+        </span>
+        </span>
+        <span class="hero-cta-stroke" aria-hidden="true">
+          <span class="hero-cta-blob"></span>
+          <span class="hero-cta-blob"></span>
+          <span class="hero-cta-blob"></span>
+        </span>
+        <span class="hero-cta-text">view selected work</span>
+        <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 8h10M8 3l5 5-5 5"/></svg>
+      </a>
+    </div>
+    <div class="hero-content hero-meta">
+      <div class="hero-stat">
+        <div class="hero-stat-num">OTT</div>
+        <div class="hero-stat-label">Cross-platform specialist</div>
+      </div>
+      <div class="hero-stat">
+        <div class="hero-stat-num">2×</div>
+        <div class="hero-stat-label">Acquired companies</div>
+      </div>
+      <div class="hero-stat">
+        <div class="hero-stat-num">Millions</div>
+        <div class="hero-stat-label">viewers reached worldwide</div>
+      </div>
+      <div class="hero-stat">
+        <div class="hero-stat-num">∞</div>
+        <div class="hero-stat-label">Figma frames opened, never closed</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ABOUT -->
+  <section id="about">
+    <div class="section-label">About</div>
+    <div class="about-grid">
+      <div class="about-text">
+        <h2>Deep craft in<br>video &amp; platform.</h2>
+        <div class="pull-quote">"Video was my entry point. Platform thinking is what inspires me. The surface keeps changing — screen, headset, hologram — and I want to be at the edge of whatever comes next."</div>
+        <p>
+          Hi, I'm Don. I'm a Brooklyn-based product designer who has spent most of my career in streaming video. I started with Boxee's early TV boxes and later helped build Vimeo's creator platforms. Along the way, two of the startups I worked for were acquired, which gave me great experience in helping products grow and transition under new teams. Recently, I've been expanding my craft by designing for 3D holograms (Looking Glass) and exploring decentralized web projects.
+        </p>
+      </div>
+      <div class="about-tools">
+        <h3>Skills &amp; craft</h3>
+        <div class="tools-grid">
+          <div class="tool-tag">Interaction design</div>
+          <div class="tool-tag">Design systems</div>
+          <div class="tool-tag">Prototyping</div>
+          <div class="tool-tag">User research</div>
+          <div class="tool-tag">Usability testing</div>
+          <div class="tool-tag">Information arch.</div>
+          <div class="tool-tag">Wireframing</div>
+          <div class="tool-tag">Drawing ligers</div>
+        </div>
+
+        <h3>Core strengths</h3>
+        <ul class="strength-list">
+          <li>End-to-end OTT &amp; video platform design</li>
+          <li>Cross-platform consistency (web, TV, mobile)</li>
+          <li>Design systems that scale across products</li>
+          <li>Navigating acquisition &amp; product integration</li>
+          <li>Emerging tech: holographic, decentralized, AI</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- CAREER -->
+  <section id="career">
+    <div class="section-label">Career narrative</div>
+    <h2>How I got here.</h2>
+    <p class="career-intro">
+      My design journey started with small hardware startups and led to larger streaming platforms. I've learned a lot at every step. Even through two acquisitions, I chose to stay with the product to ensure our work continued to serve the people using it.
+    </p>
+
+    <div class="timeline">
+
+      <div class="timeline-item">
+        <div class="timeline-header">
+          <div class="timeline-dot"></div>
+          <div class="timeline-period">July 2010 – July 2013</div>
+        </div>
+        <div class="timeline-company"><a href="https://www.theverge.com/2013/7/3/4490362/boxee-acquired-by-samsung-in-surprise-deal-according-to-report" target="_blank" rel="noopener" style="color: inherit; text-decoration: none;">Boxee</a></div>
+        <div class="timeline-role">Designer · New York, NY</div>
+        <p class="timeline-desc">
+          Where it all started. At Boxee, I helped design early Cloud DVR and social TV features when the streaming space was still brand new. I also pitched in on packaging and marketing for our hardware. In 2013, Samsung acquired Boxee, which was a great next step for the product we had built together.
+        </p>
+        <div class="timeline-tags">
+          <span class="tag">Cloud DVR</span>
+          <span class="tag">Social TV</span>
+          <span class="tag">0→1</span>
+          <span class="tag">Hardware launch</span>
+          <span class="tag">Acquired by Samsung</span>
+        </div>
+      </div>
+
+      <div class="timeline-item">
+        <div class="timeline-header">
+          <div class="timeline-dot"></div>
+          <div class="timeline-period">July 2013 – Nov 2015</div>
+        </div>
+        <div class="timeline-company"><a href="https://sra.samsung.com/" target="_blank" rel="noopener" style="color: inherit; text-decoration: none;">Samsung</a></div>
+        <div class="timeline-role">Senior Product Designer · New York, NY</div>
+        <p class="timeline-desc">
+          Following Boxee's acquisition by Samsung, I designed multi-screen experiences for Samsung's Smart TV ecosystem — integrating Boxee software into Samsung's TV interface and contributing to the design of next-generation remotes. This chapter taught me how to scale consumer-grade design thinking inside a massive hardware organization.
+        </p>
+        <div class="timeline-tags">
+          <span class="tag">Smart TV</span>
+          <span class="tag">Multi-screen</span>
+          <span class="tag">Hardware integration</span>
+          <span class="tag">10-foot UI</span>
+        </div>
+      </div>
+
+      <div class="timeline-item timeline-item--contract">
+        <div class="timeline-header">
+          <div class="timeline-dot timeline-dot--contract" data-tooltip="One Month"></div>
+          <div class="timeline-period">2013 – 2014</div>
+        </div>
+        <div class="timeline-contract-body">
+          <div class="timeline-contract-company"><a href="https://onemonth.com/" target="_blank" rel="noopener" style="color: inherit; text-decoration: none;">One Month</a></div>
+          <div class="timeline-contract-role">Designer (Contract) · New York, NY</div>
+          <p class="timeline-contract-desc">Contributed to MVP design during Y Combinator (S13). Transformed technical curriculum into user-friendly workflows that helped secure seed funding.</p>
+        </div>
+      </div>
+
+      <div class="timeline-item">
+        <div class="timeline-header">
+          <div class="timeline-dot"></div>
+          <div class="timeline-period">Oct 2015 – May 2016</div>
+        </div>
+        <div class="timeline-company"><a href="https://vimeo.com/ott" target="_blank" rel="noopener" style="color: inherit; text-decoration: none;">VHX</a></div>
+        <div class="timeline-role">Senior Product Designer · Brooklyn, NY</div>
+        <p class="timeline-desc">
+          Designed VHX's direct-to-consumer video tools with a focus on payment flows and audience management — giving independent creators the infrastructure to build their own streaming channels. Established the foundational OTT app patterns that were later adopted across the Vimeo platform when VHX was acquired.
+        </p>
+        <div class="timeline-tags">
+          <span class="tag">D2C video</span>
+          <span class="tag">Payment flows</span>
+          <span class="tag">Creator tools</span>
+          <span class="tag">Acquired by Vimeo</span>
+        </div>
+      </div>
+
+      <div class="timeline-item">
+        <div class="timeline-header">
+          <div class="timeline-dot"></div>
+          <div class="timeline-period">June 2016 – June 2025</div>
+        </div>
+        <div class="timeline-company"><a href="https://vimeo.com" target="_blank" rel="noopener" style="color: inherit; text-decoration: none;">Vimeo</a></div>
+        <div class="timeline-role">Senior Product Designer · New York, NY</div>
+        <p class="timeline-desc">
+          Nearly a decade at Vimeo, beginning with the integration of VHX post-acquisition. Architected end-to-end design for Vimeo Streaming's cross-platform distribution — web, mobile, and TV apps — and shaped interaction patterns for the Vimeo player supporting millions of daily plays. Maintained shared design systems for web and mobile throughout the company's evolution from creator tool to B2B platform.
+        </p>
+        <div class="timeline-tags">
+          <span class="tag">OTT platform</span>
+          <span class="tag">Cross-platform</span>
+          <span class="tag">Design systems</span>
+          <span class="tag">Video player UX</span>
+          <span class="tag">Post-acquisition</span>
+        </div>
+      </div>
+
+      <div class="timeline-item timeline-item--contract">
+        <div class="timeline-header">
+          <div class="timeline-dot timeline-dot--contract" data-tooltip="Recount Media"></div>
+          <div class="timeline-period">2020</div>
+        </div>
+        <div class="timeline-contract-body">
+          <div class="timeline-contract-company"><a href="https://www.therecount.com/" target="_blank" rel="noopener" style="color: inherit; text-decoration: none;">Recount Media</a></div>
+          <div class="timeline-contract-role">Senior Product Designer (Contract) · New York, NY</div>
+          <p class="timeline-contract-desc">Designed mobile-first video discovery features for a political news platform. Optimized viewer retention through rapid prototyping with editorial and engineering teams.</p>
+        </div>
+      </div>
+
+      <div class="timeline-item timeline-item--contract">
+        <div class="timeline-header">
+          <div class="timeline-dot timeline-dot--contract" data-tooltip="primitives.xyz"></div>
+          <div class="timeline-period">2022 – 2024</div>
+        </div>
+        <div class="timeline-contract-body">
+          <div class="timeline-contract-company"><a href="https://primitives.xyz" target="_blank" rel="noopener" style="color: inherit; text-decoration: none;">primitives.xyz</a></div>
+          <div class="timeline-contract-role">Senior Product Designer (Contract) · New York, NY</div>
+          <p class="timeline-contract-desc">Built the creator app for iOS and mobile web around a decentralized social sharing protocol. Translated Web3 concepts into accessible mobile interfaces for onboarding and content creation.</p>
+        </div>
+      </div>
+
+      <div class="timeline-item timeline-item--contract">
+        <div class="timeline-header">
+          <div class="timeline-dot timeline-dot--contract" data-tooltip="Looking Glass"></div>
+          <div class="timeline-period">2022 – 2024</div>
+        </div>
+        <div class="timeline-contract-body">
+          <div class="timeline-contract-company"><a href="https://lookingglassfactory.com/" target="_blank" rel="noopener" style="color: inherit; text-decoration: none;">Looking Glass</a></div>
+          <div class="timeline-contract-role">Senior Product Designer (Contract) · Brooklyn, NY</div>
+          <p class="timeline-contract-desc">Developed interaction models for holographic displays and a design system bridging 2D desktop workflows with 3D spatial visualization. Collaborated with graphics engineers on Unity-based applications.</p>
+        </div>
+      </div>
+
+      <div class="timeline-item">
+        <div class="timeline-header">
+          <div class="timeline-dot"></div>
+          <div class="timeline-period">Next chapter</div>
+        </div>
+        <a href="https://www.figma.com/careers/" target="_blank" rel="noopener" style="color: inherit; text-decoration: none; display: block;">
+        <div class="timeline-company">???</div>
+        <div class="timeline-role">Probably something interesting</div>
+        </a>
+        <p class="timeline-desc">
+          I'm most energized by hard problems in new spaces. If you're building something that doesn't have a design playbook yet — a platform, a product, a thing that shouldn't exist but does — there's a reasonable chance I'd want to help build it with you.
+        </p>
+        <div class="timeline-tags">
+          <span class="tag">Available now</span>
+          <span class="tag">Open to the right thing</span>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- WORK -->
+  <section id="work">
+    <div class="section-label">Selected work</div>
+    <h2>Case studies &amp;<br>highlights.</h2>
+    <p class="work-intro">
+      Each project represents a distinct design challenge — from inventing new UX patterns for emerging platforms to scaling design systems across a company in transition.
+    </p>
+    <div class="work-grid">
+
+      <a href="case-study-vimeo.html" class="work-card">
+        <div class="work-card-img" style="background:#000;padding:0;"><img src="images/vimeo 04E.png" style="width:100%;height:100%;object-fit:cover;display:block;"></div>
+        <div class="work-card-body">
+          <div class="work-card-type">Platform design · Vimeo</div>
+          <div class="work-card-title">Vimeo Streaming</div>
+          <p class="work-card-desc">Architecting end-to-end design for Vimeo's OTT distribution product across web, TV, and mobile — giving creators the tools to launch and manage their own streaming channels.</p>
+          <div class="work-card-meta">
+            <div class="work-card-stat"><strong>$429M+</strong><span>Annual creator revenue</span></div>
+            <div class="work-card-stat"><strong>11</strong><span>Platforms</span></div>
+            <div class="work-card-stat"><strong>5,000+</strong><span>Channels launched</span></div>
+          </div>
+        </div>
+      </a>
+
+      <a href="case-study-looking-glass.html" class="work-card">
+        <div class="work-card-img" style="background:#000;padding:0;"><img src="images/LKG 04A.png" style="width:100%;height:100%;object-fit:cover;display:block;"></div>
+        <div class="work-card-body">
+          <div class="work-card-type">Emerging tech · Looking Glass</div>
+          <div class="work-card-title">Looking Glass Go mobile app</div>
+          <p class="work-card-desc">Designing the iOS companion app for a holographic display — entirely new territory requiring first-principles thinking about depth, AI-generated 3D, and hardware state management.</p>
+          <div class="work-card-meta">
+            <div class="work-card-stat"><strong>0→1</strong><span>Mobile app</span></div>
+            <div class="work-card-stat"><strong>2D→3D</strong><span>AI conversion</span></div>
+            <div class="work-card-stat"><strong>2024</strong><span>Shipped</span></div>
+          </div>
+        </div>
+      </a>
+
+      <a href="https://www.theverge.com/2013/7/3/4490362/boxee-acquired-by-samsung-in-surprise-deal-according-to-report" target="_blank" rel="noopener noreferrer" class="work-card">
+        <div class="work-card-img" style="background:#111;padding:0;"><img src="images/boxee-app.png" style="width:100%;height:100%;object-fit:cover;display:block;"></div>
+        <div class="work-card-body">
+          <div class="work-card-type">0→1 product · Boxee</div>
+          <div class="work-card-title">Cloud DVR experience</div>
+          <p class="work-card-desc">Pioneering the Cloud DVR UX at Boxee — designing recording flows, scheduling interfaces, and social TV features for a living-room product that was ahead of its time. Led to acquisition by Samsung.</p>
+          <div class="work-card-meta">
+            <div class="work-card-stat"><strong>First</strong><span>Cloud DVR UX</span></div>
+            <div class="work-card-stat"><strong>10-ft</strong><span>TV interface</span></div>
+            <div class="work-card-stat"><strong>→ Acq.</strong><span>by Samsung</span></div>
+          </div>
+        </div>
+      </a>
+
+      <a href="https://techcrunch.com/2016/05/02/vimeo-acquires-vhx-to-boost-its-video-on-demand-business/" target="_blank" rel="noopener noreferrer" class="work-card">
+        <div class="work-card-img" style="background:#111;padding:0;"><img src="images/vhx-payment.png" style="width:100%;height:100%;object-fit:cover;display:block;"></div>
+        <div class="work-card-body">
+          <div class="work-card-type">D2C platform · VHX</div>
+          <div class="work-card-title">Creator monetization tools</div>
+          <p class="work-card-desc">Designing VHX's payment and audience-management flows — the infrastructure that let indie filmmakers and creators run their own streaming businesses. These patterns were later absorbed into the Vimeo platform.</p>
+          <div class="work-card-meta">
+            <div class="work-card-stat"><strong>D2C</strong><span>Video commerce</span></div>
+            <div class="work-card-stat"><strong>→ Acq.</strong><span>by Vimeo</span></div>
+            <div class="work-card-stat"><strong>2015</strong><span>Shipped</span></div>
+          </div>
+        </div>
+      </a>
+
+      <a href="https://vimeo.com/4626028" target="_blank" rel="noopener noreferrer" class="work-card">
+        <div class="work-card-img" id="vimeo-thumb-4626028" style="background:#111;padding:0;">
+          <img id="vimeo-thumb-img-4626028" src="" alt="Vimeo video thumbnail" style="width:100%;height:100%;object-fit:cover;display:none;">
+        </div>
+        <div class="work-card-body">
+          <div class="work-card-type">Senior thesis · MICA 2009</div>
+          <div class="work-card-title" id="vimeo-title-4626028">Script</div>
+          <p class="work-card-desc">Winner of the Stempel Thesis Prize: An annual scholarship awarded to a MICA senior exhibiting exemplary thesis work.</p>
+          <div class="work-card-meta">
+            <div class="work-card-stat"><strong>↗</strong><span>Vimeo.com</span></div>
+          </div>
+        </div>
+      </a>
+
+    </div>
+  </section>
+
+  <!-- PHILOSOPHY -->
+  <section class="philosophy">
+    <div class="section-label">Design philosophy</div>
+    <h2>What I believe<br>about this work.</h2>
+    <div class="philosophy-grid">
+      <div class="philosophy-card">
+        <div class="philosophy-num">01</div>
+        <h3>Platform thinking first</h3>
+        <p>Video products live across web, TV, and mobile simultaneously. I design with the full platform ecosystem in mind — consistent patterns, scalable systems, and experiences that feel native everywhere they land.</p>
+      </div>
+      <div class="philosophy-card">
+        <div class="philosophy-num">02</div>
+        <h3>Stay curious about what's next</h3>
+        <p>The best work of my career has come from being early — cloud DVR before it was mainstream, direct-to-consumer streaming before every studio had one. I actively pursue emerging territory so I'm ready when it becomes the present.</p>
+      </div>
+      <div class="philosophy-card">
+        <div class="philosophy-num">03</div>
+        <h3>Design survives acquisition</h3>
+        <p>I've been through two acquisitions. That experience sharpened something important: design that's well-documented, systematized, and deeply understood by its team has a life beyond any single org chart.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- CONTACT -->
+  <section id="contact" class="contact">
+    <div class="contact-inner">
+      <div>
+        <div class="section-label">Contact</div>
+        <h2>Let's talk.</h2>
+        <p class="contact-sub">
+          I'm most energized by hard problems in new spaces. If you're building a video platform, an emerging-tech product, or something that doesn't have a design playbook yet — let's talk.
+        </p>
+        <a href="mailto:don@polisti.co" class="hero-cta">
+          Get in touch
+          <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" style="width:16px;height:16px"><path d="M3 8h10M8 3l5 5-5 5"/></svg>
+        </a>
+      </div>
+      <div class="contact-links">
+        <a href="mailto:don@polisti.co" class="contact-link">
+          <span class="contact-label">don@polisti.co</span><span class="contact-icon">📧</span>
+        </a>
+        <a href="tel:9299694242" class="contact-link">
+          <span class="contact-label">929-969-4242</span><span class="contact-icon">📞</span>
+        </a>
+        <a href="https://www.linkedin.com/in/donpolistico/" target="_blank" rel="noopener noreferrer" class="contact-link">
+          <span class="contact-label">LinkedIn</span><span class="contact-icon">👨‍💻</span>
+        </a>
+        <a href="https://www.instagram.com/donosaur/" target="_blank" rel="noopener noreferrer" class="contact-link">
+          <span class="contact-label">@donosaur</span><span class="contact-icon">📸</span>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    <span>Don Polistico · Product Designer · Brooklyn, NY · <a href="mailto:don@polisti.co">don@polisti.co</a></span>
+    <span>BFA, MICA · AI for UX Design Cert. 2025</span>
+  </footer>
+
+  <script>
+    // ── Hero headline rotation ──
+    (function() {
+      const headlines = [
+        { lines: ['15+ years shaping',    'how people'],          em: 'watch video.'       },
+        { lines: ['Designing the future', 'of how the world'],    em: 'experiences media.' },
+        { lines: ['Video was the medium.', 'Design was'],         em: 'the obsession.'     },
+        { lines: ['The intersection of',   'craft, product,'],    em: 'and storytelling.'  },
+      ];
+      const key = 'hlIdx';
+      let idx = parseInt(localStorage.getItem(key) || '0') % headlines.length;
+      localStorage.setItem(key, (idx + 1) % headlines.length);
+
+      const lineEls = document.querySelectorAll('.h1-line-inner');
+      const delays = [0.1, 0.25, 0.42];
+
+      function setHeadline(h) {
+        lineEls[0].textContent = h.lines[0];
+        lineEls[1].textContent = h.lines[1];
+        lineEls[2].innerHTML = '<span class="hero-title-em">' + h.em + '</span>';
+      }
+
+      function animateIn() {
+        lineEls.forEach((el, i) => {
+          el.style.animation = 'none';
+          el.style.opacity = '0';
+          el.style.transform = 'translateY(110%)';
+          el.offsetHeight; // force reflow
+          el.style.animation = '';
+          el.style.animationDelay = delays[i] + 's';
+        });
+      }
+
+      if (lineEls.length >= 3) {
+        setHeadline(headlines[idx]);
+
+        setInterval(function() {
+          idx = (idx + 1) % headlines.length;
+          localStorage.setItem(key, (idx + 1) % headlines.length);
+          setHeadline(headlines[idx]);
+          animateIn();
+        }, 10000);
+      }
+    })();
+
+    // ── Mobile menu ──
+    function toggleMobileMenu() {
+      const menu = document.getElementById('mobileMenu');
+      const btn  = document.getElementById('hamburger');
+      menu.classList.toggle('open');
+      btn.classList.toggle('open');
+      document.body.style.overflow = menu.classList.contains('open') ? 'hidden' : '';
+    }
+    function closeMobileMenu() {
+      document.getElementById('mobileMenu').classList.remove('open');
+      document.getElementById('hamburger').classList.remove('open');
+      document.body.style.overflow = '';
+    }
+
+    // ── Nav scroll state ──
+    const nav = document.querySelector('nav');
+    function updateNav() {
+      nav.classList.toggle('at-top', window.scrollY < 80);
+    }
+    updateNav();
+    window.addEventListener('scroll', updateNav, { passive: true });
+
+    // ── Kinetic typography: cursor parallax + continuous drift ──
+    const heroEl   = document.querySelector('.hero');
+    const h1Lines  = document.querySelectorAll('.h1-line-inner');
+
+    // per-line config: [parallaxStrength, floatAmplitude, floatSpeed, floatPhase]
+    const cfg = [
+      [14, 2.2, 0.9, 0.0],
+      [20, 1.8, 1.1, 1.4],
+      [10, 2.8, 0.7, 2.6],
+    ];
+
+    let targetX = 0, targetY = 0;
+    let curX = 0, curY = 0;
+    let time = 0;
+
+    document.addEventListener('mousemove', (e) => {
+      const r = heroEl.getBoundingClientRect();
+      targetX = (e.clientX - r.left  - r.width  / 2) / r.width;
+      targetY = (e.clientY - r.top   - r.height / 2) / r.height;
+    });
+
+    function tick() {
+      time += 0.007;
+      // smooth lerp toward cursor
+      curX += (targetX - curX) * 0.055;
+      curY += (targetY - curY) * 0.055;
+
+      h1Lines.forEach((line, i) => {
+        const [str, amp, spd, phase] = cfg[i];
+        const floatY = Math.sin(time * spd + phase) * amp;
+        const floatX = Math.cos(time * spd * 0.6 + phase) * (amp * 0.4);
+        const tx = curX * str + floatX;
+        const ty = curY * (str * 0.55) + floatY;
+        line.style.transform = `translate(${tx}px, ${ty}px)`;
+      });
+
+      // video parallax — moves opposite to text for depth
+      const videoBg = heroEl.querySelector('.hero-video-bg');
+      if (videoBg) {
+        videoBg.style.transform = `translate(${curX * -18}px, ${curY * -10}px)`;
+      }
+
+      requestAnimationFrame(tick);
+    }
+
+    // ── hero dither grain ──
+    (function () {
+      const canvas = document.getElementById('heroGrain');
+      const ctx = canvas.getContext('2d');
+      const SIZE = 160; // low-res for coarse dither look
+      canvas.width = SIZE;
+      canvas.height = SIZE;
+      const img = ctx.createImageData(SIZE, SIZE);
+      let frame = 0;
+      function drawGrain() {
+        const d = img.data;
+        for (let i = 0; i < d.length; i += 4) {
+          const v = (Math.random() * 255) | 0;
+          d[i] = d[i + 1] = d[i + 2] = v;
+          d[i + 3] = 255;
+        }
+        ctx.putImageData(img, 0, 0);
+        frame++;
+        requestAnimationFrame(drawGrain);
+      }
+      drawGrain();
+    })();
+
+
+    // load vimeo thumbnail via oEmbed
+    fetch('https://vimeo.com/api/oembed.json?url=https://vimeo.com/4626028&width=800')
+      .then(r => r.json())
+      .then(data => {
+        const img = document.getElementById('vimeo-thumb-img-4626028');
+        const titleEl = document.getElementById('vimeo-title-4626028');
+        if (img && data.thumbnail_url) {
+          img.src = data.thumbnail_url;
+          img.style.display = 'block';
+        }
+        // title is set statically, don't overwrite
+      })
+      .catch(() => {});
+
+    // contract timeline: click dot to expand
+    document.querySelectorAll('.timeline-dot--contract').forEach(dot => {
+      dot.addEventListener('click', () => {
+        dot.closest('.timeline-item--contract').classList.toggle('is-open');
+      });
+    });
+
+    // emoji cursor for clover-hover span
+    (function() {
+      const canvas = document.createElement('canvas');
+      canvas.width = 32; canvas.height = 32;
+      const ctx = canvas.getContext('2d');
+      ctx.font = '26px serif';
+      ctx.textAlign = 'center';
+      ctx.textBaseline = 'middle';
+      ctx.fillText('🍀', 16, 16);
+      const url = canvas.toDataURL();
+      const style = document.createElement('style');
+      style.textContent = `.clover-hover { cursor: url("${url}") 16 16, auto !important; }`;
+      document.head.appendChild(style);
+    })();
+
+    // let entry animations finish before cursor takes over
+    setTimeout(tick, 1400);
+  </script>
+
+</body>
+</html>

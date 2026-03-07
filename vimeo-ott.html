@@ -1,0 +1,1447 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Vimeo Streaming — Don Polistico</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,600;1,400;1,600&display=swap" rel="stylesheet" />
+  <script src="https://mcp.figma.com/mcp/html-to-design/capture.js" async></script>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --ink: #0d0d0d;
+      --ink-2: #2e2e2e;
+      --ink-3: #6b6b6b;
+      --line: #e0e0e0;
+      --bg: #f9f9f7;
+      --white: #ffffff;
+      --vimeo: #1ab7ea;
+      --vimeo-dk: #0d8ab0;
+      --gold: #c9a96e;
+      --gold-light: #f5ede0;
+      --dark: #0f1115;
+      --dark-2: #181c23;
+      --dark-3: #222730;
+      --red: #e05252;
+      --green: #4caf7d;
+    }
+    body {
+      font-family: 'Inter', sans-serif;
+      background: #111;
+      -webkit-font-smoothing: antialiased;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 4px;
+      padding: 0;
+    }
+
+    /* ── BASE ── */
+    .slide {
+      width: 1440px;
+      height: 810px;
+      position: relative;
+      overflow: hidden;
+      flex-shrink: 0;
+      display: flex;
+    }
+    .slide-num {
+      position: absolute;
+      bottom: 44px;
+      right: 72px;
+      font-size: 11px;
+      font-weight: 500;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      opacity: 0.25;
+      color: inherit;
+      z-index: 10;
+    }
+    .byline {
+      position: absolute;
+      bottom: 44px;
+      left: 72px;
+      font-size: 11px;
+      font-weight: 500;
+      letter-spacing: 0.08em;
+      opacity: 0.25;
+      color: inherit;
+      z-index: 10;
+    }
+    .eyebrow {
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--vimeo);
+      margin-bottom: 20px;
+    }
+    .eyebrow.gold { color: var(--gold); }
+    .eyebrow.muted { color: rgba(255,255,255,0.35); }
+    .eyebrow.dark { color: var(--gold); }
+
+    /* ══════════════════════════════════════
+       SLIDE 1 · HOOK & SCALE
+    ══════════════════════════════════════ */
+    .s1 {
+      background: var(--dark);
+      flex-direction: column;
+    }
+    .s1-noise {
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(ellipse 1100px 700px at 105% -10%, rgba(26,183,234,0.14) 0%, transparent 55%),
+        radial-gradient(ellipse 700px 500px at -5% 110%, rgba(201,169,110,0.09) 0%, transparent 50%);
+    }
+    .s1-grid {
+      position: absolute;
+      inset: 0;
+      background-image:
+        linear-gradient(rgba(255,255,255,0.025) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,0.025) 1px, transparent 1px);
+      background-size: 72px 72px;
+    }
+
+    /* left column */
+    .s1-inner {
+      position: relative;
+      z-index: 1;
+      display: grid;
+      grid-template-columns: 1fr 460px;
+      flex: 1;
+    }
+    .s1-left {
+      padding: 88px 72px 80px 72px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      border-right: 1px solid rgba(255,255,255,0.07);
+    }
+    .s1-left h1 {
+      font-family: 'Playfair Display', serif;
+      font-size: 76px;
+      font-weight: 400;
+      line-height: 1.02;
+      letter-spacing: -0.03em;
+      color: var(--white);
+      margin-bottom: 32px;
+    }
+    .s1-left h1 em { font-style: italic; color: var(--gold); }
+    .s1-left p {
+      font-size: 17px;
+      line-height: 1.75;
+      color: rgba(255,255,255,0.5);
+      max-width: 540px;
+      margin-bottom: 48px;
+    }
+    .s1-role-block {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      padding-top: 32px;
+      border-top: 1px solid rgba(255,255,255,0.08);
+    }
+    .s1-role-block strong {
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--white);
+    }
+    .s1-role-block span {
+      font-size: 12px;
+      color: rgba(255,255,255,0.3);
+      letter-spacing: 0.06em;
+    }
+
+    /* right column — stat panel */
+    .s1-right {
+      padding: 88px 72px 80px 60px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+    .s1-stat {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      padding: 28px 0;
+      border-bottom: 1px solid rgba(255,255,255,0.07);
+    }
+    .s1-stat:first-child { border-top: 1px solid rgba(255,255,255,0.07); }
+    .s1-stat-num {
+      font-family: 'Playfair Display', serif;
+      font-size: 52px;
+      font-weight: 600;
+      line-height: 1;
+      color: var(--white);
+      margin-bottom: 6px;
+    }
+    .s1-stat-num.blue { color: var(--vimeo); }
+    .s1-stat-num.gold { color: var(--gold); }
+    .s1-stat-label {
+      font-size: 12px;
+      font-weight: 500;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.3);
+    }
+
+    /* ══════════════════════════════════════
+       SLIDE 1B · VIDEO
+    ══════════════════════════════════════ */
+    .s-video {
+      background: #000;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+    }
+    .s-video-bg {
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(ellipse 900px 600px at 50% 50%, rgba(26,183,234,0.06) 0%, transparent 70%);
+    }
+    .s-video-iframe {
+      position: relative;
+      z-index: 1;
+      width: 1280px;
+      height: 720px;
+      border: none;
+      border-radius: 4px;
+    }
+
+    /* ══════════════════════════════════════
+       SLIDE 2 · PROBLEM SPACE
+    ══════════════════════════════════════ */
+    .s2 {
+      background: var(--bg);
+      flex-direction: column;
+      padding: 72px 72px 72px;
+    }
+    .s2-header {
+      margin-bottom: 52px;
+    }
+    .s2 h2 {
+      font-family: 'Playfair Display', serif;
+      font-size: 48px;
+      font-weight: 400;
+      line-height: 1.1;
+      letter-spacing: -0.02em;
+      color: var(--ink);
+      margin-top: 16px;
+    }
+    .s2 h2 em { font-style: italic; color: var(--gold); }
+
+    /* ecosystem diagram */
+    .ecosystem {
+      display: grid;
+      grid-template-columns: 1fr 180px 1fr;
+      gap: 0;
+      flex: 1;
+      align-items: stretch;
+    }
+    .eco-side {
+      background: var(--white);
+      border: 1px solid var(--line);
+      padding: 36px 40px;
+      display: flex;
+      flex-direction: column;
+    }
+    .eco-side.creator { border-left: 4px solid var(--gold); }
+    .eco-side.viewer { border-right: 4px solid var(--vimeo); }
+    .eco-role {
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      margin-bottom: 8px;
+    }
+    .eco-role.c { color: var(--gold); }
+    .eco-role.v { color: var(--vimeo); }
+    .eco-side h3 {
+      font-family: 'Playfair Display', serif;
+      font-size: 28px;
+      font-weight: 400;
+      color: var(--ink);
+      margin-bottom: 16px;
+    }
+    .eco-side > p {
+      font-size: 13px;
+      line-height: 1.7;
+      color: var(--ink-3);
+      margin-bottom: 28px;
+    }
+    .eco-needs {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      margin-bottom: 28px;
+      flex: 1;
+    }
+    .eco-needs li {
+      font-size: 13px;
+      line-height: 1.5;
+      color: var(--ink-2);
+      display: flex;
+      gap: 10px;
+      align-items: flex-start;
+      padding: 10px 14px;
+      background: var(--bg);
+      border: 1px solid var(--line);
+    }
+    .eco-needs li::before {
+      content: attr(data-icon);
+      flex-shrink: 0;
+      font-size: 14px;
+    }
+    .eco-metric {
+      padding: 14px 16px;
+      border: 1px solid var(--line);
+      background: var(--bg);
+    }
+    .eco-metric strong {
+      display: block;
+      font-size: 22px;
+      font-family: 'Playfair Display', serif;
+      color: var(--ink);
+      margin-bottom: 2px;
+    }
+    .eco-metric span {
+      font-size: 11px;
+      font-weight: 500;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--ink-3);
+    }
+
+    /* middle connector */
+    .eco-middle {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+      padding: 0 16px;
+    }
+    .eco-platform {
+      padding: 8px 12px;
+      background: var(--dark);
+      border-radius: 2px;
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.7);
+      text-align: center;
+      width: 100%;
+    }
+    .eco-arrow {
+      font-size: 18px;
+      color: var(--ink-3);
+      opacity: 0.4;
+    }
+    .eco-middle-label {
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--ink-3);
+      text-align: center;
+      margin-bottom: 8px;
+    }
+
+    /* tension bar */
+    .tension-bar {
+      margin-top: 32px;
+      padding: 16px 24px;
+      background: #fff8ef;
+      border: 1px solid #e8d5b0;
+      border-left: 3px solid var(--gold);
+      display: flex;
+      align-items: flex-start;
+      gap: 16px;
+    }
+    .tension-bar strong {
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--gold);
+      white-space: nowrap;
+      padding-top: 1px;
+    }
+    .tension-bar p {
+      font-size: 13px;
+      line-height: 1.6;
+      color: var(--ink-2);
+    }
+
+    /* ══════════════════════════════════════
+       SLIDE 3 · EXPLORATIONS
+    ══════════════════════════════════════ */
+    .s3 {
+      background: var(--dark-2);
+      flex-direction: column;
+      padding: 68px 72px;
+    }
+    .s3 h2 {
+      font-family: 'Playfair Display', serif;
+      font-size: 44px;
+      font-weight: 400;
+      color: var(--white);
+      letter-spacing: -0.02em;
+      margin-top: 16px;
+      margin-bottom: 44px;
+    }
+    .s3 h2 em { font-style: italic; color: var(--gold); }
+    .explorations {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 16px;
+      flex: 1;
+    }
+    .exp-card {
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(255,255,255,0.08);
+      padding: 32px 28px 28px;
+      display: flex;
+      flex-direction: column;
+      position: relative;
+    }
+    .exp-card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 3px;
+    }
+    .exp-card.dir-a::before { background: var(--vimeo); }
+    .exp-card.dir-b::before { background: var(--gold); }
+    .exp-card.dir-c::before { background: rgba(255,255,255,0.15); }
+    .exp-dir {
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      margin-bottom: 12px;
+    }
+    .exp-dir.a { color: var(--vimeo); }
+    .exp-dir.b { color: var(--gold); }
+    .exp-dir.c { color: rgba(255,255,255,0.3); }
+    .exp-card h3 {
+      font-family: 'Playfair Display', serif;
+      font-size: 22px;
+      font-weight: 400;
+      color: var(--white);
+      margin-bottom: 12px;
+      line-height: 1.2;
+    }
+    .exp-card > p {
+      font-size: 13px;
+      line-height: 1.65;
+      color: rgba(255,255,255,0.45);
+      margin-bottom: 20px;
+      flex: 1;
+    }
+
+    /* mini wireframe mockup */
+    .exp-mock {
+      width: 100%;
+      aspect-ratio: 16/9;
+      border-radius: 3px;
+      margin-bottom: 20px;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+      border: 1px solid rgba(255,255,255,0.08);
+      flex-shrink: 0;
+    }
+    .mock-bar {
+      height: 24px;
+      background: rgba(255,255,255,0.06);
+      display: flex;
+      align-items: center;
+      padding: 0 10px;
+      gap: 6px;
+      flex-shrink: 0;
+    }
+    .mock-dot { width: 6px; height: 6px; border-radius: 50%; background: rgba(255,255,255,0.15); }
+    .mock-body {
+      flex: 1;
+      padding: 10px;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      background: rgba(0,0,0,0.3);
+    }
+    .mock-row {
+      height: 8px;
+      border-radius: 2px;
+      background: rgba(255,255,255,0.08);
+    }
+    .mock-row.w60 { width: 60%; }
+    .mock-row.w80 { width: 80%; }
+    .mock-row.w40 { width: 40%; }
+    .mock-row.w100 { width: 100%; }
+    .mock-row.accent-a { background: rgba(26,183,234,0.3); }
+    .mock-row.accent-b { background: rgba(201,169,110,0.3); }
+
+    /* grid mock */
+    .mock-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 5px; flex: 1; }
+    .mock-cell { background: rgba(255,255,255,0.07); border-radius: 2px; }
+
+    /* side-nav mock */
+    .mock-sidebar { display: flex; gap: 6px; flex: 1; }
+    .mock-nav { width: 28px; background: rgba(255,255,255,0.05); border-radius: 2px; flex-shrink: 0; }
+    .mock-main-col { flex: 1; display: flex; flex-direction: column; gap: 5px; }
+
+    .exp-verdict {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      padding: 12px 14px;
+      border-radius: 2px;
+    }
+    .exp-verdict.reject { background: rgba(224,82,82,0.1); border: 1px solid rgba(224,82,82,0.2); }
+    .exp-verdict.partial { background: rgba(201,169,110,0.1); border: 1px solid rgba(201,169,110,0.2); }
+    .exp-verdict.chosen { background: rgba(26,183,234,0.1); border: 1px solid rgba(26,183,234,0.2); }
+    .verdict-icon { font-size: 14px; flex-shrink: 0; margin-top: 1px; }
+    .verdict-text {
+      font-size: 12px;
+      line-height: 1.55;
+      color: rgba(255,255,255,0.5);
+    }
+    .verdict-text strong {
+      display: block;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      margin-bottom: 3px;
+    }
+    .verdict-text.r strong { color: var(--red); }
+    .verdict-text.p strong { color: var(--gold); }
+    .verdict-text.c strong { color: var(--vimeo); }
+
+    /* ══════════════════════════════════════
+       SLIDE 4 · TRADE-OFFS & PIVOT
+    ══════════════════════════════════════ */
+    .s4 {
+      background: var(--dark);
+      display: grid;
+      grid-template-columns: 520px 1fr;
+    }
+    .s4-left {
+      padding: 80px 60px 80px 72px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      border-right: 1px solid rgba(255,255,255,0.07);
+    }
+    .s4-left h2 {
+      font-family: 'Playfair Display', serif;
+      font-size: 44px;
+      font-weight: 400;
+      line-height: 1.1;
+      letter-spacing: -0.02em;
+      color: var(--white);
+      margin-top: 16px;
+      margin-bottom: 28px;
+    }
+    .s4-left h2 em { font-style: italic; color: var(--gold); }
+    .s4-left > p {
+      font-size: 15px;
+      line-height: 1.8;
+      color: rgba(255,255,255,0.5);
+      margin-bottom: 36px;
+    }
+    .pivot-statement {
+      padding: 20px 24px;
+      background: rgba(26,183,234,0.08);
+      border: 1px solid rgba(26,183,234,0.2);
+      border-left: 3px solid var(--vimeo);
+    }
+    .pivot-statement strong {
+      display: block;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--vimeo);
+      margin-bottom: 8px;
+    }
+    .pivot-statement p {
+      font-size: 14px;
+      line-height: 1.7;
+      color: rgba(255,255,255,0.65);
+    }
+    .s4-right {
+      padding: 72px 72px 72px 60px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      gap: 0;
+    }
+    .tradeoff-row {
+      display: grid;
+      grid-template-columns: 140px 1fr 1fr;
+      gap: 0;
+      border-bottom: 1px solid rgba(255,255,255,0.07);
+      min-height: 80px;
+    }
+    .tradeoff-row:first-child { border-top: 1px solid rgba(255,255,255,0.07); }
+    .to-label {
+      padding: 20px 20px 20px 0;
+      display: flex;
+      align-items: center;
+    }
+    .to-label span {
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.25);
+    }
+    .to-cell {
+      padding: 20px 20px;
+      display: flex;
+      align-items: flex-start;
+      border-left: 1px solid rgba(255,255,255,0.07);
+    }
+    .to-cell.rejected { opacity: 0.4; }
+    .to-cell-inner {
+      display: flex;
+      flex-direction: column;
+      gap: 5px;
+    }
+    .to-dir-tag {
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .to-dir-tag::before {
+      content: '';
+      width: 8px;
+      height: 2px;
+      border-radius: 1px;
+    }
+    .to-dir-tag.a { color: rgba(255,255,255,0.3); }
+    .to-dir-tag.a::before { background: rgba(255,255,255,0.3); }
+    .to-dir-tag.b { color: var(--gold); }
+    .to-dir-tag.b::before { background: var(--gold); }
+    .to-cell-inner p {
+      font-size: 13px;
+      line-height: 1.55;
+      color: rgba(255,255,255,0.45);
+    }
+    .to-cell.chosen {
+      background: rgba(26,183,234,0.05);
+    }
+    .to-cell.chosen .to-dir-tag { color: var(--vimeo); }
+    .to-cell.chosen .to-dir-tag::before { background: var(--vimeo); }
+    .to-cell.chosen .to-cell-inner p { color: rgba(255,255,255,0.65); }
+    .to-header {
+      display: grid;
+      grid-template-columns: 140px 1fr 1fr;
+      gap: 0;
+      margin-bottom: 0;
+      padding-bottom: 12px;
+      border-bottom: 1px solid rgba(255,255,255,0.1);
+      margin-bottom: 0;
+    }
+    .to-h-blank {}
+    .to-h-label {
+      padding: 0 20px;
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.2);
+      border-left: 1px solid rgba(255,255,255,0.07);
+    }
+    .to-h-label.winner {
+      color: var(--vimeo);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .to-h-label.winner::after {
+      content: '← Chosen';
+      font-size: 9px;
+      background: rgba(26,183,234,0.15);
+      padding: 2px 6px;
+      border-radius: 2px;
+    }
+
+    /* ══════════════════════════════════════
+       SLIDE 5 · SHIPPED SOLUTION
+    ══════════════════════════════════════ */
+    .s5 {
+      background: var(--bg);
+      flex-direction: column;
+      padding: 68px 72px;
+    }
+    .s5-header { margin-bottom: 44px; }
+    .s5 h2 {
+      font-family: 'Playfair Display', serif;
+      font-size: 44px;
+      font-weight: 400;
+      letter-spacing: -0.02em;
+      color: var(--ink);
+      margin-top: 14px;
+    }
+    .s5 h2 em { font-style: italic; color: var(--vimeo); }
+
+    .platform-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 20px;
+      flex: 1;
+    }
+    .pf-card {
+      background: var(--white);
+      border: 1px solid var(--line);
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+    }
+    .pf-screen {
+      flex-shrink: 0;
+      display: flex;
+      flex-direction: column;
+    }
+    .pf-screen.web {
+      aspect-ratio: 4/3;
+      background: #f0f4f8;
+      border-bottom: 1px solid var(--line);
+      padding: 16px;
+      gap: 10px;
+    }
+    .pf-screen.tv {
+      aspect-ratio: 16/9;
+      background: var(--dark);
+      border-bottom: 1px solid var(--line);
+      padding: 16px;
+      gap: 8px;
+    }
+    .pf-screen.mobile {
+      aspect-ratio: 9/16;
+      max-height: 220px;
+      background: #1a1a2e;
+      border-bottom: 1px solid var(--line);
+      padding: 12px;
+      gap: 7px;
+    }
+
+    /* web screen elements */
+    .web-topbar {
+      height: 22px;
+      background: white;
+      border: 1px solid #dde;
+      border-radius: 3px;
+      display: flex;
+      align-items: center;
+      padding: 0 10px;
+      gap: 8px;
+      flex-shrink: 0;
+    }
+    .web-topbar-dot { width: 8px; height: 8px; border-radius: 50%; background: #dde; }
+    .web-topbar-url { flex: 1; height: 6px; background: #eef; border-radius: 2px; }
+    .web-hero { height: 80px; background: linear-gradient(135deg, #e8f4fb, #ddeef8); border-radius: 3px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+    .web-hero-play { width: 28px; height: 28px; border-radius: 50%; background: var(--vimeo); display: flex; align-items: center; justify-content: center; }
+    .web-hero-play::after { content: ''; border: solid transparent; border-width: 6px 0 6px 10px; border-left-color: white; margin-left: 2px; }
+    .web-shelf { display: flex; gap: 6px; }
+    .web-shelf-item { flex: 1; background: white; border: 1px solid #dde; border-radius: 2px; }
+    .web-shelf-item-img { height: 36px; background: linear-gradient(135deg, #e0eef8, #d0e4f0); border-radius: 2px 2px 0 0; }
+    .web-shelf-item-txt { height: 24px; padding: 4px 6px; display: flex; flex-direction: column; gap: 3px; }
+    .web-shelf-item-line { height: 4px; background: #dde; border-radius: 1px; }
+    .web-shelf-item-line.short { width: 60%; }
+
+    /* tv screen elements */
+    .tv-hero { flex: 1; background: linear-gradient(160deg, #1a2a4a, #0d1520); border-radius: 3px; display: flex; align-items: center; justify-content: center; position: relative; overflow: hidden; }
+    .tv-hero::after { content: ''; position: absolute; bottom: 0; left: 0; right: 0; height: 40%; background: linear-gradient(transparent, rgba(0,0,0,0.7)); }
+    .tv-hero-title { font-size: 10px; font-weight: 600; color: white; position: relative; z-index: 1; }
+    .tv-shelf { display: flex; gap: 6px; flex-shrink: 0; }
+    .tv-thumb { height: 36px; border-radius: 2px; background: rgba(255,255,255,0.1); }
+    .tv-thumb.active { outline: 2px solid var(--vimeo); outline-offset: 1px; }
+    .tv-thumb.w1 { width: 60px; }
+    .tv-thumb.w2 { width: 48px; }
+
+    /* mobile screen elements */
+    .mob-notch { height: 8px; width: 50px; background: rgba(255,255,255,0.1); border-radius: 4px; align-self: center; flex-shrink: 0; }
+    .mob-hero { flex: 1; background: linear-gradient(160deg, #1a2a4a, #0d0d20); border-radius: 4px; display: flex; align-items: center; justify-content: center; position: relative; overflow: hidden; }
+    .mob-play { width: 28px; height: 28px; border-radius: 50%; background: rgba(26,183,234,0.85); display: flex; align-items: center; justify-content: center; }
+    .mob-play::after { content: ''; border: solid transparent; border-width: 5px 0 5px 9px; border-left-color: white; margin-left: 2px; }
+    .mob-progress { height: 3px; background: rgba(255,255,255,0.15); border-radius: 2px; flex-shrink: 0; position: relative; }
+    .mob-progress::after { content: ''; position: absolute; left: 0; top: 0; width: 35%; height: 100%; background: var(--vimeo); border-radius: 2px; }
+    .mob-row { height: 6px; background: rgba(255,255,255,0.08); border-radius: 2px; flex-shrink: 0; }
+    .mob-row.short { width: 60%; }
+
+    .pf-info {
+      padding: 20px 24px;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+    .pf-platform-tag {
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+    }
+    .pf-platform-tag.web { color: var(--vimeo); }
+    .pf-platform-tag.tv { color: var(--gold); }
+    .pf-platform-tag.mobile { color: #9b8cff; }
+    .pf-card h3 {
+      font-family: 'Playfair Display', serif;
+      font-size: 18px;
+      font-weight: 400;
+      color: var(--ink);
+    }
+    .pf-card p {
+      font-size: 12px;
+      line-height: 1.6;
+      color: var(--ink-3);
+    }
+    .pf-detail {
+      font-size: 11px;
+      font-weight: 500;
+      color: var(--ink-3);
+      margin-top: 4px;
+      padding-top: 10px;
+      border-top: 1px solid var(--line);
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+    }
+    .pf-chip {
+      padding: 3px 8px;
+      background: var(--bg);
+      border: 1px solid var(--line);
+      border-radius: 2px;
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: 0.06em;
+      color: var(--ink-3);
+    }
+
+    /* ══════════════════════════════════════
+       SLIDE 6 · RESULTS & RETROSPECTIVE
+    ══════════════════════════════════════ */
+    .s6 {
+      background: var(--dark);
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+    }
+    .s6-left {
+      padding: 72px 60px 72px 72px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      border-right: 1px solid rgba(255,255,255,0.07);
+    }
+    .s6-left h2 {
+      font-family: 'Playfair Display', serif;
+      font-size: 44px;
+      font-weight: 400;
+      line-height: 1.1;
+      letter-spacing: -0.02em;
+      color: var(--white);
+      margin-top: 16px;
+      margin-bottom: 40px;
+    }
+    .s6-left h2 em { font-style: italic; color: var(--gold); }
+    .metrics-list {
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+    }
+    .metric-row {
+      display: grid;
+      grid-template-columns: 100px 1fr;
+      gap: 24px;
+      padding: 18px 0;
+      border-bottom: 1px solid rgba(255,255,255,0.06);
+      align-items: start;
+    }
+    .metric-row:first-child { border-top: 1px solid rgba(255,255,255,0.06); }
+    .metric-val {
+      font-family: 'Playfair Display', serif;
+      font-size: 36px;
+      font-weight: 600;
+      line-height: 1;
+      color: var(--white);
+    }
+    .metric-val.blue { color: var(--vimeo); }
+    .metric-val.gold { color: var(--gold); }
+    .metric-body strong {
+      display: block;
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--white);
+      margin-bottom: 3px;
+      margin-top: 6px;
+    }
+    .metric-body span {
+      font-size: 12px;
+      color: rgba(255,255,255,0.35);
+      line-height: 1.5;
+    }
+
+    /* retrospective column */
+    .s6-right {
+      padding: 72px 72px 72px 60px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+    .retro-label {
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 20px;
+    }
+    .retro-title {
+      font-family: 'Playfair Display', serif;
+      font-size: 28px;
+      font-weight: 400;
+      color: var(--white);
+      margin-bottom: 32px;
+    }
+    .retro-items {
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+    }
+    .retro-item {
+      display: grid;
+      grid-template-columns: 24px 1fr;
+      gap: 16px;
+      padding: 16px 0;
+      border-bottom: 1px solid rgba(255,255,255,0.06);
+      align-items: start;
+    }
+    .retro-item:first-child { border-top: 1px solid rgba(255,255,255,0.06); }
+    .retro-icon {
+      font-size: 14px;
+      margin-top: 1px;
+    }
+    .retro-body strong {
+      display: block;
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--white);
+      margin-bottom: 4px;
+    }
+    .retro-body span {
+      font-size: 12px;
+      line-height: 1.6;
+      color: rgba(255,255,255,0.4);
+    }
+    .retro-item.honest { opacity: 0.85; }
+    .retro-item.honest .retro-body strong { color: rgba(255,255,255,0.7); }
+  </style>
+</head>
+<body>
+
+  <!-- ═══════════════════════════════════════
+       SLIDE 1 · HOOK & SCALE
+  ════════════════════════════════════════ -->
+  <div class="slide s1">
+    <div class="s1-noise"></div>
+    <div class="s1-grid"></div>
+    <div class="s1-inner">
+      <div class="s1-left">
+        <div>
+          <p class="eyebrow">Vimeo Streaming · Case Study · 2016–2025</p>
+          <h1>Building the platform<br>for <em>independent</em><br>streaming.</h1>
+          <p>
+            Vimeo Streaming let any creator — a filmmaker, a sports league, a media brand — launch their own Netflix. My job was to design the experience for the people building those channels, and the millions watching them.
+          </p>
+        </div>
+        <div class="s1-role-block">
+          <strong>Senior Product Designer · Vimeo · New York</strong>
+          <span>June 2016 — June 2025 &nbsp;·&nbsp; Cross-platform: Web, Smart TV, Mobile</span>
+        </div>
+      </div>
+      <div class="s1-right">
+        <div class="s1-stat">
+          <div class="s1-stat-num blue">9 yrs</div>
+          <div class="s1-stat-label">Continuous ownership</div>
+        </div>
+        <div class="s1-stat">
+          <div class="s1-stat-num">M<span style="font-size:28px;opacity:0.6;">+</span></div>
+          <div class="s1-stat-label">Daily plays at peak</div>
+        </div>
+        <div class="s1-stat">
+          <div class="s1-stat-num">3</div>
+          <div class="s1-stat-label">Platforms shipped</div>
+        </div>
+        <div class="s1-stat">
+          <div class="s1-stat-num gold">2×</div>
+          <div class="s1-stat-label">Acquisitions navigated</div>
+        </div>
+      </div>
+    </div>
+    <span class="byline" style="color:white;">Don Polistico</span>
+    <span class="slide-num" style="color:white;">01 / 06</span>
+  </div>
+
+  <!-- ═══════════════════════════════════════
+       SLIDE 1B · VIDEO
+  ════════════════════════════════════════ -->
+  <div class="slide s-video">
+    <div class="s-video-bg"></div>
+    <iframe
+      src="https://player.vimeo.com/video/1071247322?color=1ab7ea&title=0&byline=0&portrait=0"
+      allow="autoplay; fullscreen; picture-in-picture"
+      allowfullscreen
+      class="s-video-iframe"
+    ></iframe>
+    <span class="byline" style="color:white;">Don Polistico</span>
+    <span class="slide-num" style="color:white;">01b / 06</span>
+  </div>
+
+  <!-- ═══════════════════════════════════════
+       SLIDE 2 · PROBLEM SPACE
+  ════════════════════════════════════════ -->
+  <div class="slide s2">
+    <div class="s2-header">
+      <p class="eyebrow dark">Problem Space</p>
+      <h2>A two-sided ecosystem with<br><em>competing needs.</em></h2>
+    </div>
+    <div class="ecosystem">
+      <!-- CREATOR side -->
+      <div class="eco-side creator">
+        <p class="eco-role c">The Creator</p>
+        <h3>Channel builder &amp;<br>business operator</h3>
+        <p>Independent creators needed pro-grade infrastructure — monetization, analytics, multi-platform distribution — without an engineering team behind them.</p>
+        <ul class="eco-needs">
+          <li data-icon="🎬">Publish &amp; manage video content at scale</li>
+          <li data-icon="💳">Set up subscriptions, rentals, one-time purchases</li>
+          <li data-icon="📊">See viewer analytics across all platforms</li>
+          <li data-icon="🎨">Brand their channel without compromising UX</li>
+          <li data-icon="📱">Ship to Roku, Apple TV, iOS, Android — without writing code</li>
+        </ul>
+        <div class="eco-metric">
+          <strong>B2B</strong>
+          <span>Creator success metric: churn rate &amp; MRR growth</span>
+        </div>
+      </div>
+
+      <!-- MIDDLE connector -->
+      <div class="eco-middle">
+        <div class="eco-middle-label">Shared<br>platform</div>
+        <div class="eco-platform">Web</div>
+        <div class="eco-arrow">⇅</div>
+        <div class="eco-platform">Smart TV</div>
+        <div class="eco-arrow">⇅</div>
+        <div class="eco-platform">Mobile</div>
+        <div class="eco-arrow">⇅</div>
+        <div class="eco-platform">Embedded</div>
+      </div>
+
+      <!-- VIEWER side -->
+      <div class="eco-side viewer">
+        <p class="eco-role v">The Viewer</p>
+        <h3>End-user seeking<br>content they love</h3>
+        <p>Viewers expected a Netflix-quality experience — regardless of whether the channel had 200 subscribers or 2 million. They didn't care who built it.</p>
+        <ul class="eco-needs">
+          <li data-icon="▶">Frictionless playback — no buffering, no confusion</li>
+          <li data-icon="🔍">Browse &amp; discover content quickly</li>
+          <li data-icon="📥">Download for offline viewing on mobile</li>
+          <li data-icon="📺">Cast to TV from phone without thinking about it</li>
+          <li data-icon="♿">Captions, audio descriptions, accessible controls</li>
+        </ul>
+        <div class="eco-metric">
+          <strong>B2C</strong>
+          <span>Viewer success metric: retention &amp; completion rate</span>
+        </div>
+      </div>
+    </div>
+    <div class="tension-bar">
+      <strong>Core tension</strong>
+      <p>Every design decision had to serve both audiences simultaneously. A creator customization that delights the channel builder can fragment the viewer experience. Finding that balance — without forcing a tradeoff — was the defining design problem of this role.</p>
+    </div>
+    <span class="byline">Don Polistico</span>
+    <span class="slide-num" style="color:var(--ink-3);">02 / 06</span>
+  </div>
+
+  <!-- ═══════════════════════════════════════
+       SLIDE 3 · EXPLORATIONS
+  ════════════════════════════════════════ -->
+  <div class="slide s3">
+    <p class="eyebrow">Explorations — Creator Dashboard IA</p>
+    <h2>Three directions I <em>explored.</em></h2>
+    <div class="explorations">
+
+      <!-- Direction A -->
+      <div class="exp-card dir-a">
+        <p class="exp-dir a">Direction A</p>
+        <h3>Unified command center</h3>
+        <div class="exp-mock">
+          <div class="mock-bar"><div class="mock-dot"></div><div class="mock-dot"></div><div class="mock-dot"></div></div>
+          <div class="mock-body">
+            <div class="mock-sidebar">
+              <div class="mock-nav"></div>
+              <div class="mock-main-col">
+                <div class="mock-row w100 accent-a"></div>
+                <div class="mock-row w80"></div>
+                <div class="mock-row w60"></div>
+                <div class="mock-row w100"></div>
+                <div class="mock-row w40"></div>
+                <div class="mock-row w80"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <p>One dense dashboard surfacing every metric, setting, and action upfront. Maximum information density for power users — all controls always visible.</p>
+        <div class="exp-verdict reject">
+          <span class="verdict-icon">✕</span>
+          <div class="verdict-text r">
+            <strong>Rejected</strong>
+            Usability tests showed 70%+ of mid-tier creators couldn't find core publish actions. Cognitive overload caused abandonment at the most critical steps.
+          </div>
+        </div>
+      </div>
+
+      <!-- Direction B -->
+      <div class="exp-card dir-b">
+        <p class="exp-dir b">Direction B</p>
+        <h3>Wizard-style linear flow</h3>
+        <div class="exp-mock">
+          <div class="mock-bar"><div class="mock-dot"></div><div class="mock-dot"></div><div class="mock-dot"></div></div>
+          <div class="mock-body" style="align-items:center;justify-content:center;gap:8px;">
+            <div class="mock-row w60 accent-b" style="height:4px;"></div>
+            <div class="mock-row w100" style="height:48px;background:rgba(201,169,110,0.15);border-radius:3px;"></div>
+            <div class="mock-row w80" style="height:12px;background:rgba(255,255,255,0.04);"></div>
+            <div class="mock-row w40 accent-b" style="height:18px;border-radius:2px;align-self:flex-end;"></div>
+          </div>
+        </div>
+        <p>Step-by-step guided setup for new creators. Simple, focused, lower friction for first-timers — but forced even experienced creators through the same slow flow every time.</p>
+        <div class="exp-verdict partial">
+          <span class="verdict-icon">◐</span>
+          <div class="verdict-text p">
+            <strong>Partially adopted</strong>
+            Great for onboarding. Unusable as a daily workflow — power creators were bottlenecked by a flow that assumed every action was new. Kept for setup only.
+          </div>
+        </div>
+      </div>
+
+      <!-- Direction C (chosen) -->
+      <div class="exp-card dir-c">
+        <p class="exp-dir c">Direction C &nbsp;·&nbsp; <span style="color:var(--vimeo)">Chosen</span></p>
+        <h3>Progressive disclosure hub</h3>
+        <div class="exp-mock">
+          <div class="mock-bar"><div class="mock-dot"></div><div class="mock-dot"></div><div class="mock-dot"></div></div>
+          <div class="mock-body">
+            <div class="mock-sidebar">
+              <div class="mock-nav"></div>
+              <div class="mock-main-col">
+                <div class="mock-row w100 accent-a" style="height:16px;border-radius:3px;"></div>
+                <div class="mock-grid" style="height:36px;">
+                  <div class="mock-cell"></div>
+                  <div class="mock-cell"></div>
+                  <div class="mock-cell" style="background:rgba(26,183,234,0.25);"></div>
+                </div>
+                <div class="mock-row w60"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <p>A clean overview state showing only priority actions and key metrics, with advanced settings surfaced contextually. Fast for experts, safe for beginners.</p>
+        <div class="exp-verdict chosen">
+          <span class="verdict-icon">✓</span>
+          <div class="verdict-text c">
+            <strong>Chosen direction</strong>
+            Reduced time-to-publish by cutting navigation depth. Advanced features available — not hidden, just quiet. Scaled cleanly across creator tiers.
+          </div>
+        </div>
+      </div>
+
+    </div>
+    <span class="byline" style="color:white;">Don Polistico</span>
+    <span class="slide-num" style="color:white;">03 / 06</span>
+  </div>
+
+  <!-- ═══════════════════════════════════════
+       SLIDE 4 · TRADE-OFFS & PIVOT
+  ════════════════════════════════════════ -->
+  <div class="slide s4">
+    <div class="s4-left">
+      <p class="eyebrow">Trade-offs &amp; Pivot</p>
+      <h2>Why I killed<br>the <em>better-looking</em><br>option.</h2>
+      <p>Direction A looked great in a Figma presentation. It failed real users in under 3 minutes. Here's the honest breakdown of what each direction cost us — and what we gained by choosing the harder path.</p>
+      <div class="pivot-statement">
+        <strong>The Pivot</strong>
+        <p>Engineering estimated Direction C would take 40% longer to build. I made the case to PM using the usability data: the cost of re-engaging churned creators was higher than the sprint cost. We got the time.</p>
+      </div>
+    </div>
+    <div class="s4-right">
+      <div class="to-header">
+        <div class="to-h-blank"></div>
+        <div class="to-h-label">Direction A — Rejected</div>
+        <div class="to-h-label winner">Direction C — Chosen</div>
+      </div>
+      <div class="tradeoff-row">
+        <div class="to-label"><span>Creator<br>onboarding</span></div>
+        <div class="to-cell rejected">
+          <div class="to-cell-inner">
+            <span class="to-dir-tag a">Direction A</span>
+            <p>Overwhelming for new creators — 3 of 5 usability participants couldn't find where to upload their first video without prompting.</p>
+          </div>
+        </div>
+        <div class="to-cell chosen">
+          <div class="to-cell-inner">
+            <span class="to-dir-tag b">Direction C</span>
+            <p>Progressive reveal kept first-time creators on a guided path without locking out experienced ones. Onboarding completion improved measurably.</p>
+          </div>
+        </div>
+      </div>
+      <div class="tradeoff-row">
+        <div class="to-label"><span>Power user<br>workflow</span></div>
+        <div class="to-cell rejected">
+          <div class="to-cell-inner">
+            <span class="to-dir-tag a">Direction A</span>
+            <p>Actually strong here — power users wanted everything visible. This was the design's only real strength.</p>
+          </div>
+        </div>
+        <div class="to-cell chosen">
+          <div class="to-cell-inner">
+            <span class="to-dir-tag b">Direction C</span>
+            <p>Keyboard shortcuts + deep-link support gave power users speed without adding noise for everyone else. Compromise that worked.</p>
+          </div>
+        </div>
+      </div>
+      <div class="tradeoff-row">
+        <div class="to-label"><span>Eng.<br>cost</span></div>
+        <div class="to-cell rejected">
+          <div class="to-cell-inner">
+            <span class="to-dir-tag a">Direction A</span>
+            <p>Faster to ship — static layout with fewer contextual rules. This was the main argument for it internally.</p>
+          </div>
+        </div>
+        <div class="to-cell chosen">
+          <div class="to-cell-inner">
+            <span class="to-dir-tag b">Direction C</span>
+            <p>+40% estimated build time. Justified by retention data showing creator churn correlated directly with dashboard confusion in first 7 days.</p>
+          </div>
+        </div>
+      </div>
+      <div class="tradeoff-row">
+        <div class="to-label"><span>Long-term<br>scalability</span></div>
+        <div class="to-cell rejected">
+          <div class="to-cell-inner">
+            <span class="to-dir-tag a">Direction A</span>
+            <p>Adding features would require constant triage of what to de-prioritize on screen. Doesn't scale as the product grows.</p>
+          </div>
+        </div>
+        <div class="to-cell chosen">
+          <div class="to-cell-inner">
+            <span class="to-dir-tag b">Direction C</span>
+            <p>New features slot into the progressive disclosure model naturally. We added 4 major features over 2 years without a visual redesign.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+    <span class="byline" style="color:white;">Don Polistico</span>
+    <span class="slide-num" style="color:white;">04 / 06</span>
+  </div>
+
+  <!-- ═══════════════════════════════════════
+       SLIDE 5 · SHIPPED SOLUTION
+  ════════════════════════════════════════ -->
+  <div class="slide s5">
+    <div class="s5-header">
+      <p class="eyebrow">Shipped Solution</p>
+      <h2>One design system.<br>Three <em>native experiences.</em></h2>
+    </div>
+    <div class="platform-grid">
+
+      <!-- WEB -->
+      <div class="pf-card">
+        <div class="pf-screen web">
+          <div class="web-topbar">
+            <div class="web-topbar-dot"></div>
+            <div class="web-topbar-dot"></div>
+            <div class="web-topbar-dot"></div>
+            <div class="web-topbar-url"></div>
+          </div>
+          <div class="web-hero">
+            <div class="web-hero-play"></div>
+          </div>
+          <div class="web-shelf">
+            <div class="web-shelf-item">
+              <div class="web-shelf-item-img"></div>
+              <div class="web-shelf-item-txt">
+                <div class="web-shelf-item-line"></div>
+                <div class="web-shelf-item-line short"></div>
+              </div>
+            </div>
+            <div class="web-shelf-item">
+              <div class="web-shelf-item-img" style="background:linear-gradient(135deg,#ddf0e0,#cce4d4)"></div>
+              <div class="web-shelf-item-txt">
+                <div class="web-shelf-item-line"></div>
+                <div class="web-shelf-item-line short"></div>
+              </div>
+            </div>
+            <div class="web-shelf-item">
+              <div class="web-shelf-item-img" style="background:linear-gradient(135deg,#f0dde0,#e4ccd0)"></div>
+              <div class="web-shelf-item-txt">
+                <div class="web-shelf-item-line"></div>
+                <div class="web-shelf-item-line short"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="pf-info">
+          <p class="pf-platform-tag web">Web — Viewer + Creator</p>
+          <h3>The hub for everything</h3>
+          <p>Browse, watch, manage your channel, and review analytics. Cursor-driven, responsive, information-rich. The primary surface for creators and a key entry point for viewers.</p>
+          <div class="pf-detail">
+            <span class="pf-chip">Creator dashboard</span>
+            <span class="pf-chip">Viewer browse + watch</span>
+            <span class="pf-chip">Embedded player</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- TV -->
+      <div class="pf-card">
+        <div class="pf-screen tv">
+          <div class="tv-hero">
+            <div class="tv-hero-title">Featured Film</div>
+          </div>
+          <div class="tv-shelf">
+            <div class="tv-thumb active w1"></div>
+            <div class="tv-thumb w2"></div>
+            <div class="tv-thumb w2"></div>
+            <div class="tv-thumb w1"></div>
+            <div class="tv-thumb w2"></div>
+          </div>
+        </div>
+        <div class="pf-info">
+          <p class="pf-platform-tag tv">Smart TV — Roku · Apple TV · Fire TV</p>
+          <h3>The living room</h3>
+          <p>Remote-first, 10-foot UI. Lean-back posture means zero tolerance for complexity. Branded channel home screens, focus-state-driven navigation, and minimal cognitive load.</p>
+          <div class="pf-detail">
+            <span class="pf-chip">D-pad navigation</span>
+            <span class="pf-chip">Creator branding</span>
+            <span class="pf-chip">TV-safe zones</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- MOBILE -->
+      <div class="pf-card">
+        <div class="pf-screen mobile">
+          <div class="mob-notch"></div>
+          <div class="mob-hero">
+            <div class="mob-play"></div>
+          </div>
+          <div class="mob-progress"></div>
+          <div class="mob-row w100"></div>
+          <div class="mob-row short"></div>
+        </div>
+        <div class="pf-info">
+          <p class="pf-platform-tag mobile">Mobile — iOS · Android</p>
+          <h3>Watch anywhere</h3>
+          <p>Touch-first, portrait and fullscreen modes, offline downloads, background audio, and AirPlay / Chromecast handoff. Designed for noisy environments and interrupted attention.</p>
+          <div class="pf-detail">
+            <span class="pf-chip">Offline downloads</span>
+            <span class="pf-chip">Cast handoff</span>
+            <span class="pf-chip">Lock screen controls</span>
+          </div>
+        </div>
+      </div>
+
+    </div>
+    <span class="byline">Don Polistico</span>
+    <span class="slide-num" style="color:var(--ink-3);">05 / 06</span>
+  </div>
+
+  <!-- ═══════════════════════════════════════
+       SLIDE 6 · RESULTS & RETROSPECTIVE
+  ════════════════════════════════════════ -->
+  <div class="slide s6">
+    <div class="s6-left">
+      <p class="eyebrow">Results</p>
+      <h2>What shipped.<br><em>What I'd change.</em></h2>
+      <div class="metrics-list">
+        <div class="metric-row">
+          <div class="metric-val blue">9 yr</div>
+          <div class="metric-body">
+            <strong>Longest tenure of my career</strong>
+            <span>Enough time to see the consequences of every decision — the good ones and the mistakes.</span>
+          </div>
+        </div>
+        <div class="metric-row">
+          <div class="metric-val">M<span style="font-size:20px;opacity:0.5">+</span></div>
+          <div class="metric-body">
+            <strong>Daily plays at scale</strong>
+            <span>Player interaction patterns I designed handled millions of sessions daily across all surfaces.</span>
+          </div>
+        </div>
+        <div class="metric-row">
+          <div class="metric-val gold">4</div>
+          <div class="metric-body">
+            <strong>Major features shipped without redesign</strong>
+            <span>Progressive disclosure IA absorbed Live Streaming, Pay-Per-View, Team Accounts, and Chapters — validating the structural decision from Slide 4.</span>
+          </div>
+        </div>
+        <div class="metric-row">
+          <div class="metric-val">3</div>
+          <div class="metric-body">
+            <strong>TV platforms shipped from VHX patterns</strong>
+            <span>Roku, Apple TV, Fire TV — all built on the OTT app model we established at VHX before the acquisition.</span>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="s6-right">
+      <p class="retro-label">Honest Retrospective</p>
+      <p class="retro-title">If I had another 6 months —</p>
+      <div class="retro-items">
+        <div class="retro-item">
+          <span class="retro-icon">↑</span>
+          <div class="retro-body">
+            <strong>I'd have invested earlier in creator onboarding research</strong>
+            <span>We discovered the cognitive overload problem late — after Direction A was already scoped. Earlier user testing would have saved a sprint.</span>
+          </div>
+        </div>
+        <div class="retro-item">
+          <span class="retro-icon">↑</span>
+          <div class="retro-body">
+            <strong>I'd have pushed harder on TV accessibility</strong>
+            <span>TV app accessibility (screen readers, motor) was under-resourced across the industry. I shipped what was possible, but it wasn't what it should have been.</span>
+          </div>
+        </div>
+        <div class="retro-item honest">
+          <span class="retro-icon">→</span>
+          <div class="retro-body">
+            <strong>The creator/viewer tension was never fully resolved</strong>
+            <span>We managed it well, but "full brand customization" vs. "consistent viewer UX" remained a live argument through my last year. There's no clean answer — only better tradeoffs.</span>
+          </div>
+        </div>
+        <div class="retro-item honest">
+          <span class="retro-icon">→</span>
+          <div class="retro-body">
+            <strong>Mobile was always underprioritized relative to its usage</strong>
+            <span>Roadmap pressure meant TV got resources disproportionate to how creators and viewers actually used the product. Something I'd fight differently with today's data.</span>
+          </div>
+        </div>
+      </div>
+    </div>
+    <span class="byline" style="color:white;">Don Polistico</span>
+    <span class="slide-num" style="color:white;">06 / 06</span>
+  </div>
+
+</body>
+</html>
