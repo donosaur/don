@@ -1519,7 +1519,7 @@
   <!-- NAV -->
   <nav>
     <div class="nav-logo">
-      <img class="nav-avatar" id="navAvatar" src="images/avatar.gif" style="cursor: pointer;" onclick="toggleJapanese()" alt="Don Polistico">
+      <canvas class="nav-avatar" id="navAvatar" width="40" height="40" style="cursor: pointer;" onclick="toggleJapanese()" role="img" aria-label="Don Polistico"></canvas>
       <a href="#"
         style="font-family:'Playfair Display',serif;font-size:18px;font-weight:600;color:var(--ink);text-decoration:none;">don
         polistico</a>
@@ -1970,7 +1970,55 @@
     <span>BFA, MICA · AI for UX Design Cert. 2025</span>
   </footer>
 
+  <script src="https://unpkg.com/gifuct-js@2.1.2/dist/gifuct-js.js"></script>
   <script>
+    // ── Boomerang GIF player ──
+    async function boomerangGif(canvas, src) {
+      if (canvas._boomerangStop) { canvas._boomerangStop(); canvas._boomerangStop = null; }
+      const ctx = canvas.getContext('2d');
+      const buf = await fetch(src).then(r => r.arrayBuffer());
+      const gif = window.gifuctJS.parseGIF(buf);
+      const rawFrames = window.gifuctJS.decompressFrames(gif, true);
+      if (!rawFrames.length) return;
+      const W = gif.lsd.width, H = gif.lsd.height;
+      canvas.width = W; canvas.height = H;
+      const frames = [];
+      const comp = document.createElement('canvas'); comp.width = W; comp.height = H;
+      const compCtx = comp.getContext('2d');
+      for (const f of rawFrames) {
+        const id = new ImageData(new Uint8ClampedArray(f.patch), f.dims.width, f.dims.height);
+        compCtx.putImageData(id, f.dims.left, f.dims.top);
+        const fc = document.createElement('canvas'); fc.width = W; fc.height = H;
+        fc.getContext('2d').drawImage(comp, 0, 0);
+        frames.push({ c: fc, delay: Math.max((f.delay || 10) * 10, 20) });
+        if (f.disposalType === 2) compCtx.clearRect(f.dims.left, f.dims.top, f.dims.width, f.dims.height);
+      }
+      let idx = 0, dir = 1, stopped = false;
+      canvas._boomerangStop = () => { stopped = true; };
+      (function step() {
+        if (stopped) return;
+        ctx.clearRect(0, 0, W, H);
+        ctx.drawImage(frames[idx].c, 0, 0);
+        const delay = frames[idx].delay;
+        idx += dir;
+        if (idx >= frames.length) { idx = frames.length - 2; dir = -1; }
+        else if (idx < 0) { idx = 1; dir = 1; }
+        setTimeout(() => { if (!stopped) requestAnimationFrame(step); }, delay);
+      })();
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+      const canvas = document.getElementById('navAvatar');
+      // Draw static placeholder immediately so avatar is visible before GIF decodes
+      const placeholder = new Image();
+      placeholder.onload = () => {
+        const ctx = canvas.getContext('2d');
+        ctx.drawImage(placeholder, 0, 0, 40, 40);
+      };
+      placeholder.src = 'images/avatar.png';
+      boomerangGif(canvas, 'images/avatar.gif');
+    });
+
     // ── Hero headline rotation ──
     (function () {
       const headlines = [
@@ -2332,7 +2380,7 @@
       if (!isJapanese) {
         // Switch to Japanese
         if (!originals) storeOriginals();
-        avatar.src = 'images/avatar-taiko.gif';
+        boomerangGif(avatar, 'images/avatar-taiko.gif');
         document.documentElement.lang = 'ja';
         jpMap.forEach(entry => {
           const el = document.querySelector(entry.sel);
@@ -2351,7 +2399,7 @@
         if (window.updateHeroHeadline) window.updateHeroHeadline();
       } else {
         // Switch back to English
-        avatar.src = 'images/avatar.gif';
+        boomerangGif(avatar, 'images/avatar.gif');
         document.documentElement.lang = 'en';
         jpMap.forEach((entry, i) => {
           const el = document.querySelector(entry.sel);
