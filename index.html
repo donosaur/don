@@ -1331,6 +1331,23 @@
         font-size: clamp(40px, 11vw, 60px);
       }
 
+      .hero-label {
+        font-size: 16px;
+        white-space: nowrap;
+      }
+
+      .hero-cta {
+        padding: 18px 24px;
+      }
+
+      .hero-cta-text {
+        font-size: 15px;
+      }
+
+      .hero-cta:hover .hero-cta-text {
+        font-size: 17px;
+      }
+
       .hero-sub {
         font-size: 16px;
         max-width: 100%;
@@ -1406,6 +1423,23 @@
     @media (max-width: 480px) {
       .hero {
         padding: 100px 20px 64px;
+      }
+
+      .hero-label {
+        font-size: 13px;
+        white-space: normal;
+      }
+
+      .hero-cta {
+        padding: 16px 20px;
+      }
+
+      .hero-cta-text {
+        font-size: 14px;
+      }
+
+      .hero-cta:hover .hero-cta-text {
+        font-size: 15px;
       }
 
       .hero-meta {
