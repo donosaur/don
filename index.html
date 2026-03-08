@@ -1973,15 +1973,14 @@
   <script src="https://unpkg.com/gifuct-js@2.1.2/dist/gifuct-js.js"></script>
   <script>
     // ── Boomerang GIF player ──
-    async function boomerangGif(canvas, src) {
-      if (canvas._boomerangStop) { canvas._boomerangStop(); canvas._boomerangStop = null; }
-      const ctx = canvas.getContext('2d');
+    const _gifCache = {};
+    async function _decodeGif(src) {
+      if (_gifCache[src]) return _gifCache[src];
       const buf = await fetch(src).then(r => r.arrayBuffer());
       const gif = window.gifuctJS.parseGIF(buf);
       const rawFrames = window.gifuctJS.decompressFrames(gif, true);
-      if (!rawFrames.length) return;
+      if (!rawFrames.length) return null;
       const W = gif.lsd.width, H = gif.lsd.height;
-      canvas.width = W; canvas.height = H;
       const frames = [];
       const comp = document.createElement('canvas'); comp.width = W; comp.height = H;
       const compCtx = comp.getContext('2d');
@@ -1993,6 +1992,16 @@
         frames.push({ c: fc, delay: Math.max((f.delay || 10) * 10, 20) });
         if (f.disposalType === 2) compCtx.clearRect(f.dims.left, f.dims.top, f.dims.width, f.dims.height);
       }
+      _gifCache[src] = { frames, W, H };
+      return _gifCache[src];
+    }
+    async function boomerangGif(canvas, src) {
+      if (canvas._boomerangStop) { canvas._boomerangStop(); canvas._boomerangStop = null; }
+      const ctx = canvas.getContext('2d');
+      const decoded = await _decodeGif(src);
+      if (!decoded) return;
+      const { frames, W, H } = decoded;
+      canvas.width = W; canvas.height = H;
       let idx = 0, dir = 1, stopped = false;
       canvas._boomerangStop = () => { stopped = true; };
       (function step() {
@@ -2017,6 +2026,7 @@
       };
       placeholder.src = 'images/avatar.png';
       boomerangGif(canvas, 'images/avatar.gif');
+      _decodeGif('images/avatar-taiko.gif'); // pre-decode so toggle is instant
     });
 
     // ── Hero headline rotation ──
