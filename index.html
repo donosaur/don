@@ -1543,11 +1543,17 @@
       <div id="videoFallback"
         style="position: absolute; inset: 0; background: url('images/vimeo\\ 04E.png') center/cover no-repeat; z-index: 0; opacity: 0.5;">
       </div>
-      <iframe id="heroYoutube"
-        src="https://www.youtube-nocookie.com/embed/Jox6R5-rIH0?autoplay=1&mute=1&loop=1&controls=0&playsinline=1&disablekb=1&rel=0&showinfo=0&modestbranding=1&playlist=Jox6R5-rIH0"
-        allow="autoplay; encrypted-media" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen
-        style="position: relative; z-index: 1;"></iframe>
+      <iframe id="heroYoutube" allow="autoplay; encrypted-media" referrerpolicy="strict-origin-when-cross-origin"
+        allowfullscreen style="position: relative; z-index: 1;"></iframe>
     </div>
+    <script>
+      (function () {
+        const videoIds = ['Jox6R5-rIH0', 'TBsBq7298JU', '9vntypeV5QU', 'eI2PcZPZYKY'];
+        const randomVideoId = videoIds[Math.floor(Math.random() * videoIds.length)];
+        const iframe = document.getElementById('heroYoutube');
+        iframe.src = `https://www.youtube-nocookie.com/embed/${randomVideoId}?autoplay=1&mute=1&loop=1&controls=0&playsinline=1&disablekb=1&rel=0&showinfo=0&modestbranding=1&playlist=${randomVideoId}`;
+      })();
+    </script>
     <canvas class="hero-grain" id="heroGrain"></canvas>
     <div class="hero-overlay"></div>
 
