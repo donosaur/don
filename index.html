@@ -1081,7 +1081,6 @@
       line-height: 1.7;
       color: var(--ink-2);
       max-width: 480px;
-      margin-bottom: 40px;
     }
 
     .contact-links {
@@ -1326,7 +1325,7 @@
         flex-direction: column;
         align-items: stretch;
         gap: 48px;
-        min-height: 100dvh;
+        min-height: 75dvh;
         box-sizing: border-box;
       }
 
@@ -1423,6 +1422,7 @@
         flex-direction: column;
         gap: 8px;
         font-size: 12px;
+        text-align: center;
       }
 
       .h1-line-inner {
@@ -1517,9 +1517,9 @@
 
   <!-- MOBILE MENU -->
   <div class="mobile-menu" id="mobileMenu">
+    <a href="#work" onclick="closeMobileMenu()">Work</a>
     <a href="#about" onclick="closeMobileMenu()">About</a>
     <a href="#career" onclick="closeMobileMenu()">Career</a>
-    <a href="#work" onclick="closeMobileMenu()">Work</a>
     <a href="#contact" onclick="closeMobileMenu()">Contact</a>
   </div>
 
@@ -1693,7 +1693,7 @@
           <p class="work-card-desc">Winner of the Stempel Thesis Prize: An annual scholarship awarded to a MICA senior
             exhibiting exemplary thesis work.</p>
           <div class="work-card-meta">
-            <div class="work-card-stat"><strong>↗</strong><span>Vimeo.com</span></div>
+            <div class="work-card-stat"><span>Vimeo.com</span></div>
           </div>
         </div>
       </a>
@@ -1730,7 +1730,7 @@
           <div class="tool-tag">Drawing ligers</div>
         </div>
 
-        <h3>Core strengths</h3>
+        <h3>what i'm looking for</h3>
         <p style="font-size: 14px; line-height: 1.6; color: var(--ink-2);">
           For my next role, I'm looking for a team solving complex design problems. I have 15 years of experience
           creating end-to-end OTT/video platform designs, shipping cross-platform ecosystems (web, TV, mobile), defining
@@ -1943,12 +1943,6 @@
           I'm most energized by hard problems in new spaces. If you're building a video platform, an emerging-tech
           product, or something that doesn't have a design playbook yet — let's talk.
         </p>
-        <a href="mailto:don@polisti.co" class="hero-cta">
-          Get in touch
-          <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" style="width:16px;height:16px">
-            <path d="M3 8h10M8 3l5 5-5 5" />
-          </svg>
-        </a>
       </div>
       <div class="contact-links">
         <a href="mailto:don@polisti.co" class="contact-link">
@@ -1970,7 +1964,8 @@
 
   <!-- FOOTER -->
   <footer>
-    <span>Don Polistico · Product Designer · Brooklyn, NY · <a href="mailto:don@polisti.co">don@polisti.co</a></span>
+    <span><span class="hide-mobile">Don Polistico · </span>Product Designer · Brooklyn, NY · <a
+        href="mailto:don@polisti.co">don@polisti.co</a></span>
     <span>BFA, MICA · AI for UX Design Cert. 2025</span>
   </footer>
 
@@ -1978,10 +1973,10 @@
     // ── Hero headline rotation ──
     (function () {
       const headlines = [
-        { lines: ['15+ years shaping', 'how people'], em: 'watch video.' },
-        { lines: ['Designing the future', 'of how the world'], em: 'experiences media.' },
-        { lines: ['Video was the medium.', 'Design was'], em: 'the obsession.' },
-        { lines: ['The intersection of', 'craft, product,'], em: 'and storytelling.' },
+        { lines: ['15+ years shaping', 'how people'], em: 'watch video.', jpLines: ['15年以上にわたり', '人々の映像体験を'], jpEm: '創造する。' },
+        { lines: ['Designing the future', 'of how the world'], em: 'experiences media.', jpLines: ['世界がメディアを', '体験する方法の'], jpEm: '未来を描く。' },
+        { lines: ['Video was the medium.', 'Design was'], em: 'the obsession.', jpLines: ['映像は媒体であった。', 'デザインは'], jpEm: '情熱であった。' },
+        { lines: ['The intersection of', 'craft, product,'], em: 'and storytelling.', jpLines: ['技術、製品、そして', 'ストーリーテリングの'], jpEm: '交差点。' },
       ];
       const key = 'hlIdx';
       let idx = parseInt(localStorage.getItem(key) || '0') % headlines.length;
@@ -1990,10 +1985,21 @@
       const lineEls = document.querySelectorAll('.h1-line-inner');
       const delays = [0.1, 0.25, 0.42];
 
+      window.updateHeroHeadline = function () {
+        const h = headlines[idx];
+        if (window.isJapanese) {
+          lineEls[0].textContent = h.jpLines[0];
+          lineEls[1].textContent = h.jpLines[1];
+          lineEls[2].innerHTML = '<span class="hero-title-em">' + h.jpEm + '</span>';
+        } else {
+          lineEls[0].textContent = h.lines[0];
+          lineEls[1].textContent = h.lines[1];
+          lineEls[2].innerHTML = '<span class="hero-title-em">' + h.em + '</span>';
+        }
+      };
+
       function setHeadline(h) {
-        lineEls[0].textContent = h.lines[0];
-        lineEls[1].textContent = h.lines[1];
-        lineEls[2].innerHTML = '<span class="hero-title-em">' + h.em + '</span>';
+        window.updateHeroHeadline();
       }
 
       function animateIn() {
@@ -2155,15 +2161,12 @@
       { sel: '.nav-links a[href="#career"]', jp: '経歴' },
       { sel: '.nav-links a[href="#contact"]', jp: '連絡' },
       // Mobile menu
+      { sel: '.mobile-menu a[href="#work"]', jp: '作品' },
       { sel: '.mobile-menu a[href="#about"]', jp: '紹介' },
       { sel: '.mobile-menu a[href="#career"]', jp: '経歴' },
-      { sel: '.mobile-menu a[href="#work"]', jp: '作品' },
       { sel: '.mobile-menu a[href="#contact"]', jp: '連絡' },
       // Hero
       { sel: '.hero-label', jp: 'プロダクトデザイナー · ブルックリン、ニューヨーク' },
-      { sel: '.h1-line:nth-child(1) .h1-line-inner', jp: '15年以上にわたり' },
-      { sel: '.h1-line:nth-child(2) .h1-line-inner', jp: '人々の映像体験を' },
-      { sel: '.hero-title-em', jp: '創造する。' },
       { sel: '.hero-cta-text', jp: '次のステージへ、話しましょう！' },
       { sel: '.hero-stat:nth-child(1) .hero-stat-label', jp: 'クロスプラットフォーム専門家' },
       { sel: '.hero-stat:nth-child(2) .hero-stat-label', jp: '買収された企業' },
@@ -2293,8 +2296,8 @@
       { sel: '#contact h2', jp: '話しましょう。' },
       { sel: '.contact-sub', jp: '新しい分野の難しい問題に最もやりがいを感じます。動画プラットフォーム、新技術プロダクト、またはまだデザインのプレイブックが存在しないものを作っているなら — ぜひお話ししましょう。' },
       // Footer
-      { sel: 'footer span:first-child', html: 'ドン・ポリスティコ · プロダクトデザイナー · ブルックリン、NY · <a href="mailto:don@polisti.co">don@polisti.co</a>' },
-      { sel: 'footer span:last-child', jp: 'BFA, MICA · AI for UXデザイン認定 2025' },
+      { sel: 'footer span:first-child', html: '<span class="hide-mobile">ドン・ポリスティコ · </span>プロダクトデザイナー · ブルックリン、NY · <a href="mailto:don@polisti.co">don@polisti.co</a>' },
+      { sel: 'footer span:last-child', jp: 'BFA, MICA · AI for UX Design Cert. 2025' },
     ];
 
     // store originals on first run
@@ -2327,6 +2330,8 @@
         const igLink = document.querySelector('.contact-link[href*="instagram.com/donosaur"]');
         if (igLink) { igLink._origHref = igLink.href; igLink.href = 'https://www.instagram.com/donosaur.taiko'; igLink.querySelector('.contact-label').textContent = '@donosaur.taiko'; }
         isJapanese = true;
+        window.isJapanese = true;
+        if (window.updateHeroHeadline) window.updateHeroHeadline();
       } else {
         // Switch back to English
         avatar.src = 'images/avatar.gif';
@@ -2343,6 +2348,8 @@
         const igLink = document.querySelector('.contact-link[href*="instagram.com/donosaur"]');
         if (igLink && igLink._origHref) { igLink.href = igLink._origHref; igLink.querySelector('.contact-label').textContent = '@donosaur'; }
         isJapanese = false;
+        window.isJapanese = false;
+        if (window.updateHeroHeadline) window.updateHeroHeadline();
       }
     }
 
