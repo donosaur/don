@@ -1321,10 +1321,21 @@
       }
 
       .hero {
-        padding: 120px 24px 72px;
-        grid-template-columns: 1fr;
+        padding: 120px 24px 0;
+        display: flex;
+        flex-direction: column;
+        align-items: stretch;
         gap: 48px;
-        min-height: auto;
+        min-height: 100dvh;
+        box-sizing: border-box;
+      }
+
+      .hero .hero-meta {
+        margin-top: auto;
+      }
+
+      .hide-mobile {
+        display: none;
       }
 
       .hero h1 {
@@ -1355,20 +1366,21 @@
 
       .hero-meta {
         display: grid;
-        grid-template-columns: 1fr 1fr;
-        gap: 0;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 0 16px;
       }
 
       .hero-stat {
-        padding: 16px 0;
+        padding: 12px 0;
       }
 
       .hero-stat-num {
-        font-size: 22px;
+        font-size: 24px;
       }
 
       .hero-stat-label {
         font-size: 11px;
+        letter-spacing: 0.04em;
       }
 
       section {
@@ -1420,9 +1432,15 @@
       }
     }
 
+    @media (max-width: 360px) {
+      span.hide-mobile-sm {
+        display: none !important;
+      }
+    }
+
     @media (max-width: 480px) {
       .hero {
-        padding: 100px 20px 64px;
+        padding: 100px 20px 0;
       }
 
       .hero-label {
@@ -1443,15 +1461,16 @@
       }
 
       .hero-meta {
-        grid-template-columns: 1fr 1fr;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
       }
 
       .hero-stat-num {
-        font-size: 15px;
+        font-size: 20px;
       }
 
       .hero-stat-label {
         font-size: 11px;
+        letter-spacing: 0.04em;
       }
 
       .hero-stat {
@@ -1576,11 +1595,11 @@
       </div>
       <div class="hero-stat">
         <div class="hero-stat-num">Millions</div>
-        <div class="hero-stat-label">viewers reached worldwide</div>
+        <div class="hero-stat-label">viewers <span class="hide-mobile-sm">reached </span>worldwide</div>
       </div>
       <div class="hero-stat">
         <div class="hero-stat-num">∞</div>
-        <div class="hero-stat-label">Figma frames opened, never closed</div>
+        <div class="hero-stat-label">Figma frames opened<span class="hide-mobile">, never closed</span></div>
       </div>
     </div>
   </section>
@@ -2149,7 +2168,7 @@
       { sel: '.hero-stat:nth-child(1) .hero-stat-label', jp: 'クロスプラットフォーム専門家' },
       { sel: '.hero-stat:nth-child(2) .hero-stat-label', jp: '買収された企業' },
       { sel: '.hero-stat:nth-child(2) .hero-stat-num', jp: '2回' },
-      { sel: '.hero-stat:nth-child(3) .hero-stat-label', jp: '世界中の視聴者数' },
+      { sel: '.hero-stat:nth-child(3) .hero-stat-label', html: '世界中の<span class="hide-mobile-sm">到達した</span>視聴者数', enHtml: 'viewers <span class="hide-mobile-sm">reached </span>worldwide' },
       { sel: '.hero-stat:nth-child(3) .hero-stat-num', jp: '数百万' },
       { sel: '.hero-stat:nth-child(4) .hero-stat-label', jp: '開いたまま閉じてないFigmaフレーム' },
       // Work section
@@ -2211,6 +2230,62 @@
       { sel: '#career > .section-label', jp: 'キャリア物語' },
       { sel: '#career > h2', jp: 'ここに至るまで。' },
       { sel: '.career-intro', jp: '私のデザインの旅は小さなハードウェアスタートアップから始まり、大規模なストリーミングプラットフォームへと発展しました。すべてのステップで多くを学びました。2度の買収を経ても、プロダクトと共に歩み、私たちの仕事が人々に届き続けるようにしました。' },
+      // Timeline – Boxee
+      { sel: '.timeline-item:nth-child(1) .timeline-period', jp: '2010年7月 – 2013年7月' },
+      { sel: '.timeline-item:nth-child(1) .timeline-role', jp: 'デザイナー · ニューヨーク、NY' },
+      { sel: '.timeline-item:nth-child(1) .timeline-desc', jp: 'すべてはここから始まりました。Boxeeでは、ストリーミング分野がまだ黎明期だった頃に、初期のクラウドDVRやソーシャルTV機能のデザインを手がけました。ハードウェアのパッケージングやマーケティングにも貢献。2013年、SamsungがBoxeeを買収し、共に築いたプロダクトにとって素晴らしい次のステップとなりました。' },
+      { sel: '.timeline-item:nth-child(1) .tag:nth-child(1)', jp: 'クラウドDVR' },
+      { sel: '.timeline-item:nth-child(1) .tag:nth-child(2)', jp: 'ソーシャルTV' },
+      { sel: '.timeline-item:nth-child(1) .tag:nth-child(3)', jp: '0→1' },
+      { sel: '.timeline-item:nth-child(1) .tag:nth-child(4)', jp: 'ハードウェアローンチ' },
+      { sel: '.timeline-item:nth-child(1) .tag:nth-child(5)', jp: 'Samsungに買収' },
+      // Timeline – Samsung
+      { sel: '.timeline-item:nth-child(2) .timeline-period', jp: '2013年7月 – 2015年11月' },
+      { sel: '.timeline-item:nth-child(2) .timeline-role', jp: 'シニアプロダクトデザイナー · ニューヨーク、NY' },
+      { sel: '.timeline-item:nth-child(2) .timeline-desc', jp: 'SamsungによるBoxee買収後、Samsungのスマートテレビエコシステム向けにマルチスクリーン体験をデザイン — BoxeeソフトウェアをSamsungのTVインターフェースに統合し、次世代リモコンのデザインに貢献しました。大規模なハードウェア組織の中で消費者向けデザイン思考を拡張する方法を学んだ期間でした。' },
+      { sel: '.timeline-item:nth-child(2) .tag:nth-child(1)', jp: 'スマートTV' },
+      { sel: '.timeline-item:nth-child(2) .tag:nth-child(2)', jp: 'マルチスクリーン' },
+      { sel: '.timeline-item:nth-child(2) .tag:nth-child(3)', jp: 'ハードウェア統合' },
+      { sel: '.timeline-item:nth-child(2) .tag:nth-child(4)', jp: '10フィートUI' },
+      // Timeline – One Month (contract)
+      { sel: '.timeline-item:nth-child(3) .timeline-period', jp: '2013 – 2014年' },
+      { sel: '.timeline-item:nth-child(3) .timeline-contract-role', jp: 'デザイナー（契約） · ニューヨーク、NY' },
+      { sel: '.timeline-item:nth-child(3) .timeline-contract-desc', jp: 'Y Combinator（S13）期間中にMVPデザインに貢献。技術カリキュラムをユーザーフレンドリーなワークフローに変換し、シード資金の獲得に貢献しました。' },
+      // Timeline – VHX
+      { sel: '.timeline-item:nth-child(4) .timeline-period', jp: '2015年10月 – 2016年5月' },
+      { sel: '.timeline-item:nth-child(4) .timeline-role', jp: 'シニアプロダクトデザイナー · ブルックリン、NY' },
+      { sel: '.timeline-item:nth-child(4) .timeline-desc', jp: 'VHXのD2Cビデオツールを決済フローと視聴者管理に重点を置いてデザイン — 独立系クリエイターが独自のストリーミングチャンネルを構築するためのインフラを提供。VHXがVimeoに買収された際、Vimeoプラットフォーム全体で採用されたOTTアプリの基盤パターンを確立しました。' },
+      { sel: '.timeline-item:nth-child(4) .tag:nth-child(1)', jp: 'D2C動画' },
+      { sel: '.timeline-item:nth-child(4) .tag:nth-child(2)', jp: '決済フロー' },
+      { sel: '.timeline-item:nth-child(4) .tag:nth-child(3)', jp: 'クリエイターツール' },
+      { sel: '.timeline-item:nth-child(4) .tag:nth-child(4)', jp: 'Vimeoに買収' },
+      // Timeline – Vimeo
+      { sel: '.timeline-item:nth-child(5) .timeline-period', jp: '2016年6月 – 2025年6月' },
+      { sel: '.timeline-item:nth-child(5) .timeline-role', jp: 'シニアプロダクトデザイナー · ニューヨーク、NY' },
+      { sel: '.timeline-item:nth-child(5) .timeline-desc', jp: 'Vimeoで約10年間、VHX買収後の統合から始まりました。Vimeo Streamingのクロスプラットフォーム配信（Web、モバイル、TVアプリ）のエンドツーエンドデザインを設計し、毎日数百万回の再生を支えるVimeoプレーヤーのインタラクションパターンを形作りました。クリエイターツールからB2Bプラットフォームへの進化を通じて、Webとモバイルの共有デザインシステムを維持し続けました。' },
+      { sel: '.timeline-item:nth-child(5) .tag:nth-child(1)', jp: 'OTTプラットフォーム' },
+      { sel: '.timeline-item:nth-child(5) .tag:nth-child(2)', jp: 'クロスプラットフォーム' },
+      { sel: '.timeline-item:nth-child(5) .tag:nth-child(3)', jp: 'デザインシステム' },
+      { sel: '.timeline-item:nth-child(5) .tag:nth-child(4)', jp: '動画プレーヤーUX' },
+      { sel: '.timeline-item:nth-child(5) .tag:nth-child(5)', jp: '買収後統合' },
+      // Timeline – Recount Media (contract)
+      { sel: '.timeline-item:nth-child(6) .timeline-period', jp: '2020年' },
+      { sel: '.timeline-item:nth-child(6) .timeline-contract-role', jp: 'シニアプロダクトデザイナー（契約） · ニューヨーク、NY' },
+      { sel: '.timeline-item:nth-child(6) .timeline-contract-desc', jp: '政治ニュースプラットフォーム向けにモバイルファーストの動画ディスカバリー機能をデザイン。編集チームとエンジニアリングチームとの迅速なプロトタイピングを通じて視聴者リテンションを最適化しました。' },
+      // Timeline – primitives.xyz (contract)
+      { sel: '.timeline-item:nth-child(7) .timeline-period', jp: '2022 – 2024年' },
+      { sel: '.timeline-item:nth-child(7) .timeline-contract-role', jp: 'シニアプロダクトデザイナー（契約） · ニューヨーク、NY' },
+      { sel: '.timeline-item:nth-child(7) .timeline-contract-desc', jp: '分散型ソーシャル共有プロトコルを軸にiOSとモバイルWeb向けのクリエイターアプリを構築。Web3のコンセプトをオンボーディングとコンテンツ作成のためのアクセスしやすいモバイルインターフェースに変換しました。' },
+      // Timeline – Looking Glass (contract)
+      { sel: '.timeline-item:nth-child(8) .timeline-period', jp: '2022 – 2024年' },
+      { sel: '.timeline-item:nth-child(8) .timeline-contract-role', jp: 'シニアプロダクトデザイナー（契約） · ブルックリン、NY' },
+      { sel: '.timeline-item:nth-child(8) .timeline-contract-desc', jp: 'ホログラフィックディスプレイ向けのインタラクションモデルと、2Dデスクトップワークフローと3D空間ビジュアライゼーションを橋渡しするデザインシステムを開発。グラフィックスエンジニアと連携してUnityベースのアプリケーションに取り組みました。' },
+      // Timeline – Next chapter
+      { sel: '.timeline-item:nth-child(9) .timeline-period', jp: '次の章' },
+      { sel: '.timeline-item:nth-child(9) .timeline-role', jp: 'きっと面白い何か' },
+      { sel: '.timeline-item:nth-child(9) .timeline-desc', jp: '新しい分野の難しい問題に最もやりがいを感じます。まだデザインの教科書がないもの — プラットフォーム、プロダクト、存在しないはずのもの — を作っているなら、一緒に作りたいと思う可能性は十分にあります。' },
+      { sel: '.timeline-item:nth-child(9) .tag:nth-child(1)', jp: '現在空き' },
+      { sel: '.timeline-item:nth-child(9) .tag:nth-child(2)', jp: '良い出会いを待っています' },
       // Download resume
       { sel: '.contact-label', jp: '履歴書をダウンロード', all: true },
       // Contact section
