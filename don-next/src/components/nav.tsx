@@ -12,6 +12,7 @@ const links = [
 
 export function Nav() {
   const pathname = usePathname();
+  const portfolioUrl = process.env.NODE_ENV === "development" ? "http://localhost:5500" : "https://don.polisti.co";
 
   return (
     <nav className="fixed top-0 left-0 right-0 z-50 flex items-center justify-between px-6 py-4 md:px-10">
@@ -44,7 +45,7 @@ export function Nav() {
         ))}
         <li>
           <a
-            href="https://polisti.co"
+            href={portfolioUrl}
             className="text-[13px] font-medium tracking-wide text-white/40 hover:text-white/70 transition-colors"
             style={{ textDecoration: "none" }}
           >
