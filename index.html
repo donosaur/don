@@ -216,6 +216,10 @@
       overflow: hidden;
       padding-bottom: 0.22em;
       margin-bottom: -0.22em;
+      padding-left: 0.15em;
+      padding-right: 0.15em;
+      margin-left: -0.15em;
+      margin-right: -0.15em;
     }
 
     .h1-line-inner {
@@ -267,6 +271,7 @@
       line-height: 1.7;
       color: rgba(255, 255, 255, 0.82);
       max-width: 560px;
+      text-wrap: pretty;
     }
 
     .hero-meta {
@@ -302,6 +307,7 @@
       align-items: center;
       gap: 10px;
       margin-top: clamp(20px, 5vh, 40px);
+      margin-left: -8px;
       padding: 23px 32px;
       background: transparent;
       color: #fff;
@@ -504,6 +510,7 @@
       line-height: 1.15;
       letter-spacing: -0.02em;
       margin-bottom: 24px;
+      text-wrap: balance;
     }
 
     /* ── ABOUT ── */
@@ -592,6 +599,7 @@
       color: var(--ink-2);
       max-width: 720px;
       margin-bottom: 72px;
+      text-wrap: pretty;
     }
 
     .timeline {
@@ -786,6 +794,7 @@
       color: var(--ink-2);
       max-width: 680px;
       margin-bottom: 64px;
+      text-wrap: pretty;
     }
 
     .work-grid {
@@ -1073,6 +1082,7 @@
       line-height: 1.7;
       color: var(--ink-2);
       max-width: 480px;
+      text-wrap: pretty;
     }
 
     .contact-links {
@@ -1312,7 +1322,7 @@
       }
 
       .hero {
-        padding: 120px 24px 0;
+        padding: 140px 24px 0;
         display: flex;
         flex-direction: column;
         align-items: stretch;
@@ -1433,7 +1443,7 @@
 
     @media (max-width: 480px) {
       .hero {
-        padding: 100px 20px 0;
+        padding: 130px 20px 0;
       }
 
       .hero-label {
@@ -1520,6 +1530,8 @@
   <nav>
     <div class="nav-logo">
       <canvas class="nav-avatar" id="navAvatar" width="40" height="40" style="cursor: pointer;" onclick="toggleJapanese()" role="img" aria-label="Don Polistico"></canvas>
+      <img class="nav-avatar" id="navAvatar" src="images/avatar.gif" style="cursor: pointer;" onclick="toggleJapanese()"
+        alt="Don Polistico">
       <a href="#"
         style="font-family:'Playfair Display',serif;font-size:18px;font-weight:600;color:var(--ink);text-decoration:none;">don
         polistico</a>
@@ -1585,7 +1597,11 @@
           <span class="hero-cta-blob"></span>
           <span class="hero-cta-blob"></span>
         </span>
-        <span class="hero-cta-text">👀 Looking for my next role, let's talk!</span>
+        <span class="hero-cta-text"
+          style="display: inline-flex; align-items: center; justify-content: center; gap: 8px;">
+          <span style="font-size: 1.4em; line-height: 1;">👀</span>
+          <span>Looking for my next role, let's talk!</span>
+        </span>
         <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5">
           <path d="M3 8h10M8 3l5 5-5 5" />
         </svg>
@@ -1939,8 +1955,8 @@
         <div class="section-label">Contact</div>
         <h2>Let's talk.</h2>
         <p class="contact-sub">
-          I'm most energized by hard problems in new spaces. If you're building a video platform, an emerging-tech
-          product, or something that doesn't have a design playbook yet — let's talk.
+          I'm most energized by hard problems in new spaces — especially alongside designers who push me to grow. If
+          you're building something ambitious in video or emerging tech, let's talk.
         </p>
       </div>
       <div class="contact-links">
@@ -2032,7 +2048,7 @@
       const headlines = [
         { lines: ['15+ years shaping', 'how people'], em: 'watch video.', jpLines: ['15年以上にわたり', '人々の映像体験を'], jpEm: '創造する。' },
         { lines: ['Designing the future', 'of how the world'], em: 'experiences media.', jpLines: ['世界がメディアを', '体験する方法の'], jpEm: '未来を描く。' },
-        { lines: ['Video was the medium.', 'Design was'], em: 'the obsession.', jpLines: ['映像は媒体であった。', 'デザインは'], jpEm: '情熱であった。' },
+        { lines: ['Transforming complex', 'streaming tech into'], em: 'intuitive products.', jpLines: ['複雑なストリーミング技術を', '直感的なプロダクトに'], jpEm: '変える。' },
         { lines: ['The intersection of', 'craft, product,'], em: 'and storytelling.', jpLines: ['技術、製品、そして', 'ストーリーテリングの'], jpEm: '交差点。' },
       ];
       const key = 'hlIdx';
@@ -2067,7 +2083,28 @@
             html += `<span class="h1-line" style="${margin}"><span class="h1-line-inner" style="animation-delay:${delay}s">${chunk.text}</span></span>`;
           }
         });
+
+        // 1. Measure current height
+        const oldHeight = h1.offsetHeight;
+
+        // 2. Set new HTML to measure new height invisibly, but disable transition first
+        h1.style.transition = 'none';
         h1.innerHTML = html;
+        const newHeight = h1.offsetHeight;
+
+        // 3. Revert to old height
+        h1.style.height = oldHeight + 'px';
+        h1.offsetHeight; // force reflow
+
+        // 4. Animate to new height
+        h1.style.transition = 'height 0.8s cubic-bezier(0.16, 1, 0.3, 1)';
+        h1.style.height = newHeight + 'px';
+
+        // 5. Clean up afterwards so it scales normally on window resize
+        setTimeout(() => {
+          h1.style.transition = '';
+          h1.style.height = '';
+        }, 800);
       };
 
       function setHeadline(h) {
@@ -2367,7 +2404,7 @@
       // Contact section
       { sel: '#contact .section-label', jp: '連絡先' },
       { sel: '#contact h2', jp: '話しましょう。' },
-      { sel: '.contact-sub', jp: '新しい分野の難しい問題に最もやりがいを感じます。動画プラットフォーム、新技術プロダクト、またはまだデザインのプレイブックが存在しないものを作っているなら — ぜひお話ししましょう。' },
+      { sel: '.contact-sub', jp: '新しい分野の難しい問題に最もやりがいを感じます — 特に、自分を成長させてくれるデザイナーたちと一緒に。動画や新技術の分野で野心的なものを作っているなら、ぜひお話ししましょう。' },
       // Footer
       { sel: 'footer span:first-child', html: '<span class="hide-mobile">ドン・ポリスティコ · </span>プロダクトデザイナー · ブルックリン、NY · <a href="mailto:don@polisti.co">don@polisti.co</a>' },
       { sel: 'footer span:last-child', jp: 'BFA, MICA · AI for UX Design Cert. 2025' },
