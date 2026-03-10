@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Nav } from "@/components/nav";
+import { KonamiGate } from "@/components/konami-gate";
 import "./globals.css";
 
 export const metadata: Metadata = {
@@ -37,8 +38,10 @@ export default function RootLayout({
             </filter>
           </defs>
         </svg>
-        <Nav />
-        {children}
+        <KonamiGate>
+          <Nav />
+          {children}
+        </KonamiGate>
       </body>
     </html>
   );
