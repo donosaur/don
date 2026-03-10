@@ -1,16 +1,7 @@
 import type { Metadata } from "next";
-import { Inter, Playfair_Display } from "next/font/google";
+import { Nav } from "@/components/nav";
+import { KonamiGate } from "@/components/konami-gate";
 import "./globals.css";
-
-const inter = Inter({
-  variable: "--font-sans",
-  subsets: ["latin"],
-});
-
-const playfair = Playfair_Display({
-  variable: "--font-playfair",
-  subsets: ["latin"],
-});
 
 export const metadata: Metadata = {
   title: "don polistico",
@@ -24,9 +15,15 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body
-        className={`${inter.variable} ${playfair.variable} antialiased bg-bg text-ink scroll-smooth`}
-      >
+      <head>
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
+        <link
+          href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Playfair+Display:ital,wght@0,400;0,600;1,400&display=swap"
+          rel="stylesheet"
+        />
+      </head>
+      <body className="antialiased bg-bg text-ink scroll-smooth">
         <svg style={{ display: "none" }} aria-hidden="true">
           <defs>
             <filter id="hero-goo" x="-20%" y="-50%" width="140%" height="200%">
@@ -41,7 +38,10 @@ export default function RootLayout({
             </filter>
           </defs>
         </svg>
-        {children}
+        <KonamiGate>
+          <Nav />
+          {children}
+        </KonamiGate>
       </body>
     </html>
   );
