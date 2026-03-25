@@ -4,11 +4,42 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Don Polistico - Portfolio Presentation</title>
+    <title>slides for cnbc</title>
+    <link rel="icon" type="image/png" href="images/avatar.png" />
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Lexend+Deca:wght@400;500;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <script>
+        function goToSlide(id) {
+            document.getElementById(id).scrollIntoView({ behavior: 'smooth' });
+            if (menuOpen) toggleMenu();
+        }
+
+        let menuOpen = false;
+        function toggleMenu() {
+            menuOpen = !menuOpen;
+            const menu = document.getElementById('slideMenu');
+            const h1 = document.getElementById('ham1');
+            const h2 = document.getElementById('ham2');
+            const h3 = document.getElementById('ham3');
+            const name = document.getElementById('navName');
+
+            if (menuOpen) {
+                menu.style.display = 'flex';
+                setTimeout(() => menu.style.opacity = '1', 10);
+                h1.style.transform = 'translateY(9px) rotate(45deg)';
+                h2.style.opacity = '0';
+                h3.style.transform = 'translateY(-9px) rotate(-45deg)';
+            } else {
+                menu.style.opacity = '0';
+                setTimeout(() => menu.style.display = 'none', 300);
+                h1.style.transform = 'none';
+                h2.style.opacity = '1';
+                h3.style.transform = 'none';
+            }
+        }
+    </script>
     <script src="hero-headlines.js"></script>
 
     <style>
@@ -17,6 +48,10 @@
             box-sizing: border-box;
             margin: 0;
             padding: 0;
+        }
+
+        p, h1, h2, h3, h4, h5, h6, li, span, div, a {
+            text-wrap: pretty;
         }
 
         body {
@@ -40,12 +75,15 @@
             display: flex;
             flex-direction: column;
             font-family: 'Lexend Deca', sans-serif;
-            height: 720px;
+            height: auto;
+            min-height: 720px;
             justify-content: center;
             overflow: hidden;
             padding: 60px;
             position: relative;
-            width: 1280px;
+            scroll-margin-top: 100px;
+            width: 100%;
+            max-width: 1280px;
         }
 
         /* Ambient Glow Effect */
@@ -430,6 +468,7 @@
             margin-left: -0.15em;
             margin-right: -0.15em;
         }
+
         .h1-line-inner {
             display: inline-block;
             opacity: 0;
@@ -437,9 +476,14 @@
             animation: revealLine 1.1s cubic-bezier(0.16, 1, 0.3, 1) forwards;
             will-change: transform;
         }
+
         @keyframes revealLine {
-            to { opacity: 1; transform: translateY(0); }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
+
         .hero-title-em {
             font-style: italic;
             background: linear-gradient(90deg, #FFD123 0%, #f5c97a 38%, #fff0c0 50%, #f5c97a 62%, #FFD123 100%);
@@ -450,14 +494,172 @@
             animation: shimmerGold 4s linear infinite;
             animation-delay: 1.4s;
         }
+
         @keyframes shimmerGold {
-            0% { background-position: 200% center; }
-            100% { background-position: -200% center; }
+            0% {
+                background-position: 200% center;
+            }
+
+            100% {
+                background-position: -200% center;
+            }
+        }
+
+        /* Connect Video Slides to Hero Slides */
+        #slide4, #slide8 { border-bottom-left-radius: 0 !important; border-bottom-right-radius: 0 !important; padding-bottom: 48px !important; }
+        #slide4b, #slide8b { border-top-left-radius: 0 !important; border-top-right-radius: 0 !important; margin-top: -40px !important; padding: 0 !important; }
+        .video-embed-wrapper { width: 100%; max-width: 1100px; padding: 0 60px 48px; }
+
+        .legend-mobile { display: none; }
+
+        /* --- RESPONSIVE OVERRIDES --- */
+        @media (max-width: 1024px) {
+            .legend-desktop { display: none !important; }
+            .legend-mobile { display: inline !important; }
+            .video-embed-wrapper { padding: 0 24px 24px !important; }
+            .slide-container {
+                min-height: auto !important;
+                height: auto !important;
+                padding: 40px 24px !important;
+                border-radius: 0 !important;
+            }
+            #slide1, .bleed-image-layout { padding: 0 !important; }
+
+            .slide-container h1 {
+                font-size: clamp(32px, 8vw, 60px) !important;
+            }
+
+            .slide-container h2 {
+                font-size: clamp(28px, 7vw, 38px) !important;
+                line-height: 1.15 !important;
+                margin-bottom: 24px !important;
+            }
+
+            .slide-container h3 {
+                font-size: 24px !important;
+                margin-bottom: 12px !important;
+            }
+
+            #slideNav {
+                padding: 0 24px !important;
+                height: 56px !important;
+            }
+
+            #navAvatar {
+                width: 32px !important;
+                height: 32px !important;
+            }
+
+            .two-column {
+                grid-template-columns: 1fr !important;
+                gap: 30px;
+            }
+
+            .two-column.tiled>div {
+                padding: 24px;
+            }
+
+            .tiled-content {
+                flex-direction: column;
+                gap: 20px;
+            }
+
+            .qa-layout h2 {
+                font-size: clamp(40px, 8vw, 80px);
+            }
+
+            .hide-on-mobile { display: none !important; }
+
+            /* Slide specific overrides */
+            .hero-content-grid {
+                display: flex !important;
+                flex-direction: column !important;
+                align-items: stretch !important;
+                gap: 40px !important;
+                padding: 112px 24px 24px !important;
+            }
+
+            #heroH1 { font-size: clamp(32px, 9vw, 50px) !important; }
+            #heroLabel { font-size: 12px !important; white-space: normal !important; line-height: 1.4 !important; }
+
+            .stats-grid {
+                grid-template-columns: 1fr 1fr !important;
+            }
+
+            /* Bleed Image Layout */
+            .slide-container.bleed-image-layout {
+                grid-template-columns: 1fr !important;
+                gap: 0;
+            }
+
+            .slide-container.bleed-image-layout>.content-container {
+                padding: 40px 24px !important;
+            }
+
+            .slide-container.bleed-image-layout img.bleed-image-side {
+                height: auto;
+                max-height: 40vh;
+                border-radius: 8px !important;
+                width: calc(100% - 48px) !important;
+                margin: 0 auto 40px !important;
+            }
+
+            .lkg-stats { grid-template-columns: 1fr !important; }
+
+            /* Typography scaling */
+            .slide-container p,
+            .slide-container li,
+            .slide-container .subtitle {
+                font-size: 16px;
+            }
         }
     </style>
 </head>
 
 <body>
+
+    <!-- MOBILE MENU OVERLAY -->
+    <div id="slideMenu"
+        style="display:none; position:fixed; inset:0; background:#f0f0f0; z-index:999; flex-direction:column; align-items:center; justify-content:flex-start; gap:clamp(20px, 4vh, 40px); font-family:'Lexend Deca',sans-serif; transition: opacity 0.3s; opacity:0; padding:120px 16px 60px; overflow-y:auto;">
+        <a href="javascript:void(0)" onclick="goToSlide('slide1')"
+            style="font-size:clamp(16px, 5vw, 32px); font-weight:500; color:#0f0f0f; text-decoration:none; white-space:nowrap;">1. intro</a>
+        <a href="javascript:void(0)" onclick="goToSlide('slide2')"
+            style="font-size:clamp(16px, 5vw, 32px); font-weight:500; color:#0f0f0f; text-decoration:none; white-space:nowrap;">2. where experience meets challenge</a>
+        <a href="javascript:void(0)" onclick="goToSlide('slide4')"
+            style="font-size:clamp(16px, 5vw, 32px); font-weight:500; color:#0f0f0f; text-decoration:none; white-space:nowrap;">3. case study: vimeo</a>
+        <a href="javascript:void(0)" onclick="goToSlide('slide8')"
+            style="font-size:clamp(16px, 5vw, 32px); font-weight:500; color:#0f0f0f; text-decoration:none; white-space:nowrap;">4. case study: looking glass</a>
+        <a href="javascript:void(0)" onclick="goToSlide('slide11')"
+            style="font-size:clamp(16px, 5vw, 32px); font-weight:500; color:#0f0f0f; text-decoration:none; white-space:nowrap;">5. contact</a>
+        <a href="https://don.polisti.co"
+            style="font-size:clamp(16px, 5vw, 32px); font-weight:500; color:#888; text-decoration:none; white-space:nowrap; margin-top:10px;">back to portfolio</a>
+    </div>
+
+    <!-- STICKY NAV -->
+    <nav id="slideNav"
+        style="position:fixed; top:0; left:0; right:0; z-index:1000; display:flex; align-items:center; justify-content:space-between; padding:24px clamp(24px, 5vw, 60px); background:rgba(11, 17, 32, 0.8); backdrop-filter:blur(12px); border-bottom:1px solid rgba(255,255,255,0.05); transition: background 0.3s;">
+        <div style="display:flex; align-items:center; gap:12px; position:relative; z-index:1001; cursor:pointer;"
+            onclick="location.href='https://don.polisti.co'">
+            <img id="navAvatar" src="images/avatar.gif" alt="Don Polistico"
+                style="width:40px; height:40px; border-radius:50%; object-fit:cover; transition:0.3s;">
+            <span id="navName"
+                style="font-family:'Lexend Deca',sans-serif; font-size:18px; font-weight:600; color:#fff; transition:0.3s;">don
+                polistico</span>
+        </div>
+        <button id="hamburgerBtn" onclick="toggleMenu()"
+            style="background:none; border:none; cursor:pointer; width:30px; height:20px; position:relative; z-index:1001;"
+            aria-label="Menu">
+            <span
+                style="display:block; width:100%; height:2px; background:#fff; position:absolute; top:0; transition:0.3s transform, 0.3s background;"
+                id="ham1"></span>
+            <span
+                style="display:block; width:100%; height:2px; background:#fff; position:absolute; top:9px; transition:0.3s opacity;"
+                id="ham2"></span>
+            <span
+                style="display:block; width:100%; height:2px; background:#fff; position:absolute; top:18px; transition:0.3s transform, 0.3s background;"
+                id="ham3"></span>
+        </button>
+    </nav>
 
     <!-- Slide 1: Hero -->
     <div class="slide-container" id="slide1" style="padding:0;overflow:hidden;">
@@ -465,43 +667,56 @@
         <div style="position:absolute;inset:-3%;z-index:0;overflow:hidden;pointer-events:none;">
 
             <iframe id="heroYoutube" allow="autoplay; encrypted-media" referrerpolicy="strict-origin-when-cross-origin"
-                allowfullscreen style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:1600px;height:900px;min-height:100%;min-width:100%;pointer-events:none;border:0;z-index:1;"></iframe>
+                allowfullscreen
+                style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:1600px;height:900px;min-height:100%;min-width:100%;pointer-events:none;border:0;z-index:1;"></iframe>
         </div>
         <!-- Grain Canvas -->
-        <canvas id="heroGrain" style="position:absolute;inset:0;z-index:1;width:100%;height:100%;pointer-events:none;opacity:0.22;mix-blend-mode:overlay;image-rendering:pixelated;"></canvas>
+        <canvas id="heroGrain"
+            style="position:absolute;inset:0;z-index:1;width:100%;height:100%;pointer-events:none;opacity:0.22;mix-blend-mode:overlay;image-rendering:pixelated;"></canvas>
         <!-- Gradient Overlay -->
-        <div style="position:absolute;inset:0;z-index:1;pointer-events:none;background:linear-gradient(to bottom,rgba(5,6,10,0.72) 0%,rgba(5,6,10,0.45) 45%,rgba(5,6,10,0.82) 85%,rgba(5,6,10,1.0) 100%);"></div>
-
-        <!-- Top-left: Avatar + Name -->
-        <div style="position:absolute;top:28px;left:40px;z-index:3;display:flex;align-items:center;gap:12px;">
-            <img src="images/avatar.gif" alt="Don Polistico" style="width:36px;height:36px;border-radius:50%;">
-            <span style="font-size:15px;font-weight:500;color:rgba(255,255,255,0.75);letter-spacing:0.04em;text-transform:lowercase;">don polistico</span>
+        <div
+            style="position:absolute;inset:0;z-index:1;pointer-events:none;background:linear-gradient(to bottom,rgba(5,6,10,0.72) 0%,rgba(5,6,10,0.45) 45%,rgba(5,6,10,0.82) 85%,rgba(5,6,10,1.0) 100%);">
         </div>
 
+        <!-- Avatar moved to sticky nav -->
+
         <!-- Hero Content Grid -->
-        <div style="position:relative;z-index:2;display:grid;grid-template-columns:1fr 320px;gap:60px;align-items:center;width:100%;height:100%;padding:60px;">
+        <div class="hero-content-grid"
+            style="position:relative;z-index:2;display:grid;grid-template-columns:1fr 320px;gap:60px;align-items:center;width:100%;height:100%;padding:60px;">
             <!-- Left: Label + Headline -->
             <div>
-                <p style="font-size:18px;font-weight:600;letter-spacing:0.16em;text-transform:lowercase;color:#FFD123;white-space:nowrap;margin-bottom:20px;">product designer · brooklyn, ny</p>
-                <h1 id="heroH1" style="font-size:58px;font-weight:400;line-height:1.08;letter-spacing:-0.02em;color:#fff;margin-bottom:0;text-align:left;"></h1>
+                <p id="heroLabel"
+                    style="font-size:18px;font-weight:600;letter-spacing:0.16em;text-transform:lowercase;color:#FFD123;white-space:nowrap;margin-bottom:20px;">
+                    product designer · brooklyn, ny</p>
+                <h1 id="heroH1"
+                    style="font-size:58px;font-weight:400;line-height:1.08;letter-spacing:-0.02em;color:#fff;margin-bottom:0;text-align:left;">
+                </h1>
             </div>
             <!-- Right: Stats -->
-            <div style="display:flex;flex-direction:column;gap:16px;padding-bottom:8px;">
+            <div style="display:flex;flex-direction:column;gap:24px;padding-bottom:8px;">
                 <div style="border-top:1px solid rgba(255,255,255,0.18);padding-top:16px;">
-                    <div style="font-size:32px;font-weight:600;color:#fff;">OTT</div>
-                    <div style="font-size:12px;font-weight:500;letter-spacing:0.08em;text-transform:lowercase;color:rgba(255,255,255,0.5);margin-top:4px;">cross-platform specialist</div>
+                    <div style="font-family:'Lexend Deca',sans-serif;font-size:clamp(20px,min(5vw,4vh),32px);font-weight:600;color:#fff;">OTT</div>
+                    <div
+                        style="font-size:11px;font-weight:500;letter-spacing:0.04em;text-transform:lowercase;color:rgba(255,255,255,0.5);margin-top:4px;">
+                        cross-platform specialist</div>
                 </div>
                 <div style="border-top:1px solid rgba(255,255,255,0.18);padding-top:16px;">
-                    <div style="font-size:32px;font-weight:600;color:#fff;">2×</div>
-                    <div style="font-size:12px;font-weight:500;letter-spacing:0.08em;text-transform:lowercase;color:rgba(255,255,255,0.5);margin-top:4px;">acquired companies</div>
+                    <div style="font-family:'Lexend Deca',sans-serif;font-size:clamp(20px,min(5vw,4vh),32px);font-weight:600;color:#fff;">2×</div>
+                    <div
+                        style="font-size:11px;font-weight:500;letter-spacing:0.04em;text-transform:lowercase;color:rgba(255,255,255,0.5);margin-top:4px;">
+                        acquired companies</div>
                 </div>
                 <div style="border-top:1px solid rgba(255,255,255,0.18);padding-top:16px;">
-                    <div style="font-size:32px;font-weight:600;color:#fff;">Millions</div>
-                    <div style="font-size:12px;font-weight:500;letter-spacing:0.08em;text-transform:lowercase;color:rgba(255,255,255,0.5);margin-top:4px;">viewers reached worldwide</div>
+                    <div style="font-family:'Lexend Deca',sans-serif;font-size:clamp(20px,min(5vw,4vh),32px);font-weight:600;color:#fff;">Millions</div>
+                    <div
+                        style="font-size:11px;font-weight:500;letter-spacing:0.04em;text-transform:lowercase;color:rgba(255,255,255,0.5);margin-top:4px;">
+                        viewers reached worldwide</div>
                 </div>
                 <div style="border-top:1px solid rgba(255,255,255,0.18);padding-top:16px;">
-                    <div style="font-size:32px;font-weight:600;color:#fff;">∞</div>
-                    <div style="font-size:12px;font-weight:500;letter-spacing:0.08em;text-transform:lowercase;color:rgba(255,255,255,0.5);margin-top:4px;">figma frames opened, never closed</div>
+                    <div style="font-family:'Lexend Deca',sans-serif;font-size:clamp(20px,min(5vw,4vh),32px);font-weight:600;color:#fff;">∞</div>
+                    <div
+                        style="font-size:11px;font-weight:500;letter-spacing:0.04em;text-transform:lowercase;color:rgba(255,255,255,0.5);margin-top:4px;">
+                        figma frames opened</div>
                 </div>
             </div>
         </div>
@@ -514,14 +729,21 @@
             <div class="two-column tiled">
                 <div>
                     <h3 style="color:#FFD123;">Systems thinking at scale</h3>
-                    <p>Video was my entry point, but <span class="highlight-text">systems thinking</span> is what drives me. I've spent a decade at Vimeo architecting end-to-end OTT products—from the creator tools to the living room screen.</p>
-                    <p style="margin-top: 20px;">My work has always lived at the intersection of <span class="highlight-text">high-level design intent</span> and <span class="highlight-text">production-ready code</span>.</p>
+                    <p>Video was my entry point, but <span class="highlight-text">systems thinking</span> is what drives
+                        me. I've spent a decade at Vimeo architecting end-to-end OTT products—from the creator tools to
+                        the living room screen.</p>
+                    <p style="margin-top: 20px;">My work has always lived at the intersection of <span
+                            class="highlight-text">high-level design intent</span> and <span
+                            class="highlight-text">production-ready code</span>.</p>
                 </div>
                 <div>
                     <h3 style="color: #FFD123;">Why Versant excites me</h3>
-                    <p>Building a <span class="highlight-text">"house of brands"</span>—where CNBC, MSNBC, and others share a unified platform—is a massive design-systems challenge.</p>
-                    <p style="margin-top: 20px;">My goal is to show you how I bridge that gap between design intent and production code at scale.</p>
-                    <p style="margin-top: auto; padding-top: 20px; font-style: italic; color: #FFD123;">The challenge: Unified infrastructure, distinct brand identities.</p>
+                    <p>Building a <span class="highlight-text">"house of brands"</span>—where CNBC, MSNBC, and others
+                        share a unified platform—is a massive design-systems challenge.</p>
+                    <p style="margin-top: 20px;">My goal is to show you how I bridge that gap between design intent and
+                        production code at scale.</p>
+                    <p style="margin-top: auto; padding-top: 20px; font-style: italic; color: #FFD123;">The challenge:
+                        Unified infrastructure, distinct brand identities.</p>
                 </div>
             </div>
         </div>
@@ -531,24 +753,22 @@
     <div class="slide-container" id="slide3">
         <h2 class="slide-title">Career arc & the pivot</h2>
         <div class="content-area">
-            <div class="two-column">
+            <div style="max-width: 800px;">
                 <div>
-                    <p style="color: #f8fafc; font-size: 22px; margin-bottom: 30px; font-weight: 500;">My career has traced the rise of streaming—from scrappy hardware to platform giants.</p>
+                    <p style="color: #f8fafc; font-size: 22px; margin-bottom: 30px; font-weight: 500;">My career has
+                        traced the rise of streaming—from scrappy hardware to platform giants.</p>
                     <div class="bullet-list">
                         <ul>
                             <li><i class="fa-solid fa-drafting-compass"></i> <strong>Architecture Roots:</strong>
-                                Started in architecture at MICA, where I learned to think in blueprints and structural integrity—principles that still guide my design systems work.</li>
+                                Started in architecture at MICA, where I learned to think in blueprints and structural
+                                integrity—principles that still guide my design systems work.</li>
                             <li><i class="fa-solid fa-tv"></i> <strong>Boxee → Samsung:</strong>
-                                Helped pioneer the Cloud DVR experience. Our work led to Samsung's acquisition in 2013, where I stayed to scale the product under enterprise ownership.</li>
+                                Helped pioneer the Cloud DVR experience. Our work led to Samsung's acquisition in 2013,
+                                where I stayed to scale the product under enterprise ownership.</li>
                             <li><i class="fa-solid fa-rocket"></i> <strong>VHX → Vimeo:</strong>
-                                Built the tools that allow creators to launch "Netflix-style" apps across 11+ platforms. Scaled a startup's tools into a global enterprise platform.</li>
+                                Built the tools that allow creators to launch "Netflix-style" apps across 11+ platforms.
+                                Scaled a startup's tools into a global enterprise platform.</li>
                         </ul>
-                    </div>
-                </div>
-                <div>
-                    <div class="image-wrapper" style="border-radius:50%;width:320px;height:320px;margin:auto;display:flex;align-items:center;justify-content:center;">
-                        <img src="images/avatar.gif"
-                            alt="Don Polistico avatar" style="object-fit:cover;border-radius:50%;">
                     </div>
                 </div>
             </div>
@@ -556,301 +776,471 @@
     </div>
 
     <!-- Slide 4: Vimeo Hook & Scale (Case Study 01 Hero) -->
-    <div class="slide-container" id="slide4" style="padding:48px 60px;display:flex;align-items:center;justify-content:center;background:#000;">
-      <div style="max-width:1000px;width:100%;text-align:left;">
-        <!-- Eyebrow -->
-        <div style="display:flex;align-items:center;margin-bottom:24px;">
-            <span style="font-size:11px;font-weight:600;letter-spacing:0.16em;text-transform:lowercase;color:#38bdf8;">platform design · vimeo · 2016–2025</span>
+    <div class="slide-container" id="slide4"
+        style="padding:48px 60px;display:flex;align-items:center;justify-content:center;background:#000;">
+        <div style="max-width:1000px;width:100%;text-align:left;">
+            <!-- Eyebrow -->
+            <div style="display:flex;align-items:center;margin-bottom:24px;">
+                <span
+                    style="font-size:11px;font-weight:600;letter-spacing:0.16em;text-transform:lowercase;color:#38bdf8;">platform
+                    design · vimeo · 2016–2025</span>
+            </div>
+            <!-- Headline -->
+            <h2
+                style="font-size:52px;font-weight:400;line-height:1.1;letter-spacing:-0.02em;color:#f8fafc;margin-bottom:28px;text-align:left;">
+                Building the platform<br>that lets <em style="font-style:italic;color:#38bdf8;">anyone</em><br>run a
+                streaming channel.</h2>
+            <!-- Description -->
+            <p
+                style="font-size:16px;line-height:1.75;color:#94a3b8;max-width:600px;margin-bottom:40px;text-align:left;">
+                A 10-year journey designing Vimeo Streaming's cross-platform distribution suite — from the initial
+                post-acquisition integration of VHX to a mature product serving creators on web, mobile, and every major
+                TV platform.</p>
+            <!-- Stats Grid -->
+            <div class="stats-grid"
+                style="display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:rgba(255,255,255,0.25);border-radius:4px;overflow:hidden;border:1px solid rgba(255,255,255,0.1);">
+                <div style="padding:24px 20px;background:#151b2e;">
+                    <div style="font-size:clamp(20px, 5vw, 32px);font-weight:600;color:#38bdf8;margin-bottom:6px;">$429M+</div>
+                    <div
+                        style="font-size:11px;font-weight:500;letter-spacing:0.08em;text-transform:lowercase;color:#94a3b8;">
+                        annual creator revenue</div>
+                </div>
+                <div style="padding:24px 20px;background:#151b2e;">
+                    <div style="font-size:clamp(20px, 5vw, 32px);font-weight:600;color:#f8fafc;margin-bottom:6px;">Millions+</div>
+                    <div
+                        style="font-size:11px;font-weight:500;letter-spacing:0.08em;text-transform:lowercase;color:#94a3b8;">
+                        daily plays</div>
+                </div>
+                <div style="padding:24px 20px;background:#151b2e;">
+                    <div style="font-size:clamp(20px, 5vw, 32px);font-weight:600;color:#f8fafc;margin-bottom:6px;">11</div>
+                    <div
+                        style="font-size:11px;font-weight:500;letter-spacing:0.08em;text-transform:lowercase;color:#94a3b8;">
+                        platforms (web, mobile, TV)</div>
+                </div>
+                <div style="padding:24px 20px;background:#151b2e;">
+                    <div style="font-size:clamp(20px, 5vw, 32px);font-weight:600;color:#58a628;margin-bottom:6px;">5,000+</div>
+                    <div
+                        style="font-size:11px;font-weight:500;letter-spacing:0.08em;text-transform:lowercase;color:#94a3b8;">
+                        channels launched</div>
+                </div>
+            </div>
         </div>
-        <!-- Headline -->
-        <h2 style="font-size:52px;font-weight:400;line-height:1.1;letter-spacing:-0.02em;color:#f8fafc;margin-bottom:28px;text-align:left;">Building the platform<br>that lets <em style="font-style:italic;color:#38bdf8;">anyone</em><br>run a streaming channel.</h2>
-        <!-- Description -->
-        <p style="font-size:16px;line-height:1.75;color:#94a3b8;max-width:600px;margin-bottom:40px;text-align:left;">A 10-year journey designing Vimeo Streaming's cross-platform distribution suite — from the initial post-acquisition integration of VHX to a mature product serving creators on web, mobile, and every major TV platform.</p>
-        <!-- Stats Grid -->
-        <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:rgba(255,255,255,0.08);border-radius:4px;overflow:hidden;border:1px solid rgba(255,255,255,0.1);">
-            <div style="padding:24px 20px;background:#151b2e;">
-                <div style="font-size:32px;font-weight:600;color:#38bdf8;margin-bottom:6px;">$429M+</div>
-                <div style="font-size:11px;font-weight:500;letter-spacing:0.08em;text-transform:lowercase;color:#94a3b8;">annual creator revenue</div>
-            </div>
-            <div style="padding:24px 20px;background:#151b2e;">
-                <div style="font-size:32px;font-weight:600;color:#f8fafc;margin-bottom:6px;">Millions+</div>
-                <div style="font-size:11px;font-weight:500;letter-spacing:0.08em;text-transform:lowercase;color:#94a3b8;">daily plays</div>
-            </div>
-            <div style="padding:24px 20px;background:#151b2e;">
-                <div style="font-size:32px;font-weight:600;color:#f8fafc;margin-bottom:6px;">11</div>
-                <div style="font-size:11px;font-weight:500;letter-spacing:0.08em;text-transform:lowercase;color:#94a3b8;">platforms (web, mobile, TV)</div>
-            </div>
-            <div style="padding:24px 20px;background:#151b2e;">
-                <div style="font-size:32px;font-weight:600;color:#58a628;margin-bottom:6px;">5,000+</div>
-                <div style="font-size:11px;font-weight:500;letter-spacing:0.08em;text-transform:lowercase;color:#94a3b8;">channels launched</div>
-            </div>
-        </div>
-      </div>
     </div>
 
     <!-- Slide 4b: Vimeo Teaser Video -->
-    <div class="slide-container" id="slide4b" style="padding:0;background:#000;display:flex;align-items:center;justify-content:center;">
-        <div style="width:100%;max-width:1100px;padding:40px 60px;">
+    <div class="slide-container" id="slide4b"
+        style="background:#000;display:flex;align-items:center;justify-content:center;">
+        <div class="video-embed-wrapper">
             <div style="position:relative;padding-bottom:56.25%;height:0;overflow:hidden;border-radius:4px;">
                 <iframe src="https://player.vimeo.com/video/1071247322?autoplay=0&title=0&byline=0&portrait=0&dnt=1"
                     style="position:absolute;top:0;left:0;width:100%;height:100%;border:0;"
-                    allow="autoplay; fullscreen; picture-in-picture"
-                    allowfullscreen
+                    allow="autoplay; fullscreen; picture-in-picture" allowfullscreen
                     title="Vimeo Streaming Teaser"></iframe>
             </div>
         </div>
     </div>
 
     <!-- Slide 5: The "Trust" Problem (Chasm of Despair) -->
-    <div class="slide-container" id="slide5" style="padding:48px 60px;display:flex;align-items:center;justify-content:center;">
-      <div style="max-width:1080px;width:100%;text-align:left;">
-        <div style="display:flex;align-items:center;margin-bottom:24px;">
-            <span style="font-size:11px;font-weight:600;letter-spacing:0.16em;text-transform:lowercase;color:#38bdf8;">the problem space</span>
-        </div>
-        <h2 style="font-size:44px;font-weight:400;line-height:1.15;letter-spacing:-0.02em;color:#f8fafc;margin-bottom:28px;">A two-sided ecosystem with <em style="font-style:italic;color:#38bdf8;">competing needs.</em></h2>
-        <div class="content-area">
-            <p style="align-self: flex-start; margin-bottom: 40px; font-size: 20px; color: #94a3b8;">Vimeo Streaming had to serve two fundamentally different users simultaneously — each with conflicting needs — on a single product surface.</p>
-            <div class="two-column tiled">
-                <div>
-                    <h3>The creator need</h3>
-                    <p><span class="highlight-text">Goal:</span> Total brand control. Launch a Netflix-style video network without needing an engineering team.</p>
-                    <p style="margin-top: 15px;">If we gave too much control, the system broke. Platform compliance failed. Apps got rejected.</p>
-                    <p style="margin-top: auto; padding-top: 20px; font-style: italic; color: #818cf8;">Risk: Choice paralysis & compliance failures.</p>
-                </div>
-                <div>
-                    <h3 style="color: #818cf8;">The viewer expectation</h3>
-                    <p><span class="highlight-text">Goal:</span> Frictionless, Netflix-quality experience on any device, any time.</p>
-                    <p style="margin-top: 15px;">If we gave too little control to creators, the brand felt cheap and generic. Creators churned.</p>
-                    <p style="margin-top: auto; padding-top: 20px; font-style: italic; color: #38bdf8;">Risk: Brand dilution & creator churn.</p>
+    <div class="slide-container" id="slide5"
+        style="padding:48px 60px;display:flex;align-items:center;justify-content:center;">
+        <div style="max-width:1080px;width:100%;text-align:left;">
+            <div style="display:flex;align-items:center;margin-bottom:24px;">
+                <span
+                    style="font-size:11px;font-weight:600;letter-spacing:0.16em;text-transform:lowercase;color:#38bdf8;">the
+                    problem space</span>
+            </div>
+            <h2
+                style="font-size:44px;font-weight:400;line-height:1.15;letter-spacing:-0.02em;color:#f8fafc;margin-bottom:28px;">
+                A two-sided ecosystem with <em style="font-style:italic;color:#38bdf8;">competing needs.</em></h2>
+            <div class="content-area">
+                <p style="align-self: flex-start; margin-bottom: 40px; font-size: 20px; color: #94a3b8;">Vimeo Streaming
+                    had to serve two fundamentally different users simultaneously — each with conflicting needs — on a
+                    single product surface.</p>
+                <div class="two-column tiled">
+                    <div>
+                        <h3>The creator need</h3>
+                        <p><span class="highlight-text">Goal:</span> Total brand control. Launch a Netflix-style video
+                            network without needing an engineering team.</p>
+                        <p style="margin-top: 15px;">If we gave too much control, the system broke. Platform compliance
+                            failed. Apps got rejected.</p>
+                        <p style="margin-top: auto; padding-top: 20px; font-style: italic; color: #818cf8;">Risk: Choice
+                            paralysis & compliance failures.</p>
+                    </div>
+                    <div>
+                        <h3 style="color: #818cf8;">The viewer expectation</h3>
+                        <p><span class="highlight-text">Goal:</span> Frictionless, Netflix-quality experience on any
+                            device, any time.</p>
+                        <p style="margin-top: 15px;">If we gave too little control to creators, the brand felt cheap and
+                            generic. Creators churned.</p>
+                        <p style="margin-top: auto; padding-top: 20px; font-style: italic; color: #38bdf8;">Risk: Brand
+                            dilution & creator churn.</p>
+                    </div>
                 </div>
             </div>
         </div>
-      </div>
     </div>
 
     <!-- Slide 6: Two Directions — Both Wrong -->
-    <div class="slide-container" id="slide6" style="padding:48px 60px;display:flex;align-items:center;justify-content:center;">
-      <div style="max-width:1080px;width:100%;text-align:left;">
-        <!-- Eyebrow -->
-        <div style="display:flex;align-items:center;margin-bottom:24px;">
-            <span style="font-size:11px;font-weight:600;letter-spacing:0.16em;text-transform:lowercase;color:#38bdf8;">explorations — app customization flow</span>
-        </div>
-        <!-- Headline -->
-        <h2 style="font-size:44px;font-weight:400;line-height:1.15;letter-spacing:-0.02em;color:#f8fafc;margin-bottom:40px;">Two directions.<br><em style="font-style:italic;color:#38bdf8;">Both wrong</em> for different reasons.</h2>
-        <!-- Two Column Cards -->
-        <div style="display:grid;grid-template-columns:1fr 1fr;gap:24px;">
-            <!-- Exploration A -->
-            <div style="background:#0f172a;border:1px solid rgba(255,255,255,0.08);border-radius:6px;padding:32px;display:flex;flex-direction:column;">
-                <div style="font-size:11px;font-weight:600;letter-spacing:0.12em;text-transform:lowercase;color:#94a3b8;margin-bottom:12px;">exploration a</div>
-                <h3 style="font-size:22px;font-weight:600;color:#f8fafc;margin-bottom:8px;">Full granular control</h3>
-                <p style="font-size:14px;font-style:italic;color:#94a3b8;margin-bottom:20px;">"Give creators a design tool inside the product"</p>
-                <!-- Wireframe placeholder -->
-                <div style="background:#1e293b;border-radius:4px;padding:20px;margin-bottom:20px;border:1px solid rgba(255,255,255,0.06);">
-                    <div style="display:flex;gap:8px;margin-bottom:12px;">
-                        <div style="width:8px;height:8px;border-radius:50%;background:#475569;"></div>
-                        <div style="width:8px;height:8px;border-radius:50%;background:#475569;"></div>
-                        <div style="width:8px;height:8px;border-radius:50%;background:#475569;"></div>
-                    </div>
-                    <div style="display:flex;gap:8px;">
-                        <div style="width:80px;background:#334155;height:48px;border-radius:2px;"></div>
-                        <div style="flex:1;display:grid;grid-template-columns:repeat(4,1fr);gap:4px;">
-                            <div style="background:#334155;height:22px;border-radius:2px;"></div>
-                            <div style="background:#334155;height:22px;border-radius:2px;"></div>
-                            <div style="background:#334155;height:22px;border-radius:2px;"></div>
-                            <div style="background:#334155;height:22px;border-radius:2px;"></div>
-                            <div style="background:#334155;height:22px;border-radius:2px;"></div>
-                            <div style="background:#334155;height:22px;border-radius:2px;"></div>
-                            <div style="background:#334155;height:22px;border-radius:2px;"></div>
-                            <div style="background:#334155;height:22px;border-radius:2px;"></div>
+    <div class="slide-container" id="slide6"
+        style="padding:48px 60px;display:flex;align-items:center;justify-content:center;">
+        <div style="max-width:1080px;width:100%;text-align:left;">
+            <!-- Eyebrow -->
+            <div style="display:flex;align-items:center;margin-bottom:24px;">
+                <span
+                    style="font-size:11px;font-weight:600;letter-spacing:0.16em;text-transform:lowercase;color:#38bdf8;">explorations
+                    — app customization flow</span>
+            </div>
+            <!-- Headline -->
+            <h2
+                style="font-size:44px;font-weight:400;line-height:1.15;letter-spacing:-0.02em;color:#f8fafc;margin-bottom:40px;">
+                Two directions.<br><em style="font-style:italic;color:#38bdf8;">Both wrong</em> for different reasons.
+            </h2>
+            <!-- Two Column Cards -->
+            <div class="two-column" style="gap:24px; align-items: stretch;">
+                <!-- Exploration A -->
+                <div
+                    style="background:#0f172a;border:1px solid rgba(255,255,255,0.08);border-radius:6px;padding:32px;display:flex;flex-direction:column;">
+                    <div
+                        style="font-size:11px;font-weight:600;letter-spacing:0.12em;text-transform:lowercase;color:#94a3b8;margin-bottom:12px;">
+                        exploration a</div>
+                    <h3 style="font-size:22px;font-weight:600;color:#f8fafc;margin-bottom:8px;">Full granular control
+                    </h3>
+                    <p style="font-size:14px;font-style:italic;color:#94a3b8;margin-bottom:20px;">"Give creators a
+                        design tool inside the product"</p>
+                    <!-- Wireframe placeholder -->
+                    <div
+                        style="background:#1e293b;border-radius:4px;padding:20px;margin-bottom:20px;border:1px solid rgba(255,255,255,0.06);">
+                        <div style="display:flex;gap:8px;margin-bottom:12px;">
+                            <div style="width:8px;height:8px;border-radius:50%;background:#475569;"></div>
+                            <div style="width:8px;height:8px;border-radius:50%;background:#475569;"></div>
+                            <div style="width:8px;height:8px;border-radius:50%;background:#475569;"></div>
+                        </div>
+                        <div style="display:flex;gap:8px;">
+                            <div style="width:80px;background:#334155;height:48px;border-radius:2px;"></div>
+                            <div style="flex:1;display:grid;grid-template-columns:repeat(4,1fr);gap:4px;">
+                                <div style="background:#334155;height:22px;border-radius:2px;"></div>
+                                <div style="background:#334155;height:22px;border-radius:2px;"></div>
+                                <div style="background:#334155;height:22px;border-radius:2px;"></div>
+                                <div style="background:#334155;height:22px;border-radius:2px;"></div>
+                                <div style="background:#334155;height:22px;border-radius:2px;"></div>
+                                <div style="background:#334155;height:22px;border-radius:2px;"></div>
+                                <div style="background:#334155;height:22px;border-radius:2px;"></div>
+                                <div style="background:#334155;height:22px;border-radius:2px;"></div>
+                            </div>
                         </div>
                     </div>
-                </div>
-                <p style="font-size:13px;line-height:1.6;color:#94a3b8;margin-bottom:20px;">Explored giving creators total, pixel-level control over their app's UI — typography, spacing, layout, color tokens, component visibility. Maximum flexibility on paper.</p>
-                <!-- Rejected banner -->
-                <div style="background:rgba(248,113,113,0.08);border:1px solid rgba(248,113,113,0.2);border-radius:4px;padding:16px;margin-top:auto;">
-                    <div style="font-size:11px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:#f87171;margin-bottom:6px;">✕ Rejected — cognitive overload</div>
-                    <p style="font-size:12px;line-height:1.6;color:#94a3b8;">User testing revealed creators aren't designers. Faced with granular controls, they became paralyzed. Time-to-launch spiked and support tickets followed.</p>
-                </div>
-            </div>
-            <!-- Exploration B -->
-            <div style="background:#0f172a;border:1px solid rgba(255,255,255,0.08);border-radius:6px;padding:32px;display:flex;flex-direction:column;">
-                <div style="font-size:11px;font-weight:600;letter-spacing:0.12em;text-transform:lowercase;color:#94a3b8;margin-bottom:12px;">exploration b</div>
-                <h3 style="font-size:22px;font-weight:600;color:#f8fafc;margin-bottom:8px;">Single locked theme</h3>
-                <p style="font-size:14px;font-style:italic;color:#94a3b8;margin-bottom:20px;">"One opinionated template, ship fast"</p>
-                <!-- Wireframe placeholder -->
-                <div style="background:#1e293b;border-radius:4px;padding:20px;margin-bottom:20px;border:1px solid rgba(255,255,255,0.06);">
-                    <div style="display:flex;gap:8px;margin-bottom:12px;">
-                        <div style="width:8px;height:8px;border-radius:50%;background:#475569;"></div>
-                        <div style="width:8px;height:8px;border-radius:50%;background:#475569;"></div>
-                        <div style="width:8px;height:8px;border-radius:50%;background:#475569;"></div>
+                    <p style="font-size:13px;line-height:1.6;color:#94a3b8;margin-bottom:20px;">Explored giving creators
+                        total, pixel-level control over their app's UI — typography, spacing, layout, color tokens,
+                        component visibility. Maximum flexibility on paper.</p>
+                    <!-- Rejected banner -->
+                    <div
+                        style="background:rgba(248,113,113,0.08);border:1px solid rgba(248,113,113,0.2);border-radius:4px;padding:16px;margin-top:auto;">
+                        <div
+                            style="font-size:11px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:#f87171;margin-bottom:6px;">
+                            ✕ Rejected — cognitive overload</div>
+                        <p style="font-size:12px;line-height:1.6;color:#94a3b8;">User testing revealed creators aren't
+                            designers. Faced with granular controls, they became paralyzed. Time-to-launch spiked and
+                            support tickets followed.</p>
                     </div>
-                    <div style="background:#334155;height:32px;border-radius:2px;margin-bottom:8px;display:flex;align-items:center;justify-content:center;">
-                        <div style="width:12px;height:12px;border-radius:50%;background:#64748b;"></div>
-                    </div>
-                    <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:4px;margin-bottom:8px;">
-                        <div style="background:#334155;height:18px;border-radius:2px;"></div>
-                        <div style="background:#334155;height:18px;border-radius:2px;"></div>
-                        <div style="background:#334155;height:18px;border-radius:2px;"></div>
-                        <div style="background:#334155;height:18px;border-radius:2px;"></div>
-                    </div>
-                    <div style="background:#475569;height:14px;border-radius:2px;width:70%;margin:0 auto;"></div>
                 </div>
-                <p style="font-size:13px;line-height:1.6;color:#94a3b8;margin-bottom:20px;">Stripped it back to a single, opinionated template. Great for engineering velocity — one codebase, one visual system, fast to maintain and easy to QA across platforms.</p>
-                <!-- Rejected banner -->
-                <div style="background:rgba(248,113,113,0.08);border:1px solid rgba(248,113,113,0.2);border-radius:4px;padding:16px;margin-top:auto;">
-                    <div style="font-size:11px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:#f87171;margin-bottom:6px;">✕ Rejected — brand identity loss</div>
-                    <p style="font-size:12px;line-height:1.6;color:#94a3b8;">Enterprise clients pushed back hard. A media brand putting their channel on the same template as a fitness creator diluted their identity.</p>
+                <!-- Exploration B -->
+                <div
+                    style="background:#0f172a;border:1px solid rgba(255,255,255,0.08);border-radius:6px;padding:32px;display:flex;flex-direction:column;">
+                    <div
+                        style="font-size:11px;font-weight:600;letter-spacing:0.12em;text-transform:lowercase;color:#94a3b8;margin-bottom:12px;">
+                        exploration b</div>
+                    <h3 style="font-size:22px;font-weight:600;color:#f8fafc;margin-bottom:8px;">Single locked theme</h3>
+                    <p style="font-size:14px;font-style:italic;color:#94a3b8;margin-bottom:20px;">"One opinionated
+                        template, ship fast"</p>
+                    <!-- Wireframe placeholder -->
+                    <div
+                        style="background:#1e293b;border-radius:4px;padding:20px;margin-bottom:20px;border:1px solid rgba(255,255,255,0.06);">
+                        <div style="display:flex;gap:8px;margin-bottom:12px;">
+                            <div style="width:8px;height:8px;border-radius:50%;background:#475569;"></div>
+                            <div style="width:8px;height:8px;border-radius:50%;background:#475569;"></div>
+                            <div style="width:8px;height:8px;border-radius:50%;background:#475569;"></div>
+                        </div>
+                        <div
+                            style="background:#334155;height:32px;border-radius:2px;margin-bottom:8px;display:flex;align-items:center;justify-content:center;">
+                            <div style="width:12px;height:12px;border-radius:50%;background:#64748b;"></div>
+                        </div>
+                        <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:4px;margin-bottom:8px;">
+                            <div style="background:#334155;height:18px;border-radius:2px;"></div>
+                            <div style="background:#334155;height:18px;border-radius:2px;"></div>
+                            <div style="background:#334155;height:18px;border-radius:2px;"></div>
+                            <div style="background:#334155;height:18px;border-radius:2px;"></div>
+                        </div>
+                        <div style="background:#475569;height:14px;border-radius:2px;width:70%;margin:0 auto;"></div>
+                    </div>
+                    <p style="font-size:13px;line-height:1.6;color:#94a3b8;margin-bottom:20px;">Stripped it back to a
+                        single, opinionated template. Great for engineering velocity — one codebase, one visual system,
+                        fast to maintain and easy to QA across platforms.</p>
+                    <!-- Rejected banner -->
+                    <div
+                        style="background:rgba(248,113,113,0.08);border:1px solid rgba(248,113,113,0.2);border-radius:4px;padding:16px;margin-top:auto;">
+                        <div
+                            style="font-size:11px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:#f87171;margin-bottom:6px;">
+                            ✕ Rejected — brand identity loss</div>
+                        <p style="font-size:12px;line-height:1.6;color:#94a3b8;">Enterprise clients pushed back hard. A
+                            media brand putting their channel on the same template as a fitness creator diluted their
+                            identity.</p>
+                    </div>
                 </div>
             </div>
         </div>
-      </div>
     </div>
 
     <!-- Slide 6b: The Pivot — Modular Template System -->
-    <div class="slide-container" id="slide6b" style="padding:48px 60px;display:flex;align-items:center;justify-content:center;">
-      <div style="max-width:1080px;width:100%;text-align:left;">
-        <div style="display:grid;grid-template-columns:1fr 1fr;gap:48px;align-items:start;">
-            <!-- Left: The Pivot -->
-            <div>
-                <div style="font-size:11px;font-weight:600;letter-spacing:0.16em;text-transform:lowercase;color:#38bdf8;margin-bottom:20px;">the pivot</div>
-                <h2 style="font-size:44px;font-weight:400;line-height:1.15;letter-spacing:-0.02em;color:#f8fafc;margin-bottom:28px;">Structured freedom.<br>The <em style="font-style:italic;color:#38bdf8;">modular<br>template</em> system.</h2>
-                <p style="font-size:15px;line-height:1.75;color:#94a3b8;margin-bottom:28px;">Neither full control or a locked template solved the problem. The answer was a constrained customization framework — macro flexibility, locked micro — that satisfied both creators and platform compliance.</p>
-                <!-- Key Insight -->
-                <div style="border-left:3px solid #38bdf8;padding:16px 20px;background:rgba(56,189,248,0.05);border-radius:0 4px 4px 0;margin-bottom:24px;">
-                    <div style="font-size:11px;font-weight:700;letter-spacing:0.1em;text-transform:lowercase;color:#38bdf8;margin-bottom:6px;">the key insight</div>
-                    <p style="font-size:14px;line-height:1.65;color:#cbd5e1;">Creators needed to express their <em style="font-style:italic;">brand</em>, not design an <em style="font-style:italic;">app</em>. The distinction changed everything about what we locked down and what we opened up.</p>
+    <div class="slide-container" id="slide6b"
+        style="padding:48px 60px;display:flex;align-items:center;justify-content:center;">
+        <div style="max-width:1080px;width:100%;text-align:left;">
+            <div class="two-column">
+                <!-- Left: The Pivot -->
+                <div>
+                    <div
+                        style="font-size:11px;font-weight:600;letter-spacing:0.16em;text-transform:lowercase;color:#38bdf8;margin-bottom:20px;">
+                        the pivot</div>
+                    <h2
+                        style="font-size:44px;font-weight:400;line-height:1.15;letter-spacing:-0.02em;color:#f8fafc;margin-bottom:28px;">
+                        Structured freedom.<br>The <em style="font-style:italic;color:#38bdf8;">modular<br>template</em>
+                        system.</h2>
+                    <p style="font-size:15px;line-height:1.75;color:#94a3b8;margin-bottom:28px;">Neither full control or
+                        a locked template solved the problem. The answer was a constrained customization framework —
+                        macro flexibility, locked micro — that satisfied both creators and platform compliance.</p>
+                    <!-- Key Insight -->
+                    <div
+                        style="border-left:3px solid #38bdf8;padding:16px 20px;background:rgba(56,189,248,0.05);border-radius:0 4px 4px 0;margin-bottom:24px;">
+                        <div
+                            style="font-size:11px;font-weight:700;letter-spacing:0.1em;text-transform:lowercase;color:#38bdf8;margin-bottom:6px;">
+                            the key insight</div>
+                        <p style="font-size:14px;line-height:1.65;color:#cbd5e1;">Creators needed to express their <em
+                                style="font-style:italic;">brand</em>, not design an <em
+                                style="font-style:italic;">app</em>. The distinction changed everything about what we
+                            locked down and what we opened up.</p>
+                    </div>
+                    <!-- Platform tags -->
+                    <div style="display:flex;gap:8px;flex-wrap:wrap;">
+                        <span
+                            style="font-size:11px;padding:5px 12px;border:1px solid rgba(255,255,255,0.12);border-radius:3px;color:#94a3b8;letter-spacing:0.04em;">apple
+                            guidelines</span>
+                        <span
+                            style="font-size:11px;padding:5px 12px;border:1px solid rgba(255,255,255,0.12);border-radius:3px;color:#94a3b8;letter-spacing:0.04em;">roku
+                            compliance</span>
+                        <span
+                            style="font-size:11px;padding:5px 12px;border:1px solid rgba(255,255,255,0.12);border-radius:3px;color:#94a3b8;letter-spacing:0.04em;">android
+                            tv</span>
+                        <span
+                            style="font-size:11px;padding:5px 12px;border:1px solid rgba(255,255,255,0.12);border-radius:3px;color:#94a3b8;letter-spacing:0.04em;">fire
+                            tv</span>
+                    </div>
                 </div>
-                <!-- Platform tags -->
-                <div style="display:flex;gap:8px;flex-wrap:wrap;">
-                    <span style="font-size:11px;padding:5px 12px;border:1px solid rgba(255,255,255,0.12);border-radius:3px;color:#94a3b8;letter-spacing:0.04em;">apple guidelines</span>
-                    <span style="font-size:11px;padding:5px 12px;border:1px solid rgba(255,255,255,0.12);border-radius:3px;color:#94a3b8;letter-spacing:0.04em;">roku compliance</span>
-                    <span style="font-size:11px;padding:5px 12px;border:1px solid rgba(255,255,255,0.12);border-radius:3px;color:#94a3b8;letter-spacing:0.04em;">android tv</span>
-                    <span style="font-size:11px;padding:5px 12px;border:1px solid rgba(255,255,255,0.12);border-radius:3px;color:#94a3b8;letter-spacing:0.04em;">fire tv</span>
-                </div>
-            </div>
-            <!-- Right: Customization Framework -->
-            <div>
-                <div style="font-size:11px;font-weight:600;letter-spacing:0.12em;text-transform:lowercase;color:#38bdf8;margin-bottom:16px;font-style:italic;">customization framework — what creators can and can't touch</div>
-                <!-- Layer 1: Creator Controls -->
-                <div style="background:#0f172a;border:1px solid rgba(255,255,255,0.08);border-radius:6px;padding:20px;margin-bottom:12px;">
-                    <div style="display:flex;gap:16px;align-items:start;">
-                        <div style="font-size:10px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:#4ade80;white-space:nowrap;padding-top:2px;">Creator<br>controls</div>
-                        <div>
-                            <div style="font-size:15px;font-weight:600;color:#f8fafc;margin-bottom:4px;">Brand layer — fully customizable</div>
-                            <p style="font-size:12px;color:#94a3b8;margin-bottom:10px;">Hero imagery, brand colors, logo, channel name, featured content selection</p>
-                            <div style="display:flex;gap:6px;flex-wrap:wrap;">
-                                <span style="font-size:10px;padding:3px 8px;background:rgba(74,222,128,0.1);border:1px solid rgba(74,222,128,0.2);border-radius:2px;color:#4ade80;">Hero image</span>
-                                <span style="font-size:10px;padding:3px 8px;background:rgba(74,222,128,0.1);border:1px solid rgba(74,222,128,0.2);border-radius:2px;color:#4ade80;">Brand color</span>
-                                <span style="font-size:10px;padding:3px 8px;background:rgba(74,222,128,0.1);border:1px solid rgba(74,222,128,0.2);border-radius:2px;color:#4ade80;">Logo</span>
-                                <span style="font-size:10px;padding:3px 8px;background:rgba(74,222,128,0.1);border:1px solid rgba(74,222,128,0.2);border-radius:2px;color:#4ade80;">Featured content</span>
+                <!-- Right: Customization Framework -->
+                <div>
+                    <div
+                        style="font-size:11px;font-weight:600;letter-spacing:0.12em;text-transform:lowercase;color:#38bdf8;margin-bottom:16px;font-style:italic;">
+                        customization framework — what creators can and can't touch</div>
+                    <!-- Layer 1: Creator Controls -->
+                    <div
+                        style="background:#0f172a;border:1px solid rgba(255,255,255,0.08);border-radius:6px;padding:20px;margin-bottom:12px;">
+                        <div style="display:flex;gap:16px;align-items:start;">
+                            <div
+                                style="font-size:10px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:#4ade80;white-space:nowrap;padding-top:2px;">
+                                Creator<br>controls</div>
+                            <div>
+                                <div style="font-size:15px;font-weight:600;color:#f8fafc;margin-bottom:4px;">Brand layer
+                                    — fully customizable</div>
+                                <p style="font-size:12px;color:#94a3b8;margin-bottom:10px;">Hero imagery, brand colors,
+                                    logo, channel name, featured content selection</p>
+                                <div style="display:flex;gap:6px;flex-wrap:wrap;">
+                                    <span
+                                        style="font-size:10px;padding:3px 8px;background:rgba(74,222,128,0.1);border:1px solid rgba(74,222,128,0.2);border-radius:2px;color:#4ade80;">Hero
+                                        image</span>
+                                    <span
+                                        style="font-size:10px;padding:3px 8px;background:rgba(74,222,128,0.1);border:1px solid rgba(74,222,128,0.2);border-radius:2px;color:#4ade80;">Brand
+                                        color</span>
+                                    <span
+                                        style="font-size:10px;padding:3px 8px;background:rgba(74,222,128,0.1);border:1px solid rgba(74,222,128,0.2);border-radius:2px;color:#4ade80;">Logo</span>
+                                    <span
+                                        style="font-size:10px;padding:3px 8px;background:rgba(74,222,128,0.1);border:1px solid rgba(74,222,128,0.2);border-radius:2px;color:#4ade80;">Featured
+                                        content</span>
+                                </div>
                             </div>
                         </div>
                     </div>
-                </div>
-                <!-- Layer 2: Guided Selection -->
-                <div style="background:#0f172a;border:1px solid rgba(255,255,255,0.08);border-radius:6px;padding:20px;margin-bottom:12px;">
-                    <div style="display:flex;gap:16px;align-items:start;">
-                        <div style="font-size:10px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:#fbbf24;white-space:nowrap;padding-top:2px;">Guided<br>selection</div>
-                        <div>
-                            <div style="font-size:15px;font-weight:600;color:#f8fafc;margin-bottom:4px;">Layout layer — modular choice</div>
-                            <p style="font-size:12px;color:#94a3b8;margin-bottom:10px;">Content carousel arrangement, grid vs. list views, section ordering — from a curated set of validated options</p>
-                            <div style="display:flex;gap:6px;flex-wrap:wrap;">
-                                <span style="font-size:10px;padding:3px 8px;background:rgba(251,191,36,0.1);border:1px solid rgba(251,191,36,0.2);border-radius:2px;color:#fbbf24;">Carousel order</span>
-                                <span style="font-size:10px;padding:3px 8px;background:rgba(251,191,36,0.1);border:1px solid rgba(251,191,36,0.2);border-radius:2px;color:#fbbf24;">Grid / list toggle</span>
-                                <span style="font-size:10px;padding:3px 8px;background:rgba(251,191,36,0.1);border:1px solid rgba(251,191,36,0.2);border-radius:2px;color:#fbbf24;">Section layout</span>
+                    <!-- Layer 2: Guided Selection -->
+                    <div
+                        style="background:#0f172a;border:1px solid rgba(255,255,255,0.08);border-radius:6px;padding:20px;margin-bottom:12px;">
+                        <div style="display:flex;gap:16px;align-items:start;">
+                            <div
+                                style="font-size:10px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:#fbbf24;white-space:nowrap;padding-top:2px;">
+                                Guided<br>selection</div>
+                            <div>
+                                <div style="font-size:15px;font-weight:600;color:#f8fafc;margin-bottom:4px;">Layout
+                                    layer — modular choice</div>
+                                <p style="font-size:12px;color:#94a3b8;margin-bottom:10px;">Content carousel
+                                    arrangement, grid vs. list views, section ordering — from a curated set of validated
+                                    options</p>
+                                <div style="display:flex;gap:6px;flex-wrap:wrap;">
+                                    <span
+                                        style="font-size:10px;padding:3px 8px;background:rgba(251,191,36,0.1);border:1px solid rgba(251,191,36,0.2);border-radius:2px;color:#fbbf24;">Carousel
+                                        order</span>
+                                    <span
+                                        style="font-size:10px;padding:3px 8px;background:rgba(251,191,36,0.1);border:1px solid rgba(251,191,36,0.2);border-radius:2px;color:#fbbf24;">Grid
+                                        / list toggle</span>
+                                    <span
+                                        style="font-size:10px;padding:3px 8px;background:rgba(251,191,36,0.1);border:1px solid rgba(251,191,36,0.2);border-radius:2px;color:#fbbf24;">Section
+                                        layout</span>
+                                </div>
                             </div>
                         </div>
                     </div>
-                </div>
-                <!-- Layer 3: Platform Locked -->
-                <div style="background:#0f172a;border:1px solid rgba(255,255,255,0.08);border-radius:6px;padding:20px;margin-bottom:16px;">
-                    <div style="display:flex;gap:16px;align-items:start;">
-                        <div style="font-size:10px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:#94a3b8;white-space:nowrap;padding-top:2px;">Platform<br>locked</div>
-                        <div>
-                            <div style="font-size:15px;font-weight:600;color:#f8fafc;margin-bottom:4px;">Core navigation UX — locked</div>
-                            <p style="font-size:12px;color:#94a3b8;margin-bottom:10px;">Tab structure, player controls, search, account flows — standardized to meet Apple, Roku, and Android TV compliance</p>
-                            <div style="display:flex;gap:6px;flex-wrap:wrap;">
-                                <span style="font-size:10px;padding:3px 8px;background:rgba(148,163,184,0.1);border:1px solid rgba(148,163,184,0.2);border-radius:2px;color:#94a3b8;">Nav structure</span>
-                                <span style="font-size:10px;padding:3px 8px;background:rgba(148,163,184,0.1);border:1px solid rgba(148,163,184,0.2);border-radius:2px;color:#94a3b8;">Player controls</span>
-                                <span style="font-size:10px;padding:3px 8px;background:rgba(148,163,184,0.1);border:1px solid rgba(148,163,184,0.2);border-radius:2px;color:#94a3b8;">Search</span>
-                                <span style="font-size:10px;padding:3px 8px;background:rgba(148,163,184,0.1);border:1px solid rgba(148,163,184,0.2);border-radius:2px;color:#94a3b8;">Account flows</span>
+                    <!-- Layer 3: Platform Locked -->
+                    <div
+                        style="background:#0f172a;border:1px solid rgba(255,255,255,0.08);border-radius:6px;padding:20px;margin-bottom:16px;">
+                        <div style="display:flex;gap:16px;align-items:start;">
+                            <div
+                                style="font-size:10px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:#94a3b8;white-space:nowrap;padding-top:2px;">
+                                Platform<br>locked</div>
+                            <div>
+                                <div style="font-size:15px;font-weight:600;color:#f8fafc;margin-bottom:4px;">Core
+                                    navigation UX — locked</div>
+                                <p style="font-size:12px;color:#94a3b8;margin-bottom:10px;">Tab structure, player
+                                    controls, search, account flows — standardized to meet Apple, Roku, and Android TV
+                                    compliance</p>
+                                <div style="display:flex;gap:6px;flex-wrap:wrap;">
+                                    <span
+                                        style="font-size:10px;padding:3px 8px;background:rgba(148,163,184,0.1);border:1px solid rgba(148,163,184,0.2);border-radius:2px;color:#94a3b8;">Nav
+                                        structure</span>
+                                    <span
+                                        style="font-size:10px;padding:3px 8px;background:rgba(148,163,184,0.1);border:1px solid rgba(148,163,184,0.2);border-radius:2px;color:#94a3b8;">Player
+                                        controls</span>
+                                    <span
+                                        style="font-size:10px;padding:3px 8px;background:rgba(148,163,184,0.1);border:1px solid rgba(148,163,184,0.2);border-radius:2px;color:#94a3b8;">Search</span>
+                                    <span
+                                        style="font-size:10px;padding:3px 8px;background:rgba(148,163,184,0.1);border:1px solid rgba(148,163,184,0.2);border-radius:2px;color:#94a3b8;">Account
+                                        flows</span>
+                                </div>
                             </div>
                         </div>
                     </div>
-                </div>
-                <!-- Legend -->
-                <div style="display:flex;gap:20px;font-size:11px;color:#64748b;">
-                    <span>🟢 Creator can customize</span>
-                    <span>🟡 Guided options</span>
-                    <span>⚪ Platform locked</span>
+                    <!-- Legend -->
+                    <div style="display:flex;gap:12px;font-size:11px;color:#64748b;">
+                        <span style="display:flex;align-items:center;gap:4px;line-height:1.2;">
+                            <span style="flex-shrink:0;">🟢</span>
+                            <span class="legend-desktop">Creator can customize</span>
+                            <span class="legend-mobile">Customizable</span>
+                        </span>
+                        <span style="display:flex;align-items:center;gap:4px;line-height:1.2;"><span style="flex-shrink:0;">🟡</span><span>Guided options</span></span>
+                        <span style="display:flex;align-items:center;gap:4px;line-height:1.2;">
+                            <span style="flex-shrink:0;">⚪</span>
+                            <span class="legend-desktop">Platform locked</span>
+                            <span class="legend-mobile">Locked</span>
+                        </span>
+                    </div>
                 </div>
             </div>
         </div>
-      </div>
     </div>
 
     <!-- Slide 7: Results & Systems Thinking -->
     <div class="slide-container" id="slide7" style="padding:48px 60px;">
-        <div style="display:grid;grid-template-columns:1fr 1fr;gap:40px;align-items:start;max-width:1080px;margin:0 auto;">
+        <div class="two-column" style="max-width:1080px;margin:0 auto;">
             <div>
-                <h2 style="font-size:44px;font-weight:400;line-height:1.15;letter-spacing:-0.02em;color:#f8fafc;margin-bottom:28px;">Results & systems thinking <em style="font-style:italic;color:#38bdf8;">scaling to thousands of apps.</em></h2>
-                <p>This system scaled to support thousands of enterprise creators globally, standardizing the UI while allowing for rich brand expression.</p>
-                <p style="margin-top: 20px;"><span class="highlight-text" style="color:#38bdf8;">For Versant:</span> Scalability isn't about more components; it's about <span class="highlight-text">semantic alignment</span>. By the end, we weren't just shipping pixels—we were shipping machine-readable logic that reduced rework across the entire engineering org.</p>
-                <p style="margin-top: 20px;"><span class="highlight-text" style="color:#818cf8;">Key Takeaway:</span> A unified design token system, instituted early in the engineering pipeline, is the foundation for a "house of brands" approach.</p>
+                <h2
+                    style="font-size:44px;font-weight:400;line-height:1.15;letter-spacing:-0.02em;color:#f8fafc;margin-bottom:28px;">
+                    Results & systems thinking <em style="font-style:italic;color:#38bdf8;">scaling to thousands of
+                        apps.</em></h2>
+                <p>This system scaled to support thousands of enterprise creators globally, standardizing the UI while
+                    allowing for rich brand expression.</p>
+                <p style="margin-top: 20px;"><span class="highlight-text" style="color:#38bdf8;">For Versant:</span>
+                    Scalability isn't about more components; it's about <span class="highlight-text">semantic
+                        alignment</span>. By the end, we weren't just shipping pixels—we were shipping machine-readable
+                    logic that reduced rework across the entire engineering org.</p>
+                <p style="margin-top: 20px;"><span class="highlight-text" style="color:#818cf8;">Key Takeaway:</span> A
+                    unified design token system, instituted early in the engineering pipeline, is the foundation for a
+                    "house of brands" approach.</p>
             </div>
             <div style="display:flex;flex-direction:column;gap:16px;">
-                <img src="images/vimeo 04A.png" alt="Vimeo Streaming app interface" style="width:100%;border-radius:6px;cursor:pointer;border:1px solid rgba(255,255,255,0.08);transition:opacity 0.2s;" onclick="openSlideLightbox(this.src)" onmouseover="this.style.opacity='0.85'" onmouseout="this.style.opacity='1'">
-                <img src="images/vimeo 04B.png" alt="Vimeo Streaming app builder" style="width:100%;border-radius:6px;cursor:pointer;border:1px solid rgba(255,255,255,0.08);transition:opacity 0.2s;" onclick="openSlideLightbox(this.src)" onmouseover="this.style.opacity='0.85'" onmouseout="this.style.opacity='1'">
+                <img src="images/vimeo 04A.png" alt="Vimeo Streaming app interface"
+                    style="width:100%;border-radius:6px;cursor:pointer;border:1px solid rgba(255,255,255,0.08);transition:opacity 0.2s;"
+                    onclick="openSlideLightbox(this.src)" onmouseover="this.style.opacity='0.85'"
+                    onmouseout="this.style.opacity='1'">
+                <img src="images/vimeo 04B.png" alt="Vimeo Streaming app builder"
+                    style="width:100%;border-radius:6px;cursor:pointer;border:1px solid rgba(255,255,255,0.08);transition:opacity 0.2s;"
+                    onclick="openSlideLightbox(this.src)" onmouseover="this.style.opacity='0.85'"
+                    onmouseout="this.style.opacity='1'">
             </div>
         </div>
     </div>
 
     <!-- Lightbox Overlay -->
-    <div id="slideLightbox" style="display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.92);z-index:9999;cursor:pointer;justify-content:center;align-items:center;" onclick="closeSlideLightbox()">
-        <img id="slideLightboxImg" src="" alt="" style="max-width:90%;max-height:90%;object-fit:contain;border-radius:4px;">
+    <div id="slideLightbox"
+        style="display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.92);z-index:9999;cursor:pointer;justify-content:center;align-items:center;"
+        onclick="closeSlideLightbox()">
+        <img id="slideLightboxImg" src="" alt=""
+            style="max-width:90%;max-height:90%;object-fit:contain;border-radius:4px;">
     </div>
 
     <!-- Slide 8: Looking Glass Hook (Case Study 02 Hero) -->
-    <div class="slide-container" id="slide8" style="padding:48px 60px;display:flex;align-items:center;justify-content:center;background:#000;">
-      <div style="max-width:1000px;width:100%;text-align:left;">
-        <!-- Eyebrow -->
-        <div style="display:flex;align-items:center;margin-bottom:24px;">
-            <span style="font-size:11px;font-weight:600;letter-spacing:0.16em;text-transform:lowercase;color:#8B5CF6;">emerging tech · looking glass · 2023–2024</span>
+    <div class="slide-container" id="slide8"
+        style="padding:48px 60px;display:flex;align-items:center;justify-content:center;background:#000;">
+        <div style="max-width:1000px;width:100%;text-align:left;">
+            <!-- Eyebrow -->
+            <div style="display:flex;align-items:center;margin-bottom:24px;">
+                <span
+                    style="font-size:11px;font-weight:600;letter-spacing:0.16em;text-transform:lowercase;color:#8B5CF6;">emerging
+                    tech · looking glass · 2023–2024</span>
+            </div>
+            <!-- Headline -->
+            <h2
+                style="font-size:52px;font-weight:400;line-height:1.1;letter-spacing:-0.02em;color:#f8fafc;margin-bottom:28px;text-align:left;">
+                Designing for a display<br>that shows <em style="font-style:italic;color:#2DD4BF;">depth</em> —<br>not
+                just pixels.</h2>
+            <!-- Description -->
+            <p
+                style="font-size:16px;line-height:1.75;color:#94a3b8;max-width:600px;margin-bottom:40px;text-align:left;">
+                The Looking Glass Go is a holographic display that sits on your desk. My job was to design the mobile
+                companion app that bridges a phone camera to a 3D lenticular screen — a problem with no existing
+                playbook.</p>
+            <!-- Stats Grid -->
+            <div class="lkg-stats"
+                style="display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:rgba(255,255,255,0.25);border-radius:4px;overflow:hidden;border:1px solid rgba(255,255,255,0.1);">
+                <div style="padding:24px 20px;background:#151b2e;">
+                    <div style="font-size:32px;font-weight:600;color:#8B5CF6;margin-bottom:6px;">0→1</div>
+                    <div
+                        style="font-size:11px;font-weight:500;letter-spacing:0.08em;text-transform:lowercase;color:#94a3b8;">
+                        mobile app built from scratch</div>
+                </div>
+                <div style="padding:24px 20px;background:#151b2e;">
+                    <div style="font-size:32px;font-weight:600;color:#2DD4BF;margin-bottom:6px;">2D→3D</div>
+                    <div
+                        style="font-size:11px;font-weight:500;letter-spacing:0.08em;text-transform:lowercase;color:#94a3b8;">
+                        AI-powered depth conversion</div>
+                </div>
+                <div style="padding:24px 20px;background:#151b2e;">
+                    <div style="font-size:32px;font-weight:600;color:#8B5CF6;margin-bottom:6px;">AI</div>
+                    <div
+                        style="font-size:11px;font-weight:500;letter-spacing:0.08em;text-transform:lowercase;color:#94a3b8;">
+                        depth map generation in cloud</div>
+                </div>
+                <div style="padding:24px 20px;background:#151b2e;">
+                    <div style="font-size:32px;font-weight:600;color:#f8fafc;margin-bottom:6px;">v1</div>
+                    <div
+                        style="font-size:11px;font-weight:500;letter-spacing:0.08em;text-transform:lowercase;color:#94a3b8;">
+                        shipped to hardware customers</div>
+                </div>
+            </div>
         </div>
-        <!-- Headline -->
-        <h2 style="font-size:52px;font-weight:400;line-height:1.1;letter-spacing:-0.02em;color:#f8fafc;margin-bottom:28px;text-align:left;">Designing for a display<br>that shows <em style="font-style:italic;color:#2DD4BF;">depth</em> —<br>not just pixels.</h2>
-        <!-- Description -->
-        <p style="font-size:16px;line-height:1.75;color:#94a3b8;max-width:600px;margin-bottom:40px;text-align:left;">The Looking Glass Go is a holographic display that sits on your desk. My job was to design the mobile companion app that bridges a phone camera to a 3D lenticular screen — a problem with no existing playbook.</p>
-        <!-- Stats Grid -->
-        <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:rgba(255,255,255,0.08);border-radius:4px;overflow:hidden;border:1px solid rgba(255,255,255,0.1);">
-            <div style="padding:24px 20px;background:#151b2e;">
-                <div style="font-size:32px;font-weight:600;color:#8B5CF6;margin-bottom:6px;">0→1</div>
-                <div style="font-size:11px;font-weight:500;letter-spacing:0.08em;text-transform:lowercase;color:#94a3b8;">mobile app built from scratch</div>
-            </div>
-            <div style="padding:24px 20px;background:#151b2e;">
-                <div style="font-size:32px;font-weight:600;color:#2DD4BF;margin-bottom:6px;">2D→3D</div>
-                <div style="font-size:11px;font-weight:500;letter-spacing:0.08em;text-transform:lowercase;color:#94a3b8;">AI-powered depth conversion</div>
-            </div>
-            <div style="padding:24px 20px;background:#151b2e;">
-                <div style="font-size:32px;font-weight:600;color:#8B5CF6;margin-bottom:6px;">AI</div>
-                <div style="font-size:11px;font-weight:500;letter-spacing:0.08em;text-transform:lowercase;color:#94a3b8;">depth map generation in cloud</div>
-            </div>
-            <div style="padding:24px 20px;background:#151b2e;">
-                <div style="font-size:32px;font-weight:600;color:#f8fafc;margin-bottom:6px;">v1</div>
-                <div style="font-size:11px;font-weight:500;letter-spacing:0.08em;text-transform:lowercase;color:#94a3b8;">shipped to hardware customers</div>
-            </div>
-        </div>
-      </div>
     </div>
 
     <!-- Slide 8b: Looking Glass Teaser Video -->
-    <div class="slide-container" id="slide8b" style="padding:0;background:#000;display:flex;align-items:center;justify-content:center;">
-        <div style="width:100%;max-width:1100px;padding:40px 60px;">
+    <div class="slide-container" id="slide8b"
+        style="background:#000;display:flex;align-items:center;justify-content:center;">
+        <div class="video-embed-wrapper">
             <div style="position:relative;padding-bottom:56.25%;height:0;overflow:hidden;border-radius:4px;">
                 <iframe src="https://www.youtube.com/embed/wefvzabaxvY?autoplay=0&controls=1&rel=0&modestbranding=1"
                     style="position:absolute;top:0;left:0;width:100%;height:100%;border:0;"
-                    allow="autoplay; fullscreen; picture-in-picture"
-                    allowfullscreen
+                    allow="autoplay; fullscreen; picture-in-picture" allowfullscreen
                     title="Looking Glass Go Teaser"></iframe>
             </div>
         </div>
@@ -858,16 +1248,31 @@
 
     <!-- Slide 9: The Technical Friction (AI Latency) -->
     <div class="slide-container" id="slide9" style="padding:48px 60px;">
-        <div style="display:grid;grid-template-columns:1fr 1fr;gap:40px;align-items:start;max-width:1080px;margin:0 auto;">
+        <div class="two-column" style="max-width:1080px;margin:0 auto;">
             <div>
-                <h2 style="font-size:44px;font-weight:400;line-height:1.15;letter-spacing:-0.02em;color:#f8fafc;margin-bottom:28px;">The technical friction <em style="font-style:italic;color:#8B5CF6;">interactive transparent loading.</em></h2>
-                <p>Heavy cloud AI compute and hardware firmware. Users thought the app was broken because the hologram didn't appear instantly.</p>
-                <p style="margin-top: 20px;"><span class="highlight-text" style="color:#2DD4BF;">The Solution:</span> Instead of hiding the AI's work behind a spinner, I designed a UI that visually exposed the depth-mapping process. By making the technical friction part of the "magic," we eliminated user drop-off.</p>
-                <p style="margin-top: 20px;"><span class="highlight-text" style="color:#8B5CF6;">The Result:</span> Iterated on visual feedback loops. By showing the "work," we eliminated user drop-off during the generation phase.</p>
+                <h2
+                    style="font-size:44px;font-weight:400;line-height:1.15;letter-spacing:-0.02em;color:#f8fafc;margin-bottom:28px;">
+                    The technical friction <em style="font-style:italic;color:#8B5CF6;">interactive transparent
+                        loading.</em></h2>
+                <p>Heavy cloud AI compute and hardware firmware. Users thought the app was broken because the hologram
+                    didn't appear instantly.</p>
+                <p style="margin-top: 20px;"><span class="highlight-text" style="color:#2DD4BF;">The Solution:</span>
+                    Instead of hiding the AI's work behind a spinner, I designed a UI that visually exposed the
+                    depth-mapping process. By making the technical friction part of the "magic," we eliminated user
+                    drop-off.</p>
+                <p style="margin-top: 20px;"><span class="highlight-text" style="color:#8B5CF6;">The Result:</span>
+                    Iterated on visual feedback loops. By showing the "work," we eliminated user drop-off during the
+                    generation phase.</p>
             </div>
             <div style="display:flex;flex-direction:column;gap:16px;">
-                <img src="images/LKG 04A.png" alt="Looking Glass app screens" style="width:100%;border-radius:6px;cursor:pointer;border:1px solid rgba(255,255,255,0.08);transition:opacity 0.2s;" onclick="openSlideLightbox(this.src)" onmouseover="this.style.opacity='0.85'" onmouseout="this.style.opacity='1'">
-                <img src="images/LKG 04B.png" alt="Looking Glass depth mapping UI" style="width:100%;border-radius:6px;cursor:pointer;border:1px solid rgba(255,255,255,0.08);transition:opacity 0.2s;" onclick="openSlideLightbox(this.src)" onmouseover="this.style.opacity='0.85'" onmouseout="this.style.opacity='1'">
+                <img src="images/LKG 04A.png" alt="Looking Glass app screens"
+                    style="width:100%;border-radius:6px;cursor:pointer;border:1px solid rgba(255,255,255,0.08);transition:opacity 0.2s;"
+                    onclick="openSlideLightbox(this.src)" onmouseover="this.style.opacity='0.85'"
+                    onmouseout="this.style.opacity='1'">
+                <img src="images/LKG 04B.png" alt="Looking Glass depth mapping UI"
+                    style="width:100%;border-radius:6px;cursor:pointer;border:1px solid rgba(255,255,255,0.08);transition:opacity 0.2s;"
+                    onclick="openSlideLightbox(this.src)" onmouseover="this.style.opacity='0.85'"
+                    onmouseout="this.style.opacity='1'">
             </div>
         </div>
     </div>
@@ -879,17 +1284,21 @@
             <div class="content-area">
                 <div class="bleed-text-side">
                     <h3 style="font-size: 32px; margin-bottom: 20px; color: #8B5CF6;">Owning the edge cases</h3>
-                    <p>I also had to design for physical world problems—Bluetooth handshakes dropping, firmware updates failing mid-stream, and Wi-Fi bottlenecks over standard home networks.</p>
-                    <p style="margin-top: 20px;"><span class="highlight-text" style="color:#2DD4BF;">Design Decision:</span> I designed explicit hardware states (connecting, syncing, updating) so a non-technical user always knew what the device was doing.</p>
-                    <p style="margin-top: 20px;"><span class="highlight-text" style="color:#8B5CF6;">Lesson:</span> As designers, we have to own the "edge cases" of connectivity just as much as the "happy path" of the UI. Successfully shipped on iOS/Android alongside the hardware launch.</p>
+                    <p>I also had to design for physical world problems—Bluetooth handshakes dropping, firmware updates
+                        failing mid-stream, and Wi-Fi bottlenecks over standard home networks.</p>
+                    <p style="margin-top: 20px;"><span class="highlight-text" style="color:#2DD4BF;">Design
+                            Decision:</span> I designed explicit hardware states (connecting, syncing, updating) so a
+                        non-technical user always knew what the device was doing.</p>
+                    <p style="margin-top: 20px;"><span class="highlight-text" style="color:#8B5CF6;">Lesson:</span> As
+                        designers, we have to own the "edge cases" of connectivity just as much as the "happy path" of
+                        the UI. Successfully shipped on iOS/Android alongside the hardware launch.</p>
                 </div>
             </div>
         </div>
         <div class="image-container">
-            <img class="bleed-image-side"
-                src="images/LKG 04C.png"
-                alt="Person using a sleek mobile app with 3D elements, dark UI"
-                style="cursor:pointer;" onclick="openSlideLightbox(this.src)">
+            <img class="bleed-image-side" src="images/LKG 04C.png"
+                alt="Person using a sleek mobile app with 3D elements, dark UI" style="cursor:pointer;"
+                onclick="openSlideLightbox(this.src)">
         </div>
     </div>
 
@@ -897,10 +1306,17 @@
     <div class="slide-container" id="slide11">
         <div class="qa-layout">
             <h2>Thank you.</h2>
-            <p style="font-size: 22px; margin-bottom: 30px; color: #cbd5e1; max-width: 800px; margin-left: auto; margin-right: auto;">Between scaling streaming infrastructure at Vimeo and designing 0-to-1 AI tools at Looking Glass, my focus remains: <span class="highlight-text">Taking complex, technical systems and translating them into elegant human experiences.</span></p>
-            <p style="font-size: 20px; margin-bottom: 30px; color: #94a3b8; max-width: 700px; margin-left: auto; margin-right: auto;">As you build out the Versant platform, I want to help you close that gap between design and code—ensuring that the "meaning" of your brands survives the scale of 11+ platforms.</p>
-            <div class="contact-info">
-                don@polisti.co &nbsp;|&nbsp; 929-969-4242 &nbsp;|&nbsp; LinkedIn: /in/donpolistico
+            <p
+                style="font-size: clamp(16px, 4.5vw, 22px); margin-bottom: 30px; color: #cbd5e1; max-width: 800px; margin-left: auto; margin-right: auto;">
+                Between scaling streaming infrastructure at Vimeo and designing 0-to-1 AI tools at Looking Glass, my
+                focus remains: <span class="highlight-text">Taking complex, technical systems and translating them into
+                    elegant human experiences.</span></p>
+            <p
+                style="font-size: clamp(14px, 4vw, 20px); margin-bottom: 30px; color: #94a3b8; max-width: 700px; margin-left: auto; margin-right: auto;">
+                As you build out the Versant platform, I want to help you close that gap between design and
+                code—ensuring that the "meaning" of your brands survives the scale of 11+ platforms.</p>
+            <div class="contact-info" style="font-size: clamp(9px, 2.7vw, 16px); white-space: nowrap;">
+                don@polisti.co &nbsp;|&nbsp; 929-969-4242 &nbsp;|&nbsp; LinkedIn<span class="hide-on-mobile">: /in/donpolistico</span>
             </div>
         </div>
     </div>
@@ -908,91 +1324,91 @@
 </body>
 
 <script>
-// Lightbox functions
-function openSlideLightbox(src) {
-    const lb = document.getElementById('slideLightbox');
-    document.getElementById('slideLightboxImg').src = src;
-    lb.style.display = 'flex';
-}
-function closeSlideLightbox() {
-    document.getElementById('slideLightbox').style.display = 'none';
-}
-document.addEventListener('keydown', function(e) {
-    if (e.key === 'Escape') closeSlideLightbox();
-});
-
-(function() {
-    // Video background
-    const videoIds = ['Jox6R5-rIH0', 'TBsBq7298JU', '9vntypeV5QU', 'eI2PcZPZYKY'];
-    const randomVideoId = videoIds[Math.floor(Math.random() * videoIds.length)];
-    const iframe = document.getElementById('heroYoutube');
-    if (iframe) {
-        iframe.src = `https://www.youtube.com/embed/${randomVideoId}?autoplay=1&mute=1&loop=1&controls=0&playsinline=1&disablekb=1&rel=0&showinfo=0&modestbranding=1&playlist=${randomVideoId}`;
+    // Lightbox functions
+    function openSlideLightbox(src) {
+        const lb = document.getElementById('slideLightbox');
+        document.getElementById('slideLightboxImg').src = src;
+        lb.style.display = 'flex';
     }
+    function closeSlideLightbox() {
+        document.getElementById('slideLightbox').style.display = 'none';
+    }
+    document.addEventListener('keydown', function (e) {
+        if (e.key === 'Escape') closeSlideLightbox();
+    });
 
-    // Grain canvas
-    const canvas = document.getElementById('heroGrain');
-    if (canvas) {
-        const ctx = canvas.getContext('2d');
-        const SIZE = 160;
-        canvas.width = SIZE;
-        canvas.height = SIZE;
-        const img = ctx.createImageData(SIZE, SIZE);
-        function drawGrain() {
-            const d = img.data;
-            for (let i = 0; i < d.length; i += 4) {
-                const v = (Math.random() * 255) | 0;
-                d[i] = d[i + 1] = d[i + 2] = v;
-                d[i + 3] = 255;
-            }
-            ctx.putImageData(img, 0, 0);
-            requestAnimationFrame(drawGrain);
+    (function () {
+        // Video background
+        const videoIds = ['Jox6R5-rIH0', 'TBsBq7298JU', '9vntypeV5QU', 'eI2PcZPZYKY'];
+        const randomVideoId = videoIds[Math.floor(Math.random() * videoIds.length)];
+        const iframe = document.getElementById('heroYoutube');
+        if (iframe) {
+            iframe.src = `https://www.youtube.com/embed/${randomVideoId}?autoplay=1&mute=1&loop=1&controls=0&playsinline=1&disablekb=1&rel=0&showinfo=0&modestbranding=1&playlist=${randomVideoId}`;
         }
-        drawGrain();
-    }
 
-    // Cycling hero headline
-    const headlines = window.heroHeadlines || [
-        { lines: ['15+ years shaping', 'how people'], em: 'watch video.' },
-    ];
-    let hlIdx = 0;
-    const h1 = document.getElementById('heroH1');
-
-    function renderHeadline(h) {
-        const l1 = h.lines[0].split(' ').map(w => ({ text: w }));
-        const l2 = h.lines[1].split(' ').map(w => ({ text: w }));
-        const chunks = [...l1, ...l2, { text: h.em, em: true }];
-        let html = '';
-        chunks.forEach((chunk, i) => {
-            const delay = 0.1 + (i * 0.06);
-            if (chunk.em) {
-                html += `<span class="h1-line" style="margin-right:0.22em;"><span class="h1-line-inner" style="animation-delay:${delay}s"><span class="hero-title-em">${chunk.text}</span></span></span>`;
-            } else {
-                html += `<span class="h1-line" style="margin-right:0.22em;"><span class="h1-line-inner" style="animation-delay:${delay}s">${chunk.text}</span></span>`;
+        // Grain canvas
+        const canvas = document.getElementById('heroGrain');
+        if (canvas) {
+            const ctx = canvas.getContext('2d');
+            const SIZE = 160;
+            canvas.width = SIZE;
+            canvas.height = SIZE;
+            const img = ctx.createImageData(SIZE, SIZE);
+            function drawGrain() {
+                const d = img.data;
+                for (let i = 0; i < d.length; i += 4) {
+                    const v = (Math.random() * 255) | 0;
+                    d[i] = d[i + 1] = d[i + 2] = v;
+                    d[i + 3] = 255;
+                }
+                ctx.putImageData(img, 0, 0);
+                requestAnimationFrame(drawGrain);
             }
-        });
-        h1.innerHTML = html;
-    }
+            drawGrain();
+        }
 
-    function animateIn() {
-        document.querySelectorAll('#heroH1 .h1-line-inner').forEach(el => {
-            el.style.animation = 'none';
-            el.style.opacity = '0';
-            el.style.transform = 'translateY(110%)';
-            el.offsetHeight;
-            el.style.animation = '';
-        });
-    }
+        // Cycling hero headline
+        const headlines = window.heroHeadlines || [
+            { lines: ['15+ years shaping', 'how people'], em: 'watch video.' },
+        ];
+        let hlIdx = 0;
+        const h1 = document.getElementById('heroH1');
 
-    if (h1) {
-        renderHeadline(headlines[hlIdx]);
-        setInterval(() => {
-            hlIdx = (hlIdx + 1) % headlines.length;
+        function renderHeadline(h) {
+            const l1 = h.lines[0].split(' ').map(w => ({ text: w }));
+            const l2 = h.lines[1].split(' ').map(w => ({ text: w }));
+            const chunks = [...l1, ...l2, { text: h.em, em: true }];
+            let html = '';
+            chunks.forEach((chunk, i) => {
+                const delay = 0.1 + (i * 0.06);
+                if (chunk.em) {
+                    html += `<span class="h1-line" style="margin-right:0.22em;"><span class="h1-line-inner" style="animation-delay:${delay}s"><span class="hero-title-em">${chunk.text}</span></span></span>`;
+                } else {
+                    html += `<span class="h1-line" style="margin-right:0.22em;"><span class="h1-line-inner" style="animation-delay:${delay}s">${chunk.text}</span></span>`;
+                }
+            });
+            h1.innerHTML = html;
+        }
+
+        function animateIn() {
+            document.querySelectorAll('#heroH1 .h1-line-inner').forEach(el => {
+                el.style.animation = 'none';
+                el.style.opacity = '0';
+                el.style.transform = 'translateY(110%)';
+                el.offsetHeight;
+                el.style.animation = '';
+            });
+        }
+
+        if (h1) {
             renderHeadline(headlines[hlIdx]);
-            animateIn();
-        }, 10000);
-    }
-})();
+            setInterval(() => {
+                hlIdx = (hlIdx + 1) % headlines.length;
+                renderHeadline(headlines[hlIdx]);
+                animateIn();
+            }, 10000);
+        }
+    })();
 </script>
 
 </html>

@@ -50,6 +50,10 @@
       -webkit-font-smoothing: antialiased;
     }
 
+    p, h1, h2, h3, h4, h5, h6, li, span, div, a {
+      text-wrap: pretty;
+    }
+
     /* ── NAV ── */
     nav {
       position: fixed;
@@ -259,6 +263,7 @@
       background-size: 280% auto;
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
+      padding-right: 0.15em; /* Prevents italic clipping bound */
       background-clip: text;
       animation: shimmerGold 4s linear infinite;
       animation-delay: 1.4s;
@@ -291,18 +296,18 @@
 
     .hero-stat {
       border-top: 1px solid rgba(255, 255, 255, 0.18);
-      padding-top: 24px;
+      padding-top: 16px;
     }
 
     .hero-stat-num {
       font-family: 'Lexend Deca', sans-serif;
-      font-size: clamp(28px, min(4vw, 5vh), 40px);
+      font-size: clamp(24px, min(3.5vw, 4vh), 30px);
       font-weight: 600;
       color: #fff;
     }
 
     .hero-stat-label {
-      font-size: 13px;
+      font-size: 12px;
       font-weight: 500;
       letter-spacing: 0.08em;
       text-transform: lowercase;
@@ -349,15 +354,15 @@
     }
 
     .hero-cta-text {
-      font-size: 18px;
+      font-size: clamp(13px, 1.5vw, 18px);
       font-weight: 500;
       letter-spacing: 0.06em;
-      white-space: nowrap;
+      white-space: nowrap !important;
       transition: font-size 0.4s ease;
     }
 
     .hero-cta:hover .hero-cta-text {
-      font-size: 22px;
+      font-size: clamp(15px, 1.8vw, 22px);
       transition: font-size 1.8s cubic-bezier(0.34, 1.56, 0.64, 1);
     }
 
@@ -1286,12 +1291,27 @@
       backdrop-filter: blur(12px);
       flex-direction: column;
       align-items: center;
-      justify-content: center;
+      justify-content: flex-start;
+      padding: 120px 24px 60px;
+      overflow-y: auto;
       gap: 40px;
     }
 
     .mobile-menu.open {
       display: flex;
+    }
+
+    /* Keep nav white to contrast against the light overlay menu */
+    nav.menu-open {
+      background: rgba(11, 17, 32, 0.9) !important;
+      backdrop-filter: blur(12px) !important;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.05) !important;
+    }
+    nav.menu-open a {
+      color: #fff !important;
+    }
+    nav.menu-open .nav-hamburger span {
+      background: #fff !important;
     }
 
     .mobile-menu a {
@@ -1312,7 +1332,13 @@
     /* ── RESPONSIVE ── */
     @media (max-width: 768px) {
       nav {
-        padding: 16px 24px;
+        padding: 0 24px;
+        height: 56px;
+      }
+
+      .nav-avatar {
+        width: 32px;
+        height: 32px;
       }
 
       .nav-hamburger {
@@ -1324,7 +1350,7 @@
       }
 
       .hero {
-        padding: 140px 24px 0;
+        padding: 80px 24px 80px;
         display: flex;
         flex-direction: column;
         align-items: stretch;
@@ -1343,24 +1369,25 @@
       }
 
       .hero h1 {
-        font-size: clamp(40px, 11vw, 60px);
+        font-size: clamp(32px, 9vw, 50px);
       }
 
       .hero-label {
-        font-size: 16px;
-        white-space: nowrap;
+        font-size: 12px;
+        white-space: normal;
+        line-height: 1.4;
       }
 
       .hero-cta {
-        padding: 18px 24px;
+        padding: 16px 20px;
       }
 
       .hero-cta-text {
-        font-size: 15px;
+        font-size: clamp(11px, 3vw, 14px);
       }
 
       .hero-cta:hover .hero-cta-text {
-        font-size: 17px;
+        font-size: clamp(12px, 3.2vw, 15px);
       }
 
       .hero-sub {
@@ -1405,6 +1432,20 @@
         gap: 2px;
       }
 
+      .work-intro,
+      .career-intro,
+      .about-intro {
+        font-size: 15px;
+      }
+
+      .timeline-desc {
+        font-size: 14px;
+      }
+
+      .timeline-contract-desc {
+        font-size: 13px;
+      }
+
       .philosophy-grid {
         grid-template-columns: 1fr;
       }
@@ -1445,7 +1486,7 @@
 
     @media (max-width: 480px) {
       .hero {
-        padding: 130px 20px 0;
+        padding: 100px 20px 0;
       }
 
       .hero-label {
@@ -1454,15 +1495,20 @@
       }
 
       .hero-cta {
-        padding: 16px 20px;
+        padding: 12px 14px;
+        gap: 8px;
+        width: 100%;
+        max-width: 320px;
+        justify-content: center;
       }
 
       .hero-cta-text {
-        font-size: 14px;
+        font-size: clamp(9px, 3vw, 11px);
+        white-space: nowrap;
       }
 
       .hero-cta:hover .hero-cta-text {
-        font-size: 15px;
+        font-size: clamp(9px, 3vw, 11px);
       }
 
       .hero-meta {
@@ -1528,10 +1574,10 @@
 
   <!-- MOBILE MENU -->
   <div class="mobile-menu" id="mobileMenu">
-    <a href="#work" onclick="closeMobileMenu()">Work</a>
-    <a href="#about" onclick="closeMobileMenu()">About</a>
-    <a href="#career" onclick="closeMobileMenu()">Career</a>
-    <a href="#contact" onclick="closeMobileMenu()">Contact</a>
+    <a href="#work" onclick="closeMobileMenu()">work</a>
+    <a href="#about" onclick="closeMobileMenu()">about</a>
+    <a href="#career" onclick="closeMobileMenu()">career</a>
+    <a href="#contact" onclick="closeMobileMenu()">contact</a>
   </div>
 
   <!-- NAV -->
@@ -1981,10 +2027,9 @@
   </section>
 
   <!-- FOOTER -->
-  <footer>
-    <span><span class="hide-mobile">Don Polistico · </span>Product Designer · Brooklyn, NY · <a
-        href="mailto:don@polisti.co">don@polisti.co</a></span>
-    <span>BFA, MICA · AI for UX Design Cert. 2025</span>
+  <footer class="footer">
+    <span><span class="hide-mobile">don polistico · </span>product designer · brooklyn, ny · <a href="mailto:don@polisti.co">don@polisti.co</a></span>
+    <span>bfa, mica · ai for ux design cert. 2025</span>
   </footer>
 
   <script>
@@ -2084,11 +2129,13 @@
       const btn = document.getElementById('hamburger');
       menu.classList.toggle('open');
       btn.classList.toggle('open');
+      document.querySelector('nav').classList.toggle('menu-open');
       document.body.style.overflow = menu.classList.contains('open') ? 'hidden' : '';
     }
     function closeMobileMenu() {
       document.getElementById('mobileMenu').classList.remove('open');
       document.getElementById('hamburger').classList.remove('open');
+      document.querySelector('nav').classList.remove('menu-open');
       document.body.style.overflow = '';
     }
 

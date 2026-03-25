@@ -125,7 +125,7 @@
       display: grid;
       grid-template-columns: repeat(4, 1fr);
       gap: 1px;
-      background: var(--border);
+      background: rgba(255,255,255,0.25);
       border: 1px solid var(--border);
       border-radius: 4px;
       overflow: hidden;
@@ -550,8 +550,16 @@
       letter-spacing: 0.08em;
     }
 
+    .video-container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 64px 56px;
+    }
+
     @media (max-width: 768px) {
+      .hide-mobile { display: none; }
       nav { padding: 16px 24px; }
+      .video-container { padding: 40px 24px; }
       .hero { padding: 120px 24px 64px; }
       .hero h1 { font-size: clamp(36px, 9vw, 56px); }
       .hero-sub { font-size: 16px; }
@@ -640,7 +648,7 @@
 
   <!-- VIDEO -->
   <div style="background:#000;border-bottom:1px solid var(--border);">
-    <div style="max-width:1200px;margin:0 auto;padding:64px 56px;">
+    <div class="video-container">
       <div style="position:relative;padding-bottom:56.25%;height:0;overflow:hidden;border-radius:4px;background:#000;">
         <iframe
           src="https://player.vimeo.com/video/1071247322?autoplay=0&title=0&byline=0&portrait=0&dnt=1"
@@ -879,7 +887,7 @@
   </div>
 
   <footer>
-    <span>Don Polistico · Senior Product Designer · <a href="mailto:don@polisti.co">don@polisti.co</a></span>
+    <span><span class="hide-mobile">don polistico · </span><span class="hide-mobile">senior </span>product designer · <a href="mailto:don@polisti.co">don@polisti.co</a></span>
     <span>© 2025</span>
   </footer>
 
