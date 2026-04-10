@@ -3,7 +3,8 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>vimeo streaming</title>
+  <title>boxee + samsung — 10-foot ui for the living room</title>
+  <meta name="description" content="Designing Cloud DVR, social TV, and D-pad-driven interfaces for the living room — from Boxee's startup days through Samsung's acquisition." />
   <link rel="icon" type="image/png" href="images/avatar.png" />
   <link href="https://fonts.googleapis.com/css2?family=Lexend+Deca:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
   <style>
@@ -11,20 +12,17 @@
 
     :root {
       --bg: #0f1115;
-      --bg-2: #181c23;
-      --bg-3: #1e2330;
-      --gold: #17D5FF;
-      --gold-dim: rgba(23,213,255,0.12);
-      --blue: #17D5FF;
-      --blue-dim: rgba(23,213,255,0.12);
+      --bg-2: #141a12;
+      --bg-3: #1a2318;
+      --green: #4ade80;
+      --green-dim: rgba(74,222,128,0.12);
+      --gold: #fbbf24;
+      --gold-dim: rgba(251,191,36,0.12);
       --white: #ffffff;
       --muted: rgba(255,255,255,0.55);
       --border: rgba(255,255,255,0.08);
-      --ink: #0f0f0f;
-      --cream: #fafaf8;
-      --line: #e4e4e4;
-      --accent: #17D5FF;
-      --accent-light: rgba(23,213,255,0.1);
+      --accent: #4ade80;
+      --accent-dim: rgba(74,222,128,0.1);
     }
 
     html { scroll-behavior: smooth; cursor: crosshair; }
@@ -61,7 +59,7 @@
       text-decoration: none;
       transition: color 0.2s;
     }
-    .nav-back:hover { color: var(--gold); }
+    .nav-back:hover { color: var(--green); }
     .nav-back svg { width: 14px; height: 14px; }
     .nav-title {
       font-size: 13px;
@@ -73,7 +71,7 @@
       font-weight: 500;
       letter-spacing: 0.06em;
       text-transform: lowercase;
-      color: var(--gold);
+      color: var(--green);
       text-decoration: none;
       transition: opacity 0.2s;
     }
@@ -91,7 +89,7 @@
       font-weight: 600;
       letter-spacing: 0.16em;
       text-transform: lowercase;
-      color: var(--blue);
+      color: var(--green);
       margin-bottom: 28px;
       display: flex;
       align-items: center;
@@ -101,7 +99,7 @@
       content: '';
       width: 32px;
       height: 1px;
-      background: var(--blue);
+      background: var(--green);
       display: block;
     }
     .hero h1 {
@@ -113,7 +111,7 @@
       margin-bottom: 32px;
       max-width: 820px;
     }
-    .hero h1 em { font-style: italic; color: var(--gold); }
+    .hero h1 em { font-style: italic; color: var(--green); }
     .hero-sub {
       font-size: 18px;
       line-height: 1.75;
@@ -142,7 +140,7 @@
       line-height: 1;
       margin-bottom: 10px;
     }
-    .stat-num em { color: var(--gold); font-style: normal; }
+    .stat-num em { color: var(--green); font-style: normal; }
     .stat-label {
       font-size: 12px;
       font-weight: 500;
@@ -163,7 +161,7 @@
       font-weight: 600;
       letter-spacing: 0.16em;
       text-transform: lowercase;
-      color: var(--gold);
+      color: var(--green);
       margin-bottom: 48px;
       display: flex;
       align-items: center;
@@ -191,7 +189,7 @@
       margin-bottom: 56px;
     }
 
-    /* ── PROBLEM ── */
+    /* ── TWO COL ── */
     .two-col {
       display: grid;
       grid-template-columns: 1fr 1fr;
@@ -225,92 +223,13 @@
     }
     .col-card li::before {
       content: '→';
-      color: var(--blue);
+      color: var(--green);
       flex-shrink: 0;
       font-weight: 600;
     }
 
-    /* ── EXPLORATIONS ── */
-    .exploration-grid {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 2px;
-      background: var(--border);
-      border-radius: 4px;
-      overflow: hidden;
-      margin-top: 16px;
-    }
-    .exploration-card {
-      padding: 36px;
-      background: var(--bg-2);
-    }
-    .exp-num {
-      font-family: 'Lexend Deca', sans-serif;
-      font-size: 36px;
-      font-style: italic;
-      color: var(--gold);
-      margin-bottom: 20px;
-    }
-    .exploration-card h3 {
-      font-family: 'Lexend Deca', sans-serif;
-      font-size: 20px;
-      font-weight: 400;
-      margin-bottom: 14px;
-    }
-    .exploration-card p {
-      font-size: 14px;
-      line-height: 1.7;
-      color: var(--muted);
-      margin-bottom: 20px;
-    }
-    .verdict {
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      padding: 6px 14px;
-      border-radius: 2px;
-      font-size: 11px;
-      font-weight: 600;
-      letter-spacing: 0.1em;
-      text-transform: lowercase;
-    }
-    .verdict.rejected { background: rgba(239,68,68,0.12); color: #f87171; }
-    .verdict.pivoted { background: rgba(251,191,36,0.12); color: #fbbf24; }
-    .verdict.shipped { background: rgba(34,197,94,0.12); color: #4ade80; }
-
-    /* ── TRADEOFF TABLE ── */
-    .tradeoff-table {
-      width: 100%;
-      border-collapse: collapse;
-      margin-bottom: 40px;
-    }
-    .tradeoff-table th {
-      font-size: 11px;
-      font-weight: 600;
-      letter-spacing: 0.1em;
-      text-transform: lowercase;
-      color: var(--muted);
-      padding: 16px 20px;
-      text-align: left;
-      border-bottom: 1px solid var(--border);
-    }
-    .tradeoff-table td {
-      padding: 18px 20px;
-      font-size: 14px;
-      line-height: 1.6;
-      color: var(--muted);
-      border-bottom: 1px solid var(--border);
-      vertical-align: top;
-    }
-    .tradeoff-table tr:last-child td { border-bottom: none; }
-    .tradeoff-table .label {
-      font-weight: 600;
-      color: var(--white);
-      font-size: 13px;
-    }
-
-    /* ── PLATFORM CARDS ── */
-    .platform-grid {
+    /* ── PATTERN CARDS ── */
+    .pattern-grid {
       display: grid;
       grid-template-columns: repeat(3, 1fr);
       gap: 2px;
@@ -318,36 +237,65 @@
       border-radius: 4px;
       overflow: hidden;
     }
-    .platform-card {
+    .pattern-card {
       padding: 36px;
       background: var(--bg-2);
     }
-    .platform-icon {
+    .pattern-icon {
       font-size: 28px;
       margin-bottom: 20px;
     }
-    .platform-card h3 {
+    .pattern-card h3 {
       font-family: 'Lexend Deca', sans-serif;
       font-size: 20px;
       font-weight: 400;
       margin-bottom: 12px;
     }
-    .platform-card p {
+    .pattern-card p {
       font-size: 14px;
       line-height: 1.7;
       color: var(--muted);
     }
-    .platform-tag {
+    .pattern-tag {
       display: inline-block;
       margin-top: 16px;
       padding: 4px 12px;
-      background: var(--blue-dim);
-      color: var(--blue);
+      background: var(--green-dim);
+      color: var(--green);
       border-radius: 2px;
       font-size: 11px;
       font-weight: 600;
       letter-spacing: 0.08em;
       text-transform: lowercase;
+    }
+
+    /* ── CHALLENGES ── */
+    .challenge-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 2px;
+      background: var(--border);
+      border-radius: 4px;
+      overflow: hidden;
+    }
+    .challenge-card {
+      padding: 40px;
+      background: var(--bg-2);
+    }
+    .challenge-icon {
+      font-size: 24px;
+      margin-bottom: 16px;
+    }
+    .challenge-card h3 {
+      font-size: 16px;
+      font-weight: 600;
+      margin-bottom: 10px;
+      color: var(--green);
+    }
+    .challenge-card p {
+      font-size: 14px;
+      line-height: 1.7;
+      color: var(--muted);
     }
 
     /* ── RESULTS ── */
@@ -362,7 +310,7 @@
       gap: 20px;
     }
     .metric-item {
-      border-left: 2px solid var(--blue);
+      border-left: 2px solid var(--green);
       padding-left: 20px;
     }
     .metric-num {
@@ -408,10 +356,62 @@
       font-weight: 400;
       line-height: 1.45;
       color: var(--white);
-      border-left: 3px solid var(--gold);
+      border-left: 3px solid var(--green);
       padding-left: 32px;
       max-width: 720px;
       margin: 48px 0;
+    }
+
+    /* ── SAMSUNG SECTION ── */
+    .samsung-callout {
+      background: linear-gradient(135deg, rgba(74,222,128,0.04), rgba(251,191,36,0.04));
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      padding: 48px;
+      margin-top: 24px;
+    }
+    .samsung-callout h3 {
+      font-family: 'Lexend Deca', sans-serif;
+      font-size: 22px;
+      font-weight: 400;
+      margin-bottom: 20px;
+    }
+    .samsung-callout h3 em {
+      font-style: italic;
+      color: var(--gold);
+    }
+    .samsung-callout p {
+      font-size: 14px;
+      line-height: 1.75;
+      color: var(--muted);
+      max-width: 640px;
+      margin-bottom: 16px;
+    }
+    .samsung-callout p:last-child { margin-bottom: 0; }
+    .samsung-highlights {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 2px;
+      background: var(--border);
+      border-radius: 4px;
+      overflow: hidden;
+      margin-top: 32px;
+    }
+    .samsung-highlight {
+      padding: 28px;
+      background: rgba(251,191,36,0.04);
+    }
+    .samsung-highlight h4 {
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--gold);
+      margin-bottom: 8px;
+    }
+    .samsung-highlight p {
+      font-size: 13px;
+      line-height: 1.6;
+      color: var(--muted);
+      margin-bottom: 0;
     }
 
     /* ── FOOTER NAV ── */
@@ -433,7 +433,7 @@
       text-decoration: none;
       transition: color 0.2s;
     }
-    .footer-nav a:hover { color: var(--gold); }
+    .footer-nav a:hover { color: var(--green); }
     footer {
       padding: 28px 56px;
       border-top: 1px solid var(--border);
@@ -443,7 +443,7 @@
       color: var(--muted);
     }
     footer a { color: var(--muted); text-decoration: none; }
-    footer a:hover { color: var(--gold); }
+    footer a:hover { color: var(--green); }
 
     /* ── dither grain on hover ── */
     @keyframes dither-roll {
@@ -456,8 +456,7 @@
     }
     .nav-back   { position: relative; overflow: hidden; }
     .nav-cta    { position: relative; overflow: hidden; }
-    .screen-thumb { position: relative; overflow: hidden; }
-    .nav-back::after, .nav-cta::after, .screen-thumb::after {
+    .nav-back::after, .nav-cta::after {
       content: '';
       position: absolute;
       inset: 0;
@@ -469,7 +468,7 @@
       transition: opacity 0.15s;
       z-index: 10;
     }
-    .nav-back:hover::after, .nav-cta:hover::after, .screen-thumb:hover::after {
+    .nav-back:hover::after, .nav-cta:hover::after {
       opacity: 0.35;
       animation: dither-roll 0.5s steps(6) infinite;
     }
@@ -550,16 +549,9 @@
       letter-spacing: 0.08em;
     }
 
-    .video-container {
-      max-width: 1200px;
-      margin: 0 auto;
-      padding: 64px 56px;
-    }
-
     @media (max-width: 768px) {
       .hide-mobile { display: none; }
       nav { padding: 16px 24px; }
-      .video-container { padding: 40px 24px; }
       .hero { padding: 120px 24px 64px; }
       .hero h1 { font-size: clamp(36px, 9vw, 56px); }
       .hero-sub { font-size: 16px; }
@@ -570,20 +562,16 @@
       .section-label { margin-bottom: 32px; }
       h2 { font-size: clamp(28px, 7vw, 40px); }
       .lead { font-size: 16px; margin-bottom: 40px; }
-      .two-col, .exploration-grid, .platform-grid { grid-template-columns: 1fr; }
-      .col-card, .exploration-card, .platform-card { padding: 28px 24px; }
+      .two-col, .pattern-grid, .challenge-grid, .samsung-highlights { grid-template-columns: 1fr; }
+      .col-card, .pattern-card, .challenge-card, .samsung-highlight { padding: 28px 24px; }
+      .samsung-callout { padding: 32px 24px; }
       .results-grid { grid-template-columns: 1fr; }
       .screens-grid { grid-template-columns: 1fr; }
-      .screen-thumb { aspect-ratio: 16/9; }
-      .tradeoff-table { font-size: 13px; }
-      .tradeoff-table th, .tradeoff-table td { padding: 12px 14px; }
       .pull-quote { font-size: clamp(18px, 4.5vw, 24px); padding-left: 20px; margin: 32px 0; }
       .retro-item { padding: 20px; }
       .metric-num { font-size: 28px; }
       .footer-nav { padding: 48px 24px; flex-direction: column; gap: 24px; }
       footer { padding: 24px; flex-direction: column; gap: 8px; }
-      .lightbox-arrow.prev { left: 8px; }
-      .lightbox-arrow.next { right: 8px; }
     }
 
     @media (max-width: 480px) {
@@ -592,8 +580,6 @@
       .hero { padding: 100px 20px 56px; }
       .hero-stats { grid-template-columns: 1fr 1fr; gap: 1px; }
       .section { padding: 56px 20px; }
-      .exploration-card h3 { font-size: 18px; }
-      .tradeoff-table { display: block; overflow-x: auto; }
       .footer-nav { padding: 40px 20px; }
       footer { padding: 20px; }
     }
@@ -613,218 +599,201 @@
       <svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M11 7H3M6 3L2 7l4 4"/></svg>
       Portfolio
     </a>
-    <span class="nav-title">Vimeo Streaming</span>
+    <span class="nav-title">Boxee + Samsung</span>
     <a href="index.html#contact" class="nav-cta">Contact →</a>
   </nav>
 
   <!-- HERO -->
   <div style="background:var(--bg);border-bottom:1px solid var(--border);">
     <div class="hero">
-      <div class="hero-eyebrow">Platform design · Vimeo · 2016–2025</div>
-      <h1>Building the platform<br>that lets <em>anyone</em><br>run a streaming channel.</h1>
+      <div class="hero-eyebrow">0→1 product · boxee · 2010–2013 → samsung · 2013–2015</div>
+      <h1>Designing for the<br><em>living room</em> —<br>from startup to Samsung.</h1>
       <p class="hero-sub">
-        A 10-year journey designing Vimeo Streaming's cross-platform distribution suite — from the initial post-acquisition integration of VHX to a mature product serving creators on web, mobile, and every major TV platform.
+        Boxee was one of the first consumer products to put streaming video on a TV. I designed the Cloud DVR, social TV features, and 10-foot UI — then carried that work into Samsung's Smart TV ecosystem when Boxee was acquired.
       </p>
       <div class="hero-stats">
         <div class="stat-item">
-          <div class="stat-num" style="color:#17D5FF;">$429M+</div>
-          <div class="stat-label">Annual creator revenue</div>
+          <div class="stat-num"><em>First</em></div>
+          <div class="stat-label">Cloud DVR UX designed</div>
         </div>
         <div class="stat-item">
-          <div class="stat-num" style="color:#fff;">Millions+</div>
-          <div class="stat-label">Daily plays</div>
+          <div class="stat-num"><em>10-ft</em></div>
+          <div class="stat-label">TV interface (D-pad driven)</div>
         </div>
         <div class="stat-item">
-          <div class="stat-num" style="color:#fff;">11</div>
-          <div class="stat-label">Platforms (web, mobile, TV)</div>
+          <div class="stat-num" style="color:#fff;">→ Acq.</div>
+          <div class="stat-label">Samsung acquired Boxee</div>
         </div>
         <div class="stat-item">
-          <div class="stat-num" style="color:#58a628;">5,000+</div>
-          <div class="stat-label">Channels launched</div>
+          <div class="stat-num" style="color: var(--gold);">CE</div>
+          <div class="stat-label">Consumer electronics design</div>
         </div>
       </div>
     </div>
   </div>
 
-  <!-- VIDEO -->
+  <!-- PRODUCT IMAGE -->
   <div style="background:#000;border-bottom:1px solid var(--border);">
-    <div class="video-container">
-      <div style="position:relative;padding-bottom:56.25%;height:0;overflow:hidden;border-radius:4px;background:#000;">
-        <iframe
-          src="https://player.vimeo.com/video/1071247322?autoplay=0&title=0&byline=0&portrait=0&dnt=1"
-          style="position:absolute;top:0;left:0;width:100%;height:100%;border:0;"
-          allow="autoplay; fullscreen; picture-in-picture"
-          allowfullscreen
-          title="Vimeo Streaming">
-        </iframe>
+    <div style="max-width:1200px;margin:0 auto;padding:64px 56px;">
+      <div class="screens-grid">
+        <div class="screen-thumb" onclick="openLightbox(0)"><img src="images/boxee-tv.png" alt="Boxee TV interface"></div>
+        <div class="screen-thumb" onclick="openLightbox(1)"><img src="images/boxee-app.png" alt="Boxee TV app"></div>
       </div>
     </div>
   </div>
 
-  <!-- PROBLEM -->
+  <!-- THE LIVING ROOM PROBLEM -->
   <div style="background:var(--bg);">
     <div class="section">
-      <div class="section-label">The problem space</div>
-      <h2>A two-sided ecosystem with competing needs.</h2>
+      <div class="section-label">The design challenge</div>
+      <h2>The TV is not a phone<br>with a bigger screen.</h2>
       <p class="lead">
-        Vimeo Streaming had to serve two fundamentally different users simultaneously — each with conflicting needs — on a single product surface.
+        Everything I'd learned about designing for the web had to be unlearned. The living room has its own physics: a remote control, not a mouse. A couch, not a desk. Shared attention, not focused focus. Every interaction model changes.
       </p>
       <div class="two-col">
         <div class="col-card">
-          <h3>The creator</h3>
+          <h3>What changes at 10 feet</h3>
           <ul>
-            <li>Needs full brand control — their channel, their identity</li>
-            <li>Wants to manage subscribers, pricing, and content in one place</li>
-            <li>Has no engineering team — needs no-code app publishing</li>
-            <li>Expects analytics to understand what's working</li>
-            <li>Must comply with platform guidelines (Apple, Roku, Google)</li>
+            <li>No cursor — everything is D-pad and focus-state driven</li>
+            <li>Text must be readable from across a room (minimum 24px equivalent)</li>
+            <li>Overscan and safe areas constrain every layout</li>
+            <li>Users navigate with 4 directions + select — no scroll, no swipe</li>
+            <li>Attention is lean-back — UI must be glanceable, not dense</li>
+            <li>Performance on embedded hardware is severely constrained</li>
           </ul>
         </div>
         <div class="col-card">
-          <h3>The viewer</h3>
+          <h3>What Boxee was building</h3>
           <ul>
-            <li>Expects a native, platform-appropriate experience</li>
-            <li>Won't tolerate generic-looking apps that feel "built by template"</li>
-            <li>Moves between web, phone, and TV — expects continuity</li>
-            <li>Pays the creator directly — trust is the product</li>
-            <li>Discovers content differently on each platform</li>
+            <li>A consumer set-top box with custom Linux-based OS</li>
+            <li>First Cloud DVR — recording live TV to the cloud via an antenna accessory</li>
+            <li>Social TV features — see what friends are watching in real-time</li>
+            <li>Content aggregation across streaming services + local media</li>
+            <li>A physical remote control with QWERTY keyboard on the back</li>
+            <li>All of this in 2010 — years before Roku, Fire TV, or Chromecast</li>
           </ul>
         </div>
       </div>
     </div>
   </div>
 
-  <!-- EXPLORATIONS -->
+  <!-- 10-FOOT UI PATTERNS -->
   <div style="background:var(--bg-2);">
     <div class="section">
-      <div class="section-label">Design explorations</div>
-      <h2>Three directions.<br>One clear winner.</h2>
+      <div class="section-label">10-foot ui patterns</div>
+      <h2>Interaction patterns<br>for the remote control.</h2>
       <p class="lead">
-        Before committing to an architecture, I explored three fundamentally different models for how creators would customize and publish their apps.
+        Every pattern had to be invented from first principles. There were no established conventions for TV app design in 2010 — no tvOS Human Interface Guidelines, no Android TV patterns. We were writing the playbook.
       </p>
-      <div class="exploration-grid">
-        <div class="exploration-card">
-          <div class="exp-num">01</div>
-          <h3>Full granular control</h3>
-          <p>Every element — colors, layout, typography, section order — fully editable. Maximum creator flexibility, matched by maximum complexity.</p>
-          <div class="verdict rejected">✕ Rejected — Cognitive overload</div>
+      <div class="pattern-grid">
+        <div class="pattern-card">
+          <div class="pattern-icon">📺</div>
+          <h3>Content rails</h3>
+          <p>Horizontal carousels navigated with left/right D-pad. Each rail represents a content category. Focus scales the selected poster to signal selection — no underline, no cursor, just spatial emphasis.</p>
+          <span class="pattern-tag">Navigation paradigm</span>
         </div>
-        <div class="exploration-card">
-          <div class="exp-num">02</div>
-          <h3>Single locked theme</h3>
-          <p>One beautiful default. Creator only sets their logo, colors, and content. Fastest time-to-launch, least differentiation across channels.</p>
-          <div class="verdict rejected">✕ Rejected — Brand dilution</div>
+        <div class="pattern-card">
+          <div class="pattern-icon">🎯</div>
+          <h3>Focus state system</h3>
+          <p>Without a cursor, focus state IS the interface. I designed a consistent focus language: scale + glow for content items, highlight + border for controls, breadcrumb trail for spatial orientation.</p>
+          <span class="pattern-tag">Core interaction</span>
         </div>
-        <div class="exploration-card">
-          <div class="exp-num">03</div>
-          <h3>Modular template system</h3>
-          <p>Curated, platform-compliant templates with guided customization zones. Structure ensures compliance; flexibility enables brand expression.</p>
-          <div class="verdict shipped">✓ Shipped</div>
+        <div class="pattern-card">
+          <div class="pattern-icon">⏺️</div>
+          <h3>Cloud DVR flows</h3>
+          <p>Recording live TV from the guide: one-press record, series scheduling, conflict resolution. Every flow had to work with just a remote — no forms, no text input, minimal cognitive load.</p>
+          <span class="pattern-tag">0→1 feature</span>
+        </div>
+        <div class="pattern-card">
+          <div class="pattern-icon">👥</div>
+          <h3>Social TV layer</h3>
+          <p>A persistent sidebar showing what friends were watching — real-time presence in the living room. Designed to be glanceable and non-intrusive during active viewing.</p>
+          <span class="pattern-tag">Social feature</span>
+        </div>
+        <div class="pattern-card">
+          <div class="pattern-icon">⌨️</div>
+          <h3>Text input on TV</h3>
+          <p>Search on a TV is painful. I designed a predictive search interface optimized for the QWERTY keyboard on the back of Boxee's remote — reducing keystrokes through smart suggestions.</p>
+          <span class="pattern-tag">Input optimization</span>
+        </div>
+        <div class="pattern-card">
+          <div class="pattern-icon">🎨</div>
+          <h3>Content-forward hierarchy</h3>
+          <p>Posters, thumbnails, and hero images do the talking — not labels. The UI gets out of the way so content occupies 80%+ of the viewport. Chrome is minimal.</p>
+          <span class="pattern-tag">Visual design</span>
         </div>
       </div>
     </div>
   </div>
 
-  <!-- TRADEOFFS -->
+  <!-- HARDWARE CHALLENGES -->
   <div style="background:var(--bg);">
     <div class="section">
-      <div class="section-label">Trade-offs &amp; pivot</div>
-      <h2>The constraints that<br>shaped the decision.</h2>
+      <div class="section-label">Consumer electronics constraints</div>
+      <h2>Designing for hardware<br>that ships in a box.</h2>
       <p class="lead">
-        Platform compliance wasn't optional — Apple, Roku, and Fire TV all have strict HIG requirements. Any solution had to make compliance invisible to creators while still feeling like their brand.
+        Unlike a web app, you can't hotfix a TV product once it's in someone's living room. Every design decision carried the weight of physical manufacturing — packaging, unboxing, setup, and firmware updates all fell within the design surface.
       </p>
-      <table class="tradeoff-table">
-        <thead>
-          <tr>
-            <th>Consideration</th>
-            <th>Full control</th>
-            <th>Locked theme</th>
-            <th>Modular templates</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td class="label">Platform compliance</td>
-            <td>Creator's problem</td>
-            <td>Guaranteed</td>
-            <td>Built-in by design</td>
-          </tr>
-          <tr>
-            <td class="label">Brand differentiation</td>
-            <td>Maximum</td>
-            <td>None</td>
-            <td>Meaningful within guardrails</td>
-          </tr>
-          <tr>
-            <td class="label">Time to launch</td>
-            <td>Weeks of setup</td>
-            <td>Hours</td>
-            <td>Days — right amount of effort</td>
-          </tr>
-          <tr>
-            <td class="label">Support burden</td>
-            <td>Extremely high</td>
-            <td>Minimal</td>
-            <td>Low — decisions are guided</td>
-          </tr>
-          <tr>
-            <td class="label">Viewer experience</td>
-            <td>Unpredictable</td>
-            <td>Consistent but bland</td>
-            <td>Consistently excellent</td>
-          </tr>
-        </tbody>
-      </table>
+      <div class="challenge-grid">
+        <div class="challenge-card">
+          <div class="challenge-icon">📦</div>
+          <h3>Unboxing to first content</h3>
+          <p>The time from opening the box to watching something had to be under 5 minutes. I designed the OOBE (out-of-box experience) to guide users through Wi-Fi setup, account creation, and content discovery with minimal text input.</p>
+        </div>
+        <div class="challenge-card">
+          <div class="challenge-icon">🎮</div>
+          <h3>Remote control design</h3>
+          <p>Contributed to the industrial design of Boxee's remote — a dual-sided device with a classic D-pad on the front and a full QWERTY keyboard on the back. Trained the UI to match the input the user was currently using.</p>
+        </div>
+        <div class="challenge-card">
+          <div class="challenge-icon">⚡</div>
+          <h3>Performance budgets</h3>
+          <p>Embedded hardware with limited RAM and CPU. Animations had to be GPU-composited. Image loading had to be predictive. Every screen had a performance budget that directly impacted design decisions.</p>
+        </div>
+        <div class="challenge-card">
+          <div class="challenge-icon">🔄</div>
+          <h3>OTA firmware updates</h3>
+          <p>Designed update flows that conveyed progress and urgency without alarming users. A failed firmware update bricks the device — the stakes were the highest I'd experienced in design.</p>
+        </div>
+      </div>
 
       <div class="pull-quote">
-        "The real insight was that creators don't want infinite options — they want confidence. A well-designed constraint gives them that."
+        "The living room taught me that ten feet of distance changes everything about design — not just scale, but the entire logic of how an interface earns attention."
       </div>
     </div>
   </div>
 
-  <!-- SHIPPED SOLUTION -->
+  <!-- SAMSUNG ACQUISITION -->
   <div style="background:var(--bg-2);">
     <div class="section">
-      <div class="section-label">Shipped solution</div>
-      <h2>One product. Three<br>platform realities.</h2>
+      <div class="section-label">Post-acquisition · Samsung</div>
+      <h2>Scaling living-room design<br>inside a global hardware company.</h2>
       <p class="lead">
-        The modular App Builder shipped across web, mobile, and TV — each platform treated as a first-class citizen with its own interaction patterns, navigation paradigms, and visual hierarchy.
+        When Samsung acquired Boxee in 2013, I chose to stay with the product. For two years, I worked within Samsung's R&D lab in New York, integrating Boxee's software into Samsung's Smart TV platform and contributing to next-generation consumer electronics design.
       </p>
-      <div class="platform-grid">
-        <div class="platform-card">
-          <div class="platform-icon">💻</div>
-          <h3>Web</h3>
-          <p>The creator's primary management surface. Drag-and-drop layout, inline preview, instant publishing. Designed to be usable by non-technical creators with zero onboarding.</p>
-          <span class="platform-tag">Creator-facing</span>
-        </div>
-        <div class="platform-card">
-          <div class="platform-icon">📱</div>
-          <h3>Mobile (iOS + Android)</h3>
-          <p>Portrait mode, offline downloads, branded splash screens. The streaming app that lives on your home screen — everything around the content, not just the video.</p>
-          <span class="platform-tag">Viewer-facing</span>
-        </div>
-        <div class="platform-card">
-          <div class="platform-icon">📺</div>
-          <h3>TV (tvOS, Android TV, Roku, Fire TV, Samsung, LG)</h3>
-          <p>10-foot UI adapted per platform HIG. Content rails, poster grids, and lean-back browsing designed for D-pad remotes — no pointer, no keyboard. Each platform had its own safe areas, overscan rules, and focus-state conventions. Shipped across 6+ TV platforms with consistent branding while respecting native navigation patterns.</p>
-          <span class="platform-tag">Viewer-facing · 10-foot UI</span>
-        </div>
-      </div>
-    </div>
-  </div>
 
-  <!-- SCREENS -->
-  <div style="background:var(--bg-2);border-bottom:1px solid var(--border);">
-    <div class="section">
-      <div class="section-label">Product screens</div>
-      <h2>The product,<br>in detail.</h2>
-      <p class="lead">A look at the shipped interfaces across the Vimeo Streaming platform.</p>
-      <div class="screens-grid">
-        <div class="screen-thumb" onclick="openLightbox(0)"><img src="images/vimeo 04A.png" alt="Vimeo screen 1"></div>
-        <div class="screen-thumb" onclick="openLightbox(1)"><img src="images/vimeo 04B.png" alt="Vimeo screen 2"></div>
-        <div class="screen-thumb" onclick="openLightbox(2)"><img src="images/vimeo 04C2.png" alt="Vimeo screen 3"></div>
-        <div class="screen-thumb" onclick="openLightbox(3)"><img src="images/vimeo 04E.png" alt="Vimeo screen 4"></div>
-        <div class="screen-thumb" onclick="openLightbox(4)"><img src="images/vimeo 04F.png" alt="Vimeo screen 5"></div>
+      <div class="samsung-callout">
+        <h3>What changed at <em>Samsung scale</em></h3>
+        <p>
+          At Boxee, we controlled the entire stack — hardware, OS, and app. At Samsung, I was designing for millions of devices across dozens of markets. Every decision had to pass through localization, accessibility, and hardware compatibility reviews.
+        </p>
+        <p>
+          This chapter taught me how to maintain design quality and user-centered thinking inside a massive consumer electronics organization — balancing creative ambition with manufacturing reality.
+        </p>
+        <div class="samsung-highlights">
+          <div class="samsung-highlight">
+            <h4>Multi-screen experiences</h4>
+            <p>Designed companion app interactions between Samsung phones and TVs — second-screen content browsing, remote control app, and cross-device handoff.</p>
+          </div>
+          <div class="samsung-highlight">
+            <h4>Next-gen remote design</h4>
+            <p>Contributed to the design of Samsung's Smart TV remote — simplifying the button layout while maintaining access to core navigation patterns.</p>
+          </div>
+          <div class="samsung-highlight">
+            <h4>Platform integration</h4>
+            <p>Led the UX integration of Boxee's content aggregation into Samsung's Tizen-based Smart TV interface — adapting our patterns for Samsung's design language.</p>
+          </div>
+        </div>
       </div>
     </div>
   </div>
@@ -832,43 +801,39 @@
   <!-- RESULTS -->
   <div style="background:var(--bg);">
     <div class="section">
-      <div class="section-label">Results &amp; retrospective</div>
-      <h2>What shipped.<br>What I learned.<br>What I'd do differently.</h2>
+      <div class="section-label">Results & retrospective</div>
+      <h2>What I carried forward.</h2>
       <div class="results-grid">
         <div class="metric-row">
           <div class="metric-item">
-            <div class="metric-num">6+</div>
-            <div class="metric-label">TV and mobile platforms with consistent creator-branded experiences</div>
+            <div class="metric-num">First</div>
+            <div class="metric-label">Cloud DVR UX — recording live TV to the cloud was uncharted territory. The patterns I created later appeared in competitors like YouTube TV and Hulu.</div>
           </div>
           <div class="metric-item">
-            <div class="metric-num">0→1</div>
-            <div class="metric-label">App Builder built from scratch — became the primary creator acquisition driver</div>
+            <div class="metric-num">10-ft</div>
+            <div class="metric-label">TV interface designed from first principles — content rails, focus states, D-pad navigation, and lean-back interaction patterns, years before tvOS or Android TV existed.</div>
           </div>
           <div class="metric-item">
-            <div class="metric-num">10yr</div>
-            <div class="metric-label">Tenure on the product — through VHX acquisition, rebrand, and platform shift to B2B</div>
+            <div class="metric-num">→ Acq.</div>
+            <div class="metric-label">Samsung acquired Boxee — the design work contributed to a successful exit and continued in Samsung's Smart TV platform.</div>
           </div>
           <div class="metric-item">
-            <div class="metric-num">M+</div>
-            <div class="metric-label">Daily video plays through creator-published apps on the platform</div>
+            <div class="metric-num">5 yrs</div>
+            <div class="metric-label">Combined experience across Boxee + Samsung in consumer electronics and TV platform design.</div>
           </div>
         </div>
         <div class="retro-list">
           <div class="retro-item">
             <h4>What worked</h4>
-            <p>The template system gave creators enough flexibility to feel ownership without opening support chaos. Compliance-by-default was the right call.</p>
+            <p>Inventing 10-foot UI patterns from scratch gave me a deep intuition for living-room design that I've carried through every role since. Every TV project at Vimeo benefited from this foundation.</p>
           </div>
           <div class="retro-item">
             <h4>What I'd do differently</h4>
-            <p>We should have invested in viewer-side research earlier. Creator feedback dominated the roadmap because they were vocal — viewers were invisible until churn data surfaced the signal.</p>
+            <p>I'd push harder for user research early on. We relied heavily on internal intuition for the DVR flows — testing with real TV viewers earlier would have surfaced scheduling edge cases faster.</p>
           </div>
           <div class="retro-item">
-            <h4>Hardest constraint</h4>
-            <p>Platform app store reviews move slowly and reject unpredictably. Designing for compliance meant building UX guardrails that creators sometimes resented — that tension never fully resolved.</p>
-          </div>
-          <div class="retro-item">
-            <h4>What I'm proud of</h4>
-            <p>The TV app design held up for years without major rework. Designing for the 10-foot paradigm early — when it wasn't mainstream — meant the architecture was solid when streaming exploded.</p>
+            <h4>Biggest lesson</h4>
+            <p>Consumer electronics design is designing for commitment. Users live with your decisions every day. A web app can iterate in sprints — a TV in someone's living room is there for years. That weight makes you a better designer.</p>
           </div>
         </div>
       </div>
@@ -876,19 +841,16 @@
   </div>
 
   <!-- FOOTER NAV -->
-  <div class="footer-nav">
-    <a href="index.html">
-      <svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M11 7H3M6 3L2 7l4 4"/></svg>
-      Back to portfolio
-    </a>
-    <a href="case-study-looking-glass.html">
-      Next: Looking Glass Go →
-    </a>
+  <div style="background:var(--bg);">
+    <div class="footer-nav">
+      <a href="index.html">← Back to portfolio</a>
+      <a href="case-study-vimeo.html">Next: Vimeo Streaming →</a>
+    </div>
   </div>
 
   <footer>
-    <span><span class="hide-mobile">don polistico · </span><span class="hide-mobile">senior </span>product designer · <a href="mailto:don@polisti.co">don@polisti.co</a></span>
-    <span>© 2025</span>
+    <span>don polistico · product designer · brooklyn, ny · <a href="mailto:don@polisti.co">don@polisti.co</a></span>
+    <span>bfa, mica · ai for ux design cert. 2025</span>
   </footer>
 
   <!-- LIGHTBOX -->
@@ -902,11 +864,8 @@
 
   <script>
     const images = [
-      'images/vimeo 04A.png',
-      'images/vimeo 04B.png',
-      'images/vimeo 04C2.png',
-      'images/vimeo 04E.png',
-      'images/vimeo 04F.png'
+      'images/boxee-tv.png',
+      'images/boxee-app.png'
     ];
     let current = 0;
 

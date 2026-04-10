@@ -4,7 +4,12 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>don polistico</title>
+  <title>don polistico — product designer | tv, streaming & cross-platform</title>
+  <meta name="description" content="Product designer with 15+ years in streaming, TV, and consumer electronics. Deep expertise in OTT, cross-platform design systems, and AI-powered experiences. Boxee → Samsung → VHX → Vimeo." />
+  <meta property="og:title" content="Don Polistico — Product Designer" />
+  <meta property="og:description" content="15+ years shaping how people watch video. Deep expertise in TV, streaming, consumer electronics, and AI-powered design." />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://don.polisti.co" />
   <link rel="icon" type="image/png" href="images/avatar.png" />
   <link href="https://fonts.googleapis.com/css2?family=Lexend+Deca:wght@300;400;500;600;700&display=swap"
     rel="stylesheet" />
@@ -1780,8 +1785,8 @@
         <div class="hero-stat-label">viewers <span class="hide-mobile-sm">reached </span>worldwide</div>
       </div>
       <div class="hero-stat">
-        <div class="hero-stat-num">∞</div>
-        <div class="hero-stat-label">Figma frames opened<span class="hide-mobile">, never closed</span></div>
+        <div class="hero-stat-num">AI + CE</div>
+        <div class="hero-stat-label">AI workflows<span class="hide-mobile"> & Consumer Electronics</span></div>
       </div>
     </div>
   </section>
@@ -1828,8 +1833,7 @@
         </div>
       </a>
 
-      <a href="https://www.theverge.com/2013/7/3/4490362/boxee-acquired-by-samsung-in-surprise-deal-according-to-report"
-        target="_blank" rel="noopener noreferrer" class="work-card" id="card-boxee">
+      <a href="case-study-boxee.html" class="work-card" id="card-boxee">
         <div class="work-card-img" style="background:#111;padding:0;"><img src="images/boxee-app.png"
             style="width:100%;height:100%;object-fit:cover;display:block;"></div>
         <div class="work-card-body">
@@ -1890,21 +1894,23 @@
       <div class="about-text">
         <h2>Deep craft in<br>video &amp; platform.</h2>
         <p>
-          Hi 👋 I'm Don. I'm a Brooklyn-based product designer who has spent most of my career in streaming video. I
-          started with Boxee's early TV boxes and later helped build Vimeo's creator platforms. Along the way, two of
-          the startups I worked for were acquired, which gave me great experience in helping products grow and
-          transition under new teams. Recently, I've been expanding my craft by designing for 3D holograms (Looking
-          Glass) and exploring decentralized web projects.
+          Hi 👋 I'm Don. I'm a Brooklyn-based product designer who has spent 15+ years in streaming video and
+          consumer electronics. I started designing 10-foot TV interfaces at Boxee, helped integrate our software into
+          Samsung Smart TVs after acquisition, then built Vimeo's OTT creator platform across 11 platforms including
+          web, mobile, and every major TV OS. Along the way, I've designed for holographic displays at Looking Glass
+          and earned an AI for UX Design certification. I use AI tools throughout my design process — from rapid
+          concept exploration with generative AI to prototyping with AI-assisted tools.
         </p>
       </div>
       <div class="about-tools">
         <h3>Skills &amp; craft</h3>
         <div class="tools-grid">
-          <a href="#card-vimeo" class="tool-tag" onclick="highlightCard('card-vimeo')">Design systems</a>
-          <a href="#card-vhx" class="tool-tag" onclick="highlightCard('card-vhx')">Monetization flows</a>
-          <a href="#card-lookingglass" class="tool-tag" onclick="highlightCard('card-lookingglass')">Prototyping</a>
-          <a href="#card-vimeo" class="tool-tag" onclick="highlightCard('card-vimeo')">Cross-platform</a>
           <a href="#card-boxee" class="tool-tag" onclick="highlightCard('card-boxee')">10-foot UI</a>
+          <a href="#card-vimeo" class="tool-tag" onclick="highlightCard('card-vimeo')">Cross-platform</a>
+          <a href="#card-vimeo" class="tool-tag" onclick="highlightCard('card-vimeo')">Design systems</a>
+          <a href="#card-lookingglass" class="tool-tag" onclick="highlightCard('card-lookingglass')">AI prototyping</a>
+          <a href="#card-boxee" class="tool-tag" onclick="highlightCard('card-boxee')">Consumer electronics</a>
+          <a href="#card-vhx" class="tool-tag" onclick="highlightCard('card-vhx')">Monetization flows</a>
           <a href="#card-lookingglass" class="tool-tag" onclick="highlightCard('card-lookingglass')">Emerging tech</a>
           <a href="#card-boxee" class="tool-tag" onclick="highlightCard('card-boxee')">0→1</a>
           <div class="tool-tag">Drawing ligers</div>
@@ -2311,15 +2317,18 @@
       canvas.height = SIZE;
       const img = ctx.createImageData(SIZE, SIZE);
       let frame = 0;
+      const SKIP = 5; // redraw every 5th rAF ≈ 12fps — visually identical, much lighter
       function drawGrain() {
-        const d = img.data;
-        for (let i = 0; i < d.length; i += 4) {
-          const v = (Math.random() * 255) | 0;
-          d[i] = d[i + 1] = d[i + 2] = v;
-          d[i + 3] = 255;
-        }
-        ctx.putImageData(img, 0, 0);
         frame++;
+        if (frame % SKIP === 0) {
+          const d = img.data;
+          for (let i = 0; i < d.length; i += 4) {
+            const v = (Math.random() * 255) | 0;
+            d[i] = d[i + 1] = d[i + 2] = v;
+            d[i + 3] = 255;
+          }
+          ctx.putImageData(img, 0, 0);
+        }
         requestAnimationFrame(drawGrain);
       }
       drawGrain();
@@ -2383,7 +2392,7 @@
       { sel: '.hero-stat:nth-child(2) .hero-stat-num', jp: '2回' },
       { sel: '.hero-stat:nth-child(3) .hero-stat-label', html: '世界中の<span class="hide-mobile-sm">到達した</span>視聴者数', enHtml: 'viewers <span class="hide-mobile-sm">reached </span>worldwide' },
       { sel: '.hero-stat:nth-child(3) .hero-stat-num', jp: '数百万' },
-      { sel: '.hero-stat:nth-child(4) .hero-stat-label', jp: '開いたまま閉じてないFigmaフレーム' },
+      { sel: '.hero-stat:nth-child(4) .hero-stat-label', jp: 'AIワークフロー & コンシューマーエレクトロニクス' },
       // Work section
       { sel: '#work > .section-label', jp: '作品集' },
       { sel: '#work > h2', html: 'ケーススタディと<br>ハイライト。' },
@@ -2426,19 +2435,20 @@
       { sel: '#about > .section-label', jp: '紹介' },
       { sel: '#about h2', html: '映像と<br>プラットフォームの深い技。' },
       { sel: '.pull-quote', jp: '「映像が私の出発点でした。プラットフォーム思考こそが刺激を与えてくれるものです。画面、ヘッドセット、ホログラム — 表面は常に変わり続け、私はその先端にいたいと思っています。」' },
-      { sel: '.about-text > p', jp: 'こんにちは、ドンです。ブルックリンを拠点とするプロダクトデザイナーで、キャリアのほとんどをストリーミングビデオに費やしてきました。Boxeeの初期のTVボックスから始まり、Vimeoのクリエイタープラットフォームの構築に携わりました。その過程で2つのスタートアップが買収され、プロダクトの成長と新チームへの移行を支援する貴重な経験を得ました。最近は3Dホログラム（Looking Glass）や分散型Webプロジェクトにも取り組んでいます。' },
+      { sel: '.about-text > p', jp: 'こんにちは、ドンです。ブルックリンを拠点とするプロダクトデザイナーで、15年以上ストリーミングビデオと家電に携わってきました。Boxeeの10フィートTVインターフェースのデザインから始まり、SamsungのSmart TVへの統合、VimeoのOTTクリエイタープラットフォームの構築に至るまで。Looking Glassでのホログラフィックディスプレイのデザインや、AIツールを活用したデザインプロセスにも取り組んでいます。' },
       { sel: '.about-tools h3:first-of-type', jp: 'スキルと技術' },
       { sel: '.about-tools h3:last-of-type', jp: 'コア・ストレングス' },
       { sel: '.about-tools > p', jp: '次の役割では、複雑なデザイン課題を解決するチームを探しています。OTT/動画プラットフォームのデザイン、クロスプラットフォームエコシステムの開発、デザインシステムの構築、スタートアップ買収とプロダクト統合、新しいハードウェアと空間デザインの分野で15年の経験があります。' },
       // Skill tags
-      { sel: '.tool-tag:nth-child(1)', jp: 'デザインシステム' },
-      { sel: '.tool-tag:nth-child(2)', jp: '収益化フロー' },
-      { sel: '.tool-tag:nth-child(3)', jp: 'プロトタイピング' },
-      { sel: '.tool-tag:nth-child(4)', jp: 'クロスプラットフォーム' },
-      { sel: '.tool-tag:nth-child(5)', jp: '10フィートUI' },
-      { sel: '.tool-tag:nth-child(6)', jp: '新技術' },
-      { sel: '.tool-tag:nth-child(7)', jp: '0→1' },
-      { sel: '.tool-tag:nth-child(8)', jp: 'ライガーを描く' },
+      { sel: '.tool-tag:nth-child(1)', jp: '10フィートUI' },
+      { sel: '.tool-tag:nth-child(2)', jp: 'クロスプラットフォーム' },
+      { sel: '.tool-tag:nth-child(3)', jp: 'デザインシステム' },
+      { sel: '.tool-tag:nth-child(4)', jp: 'AIプロトタイピング' },
+      { sel: '.tool-tag:nth-child(5)', jp: 'コンシューマーエレクトロニクス' },
+      { sel: '.tool-tag:nth-child(6)', jp: '収益化フロー' },
+      { sel: '.tool-tag:nth-child(7)', jp: '新技術' },
+      { sel: '.tool-tag:nth-child(8)', jp: '0→1' },
+      { sel: '.tool-tag:nth-child(9)', jp: 'ライガーを描く' },
       // Career section
       { sel: '#career > .section-label', jp: 'キャリア物語' },
       { sel: '#career > h2', jp: 'ここに至るまで。' },
