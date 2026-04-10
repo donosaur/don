@@ -1635,8 +1635,19 @@
 
         var randomIndex = Math.floor(Math.random() * heroVideoConfig.ytIds.length);
 
-        // Skip YouTube entirely when viewing via file:// protocol
-        if (window.location.protocol === 'file:') {
+        // ?fallback=video → force MP4 fallback | ?fallback=image → force static image
+        var forcedFallback = new URLSearchParams(window.location.search).get('fallback');
+
+        if (forcedFallback === 'image') {
+          console.info('[hero] Forced static image fallback via ?fallback=image');
+          document.getElementById('heroYoutubeWrap').style.display = 'none';
+          // leave fallback image visible, don't activate local video
+        } else if (forcedFallback === 'video') {
+          console.info('[hero] Forced local video fallback via ?fallback=video');
+          document.getElementById('heroYoutubeWrap').style.display = 'none';
+          activateLocalVideo();
+        } else if (window.location.protocol === 'file:') {
+          // Skip YouTube entirely when viewing via file:// protocol
           console.warn('file:// protocol detected — skipping YouTube, trying local video.');
           document.getElementById('heroYoutubeWrap').style.display = 'none';
           activateLocalVideo();
