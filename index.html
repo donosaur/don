@@ -156,7 +156,13 @@
       will-change: transform;
     }
 
-    .hero-video-bg iframe {
+    #heroYoutubeWrap {
+      position: absolute;
+      inset: 0;
+    }
+
+    .hero-video-bg iframe,
+    .hero-video-bg video {
       position: absolute;
       top: 50%;
       left: 50%;
@@ -167,6 +173,7 @@
       min-width: 177.78vh;
       pointer-events: none;
       border: 0;
+      object-fit: cover;
     }
 
     /* dither grain overlay */
@@ -1602,21 +1609,109 @@
 
   <!-- HERO -->
   <section class="hero">
-    <!-- video background (with fallback for local viewing) -->
+    <!-- video background: YouTube → self-hosted MP4 → static image fallback chain -->
     <div class="hero-video-bg">
       <div id="videoFallback"
-        style="position: absolute; inset: 0; background: url('images/vimeo\\ 04E.png') center/cover no-repeat; z-index: 0; opacity: 0.5;">
+        style="position: absolute; inset: 0; background: url('videos/fallback.png') center/cover no-repeat; z-index: 0; opacity: 0.5;">
       </div>
-      <iframe id="heroYoutube" allow="autoplay; encrypted-media" referrerpolicy="strict-origin-when-cross-origin"
-        allowfullscreen style="position: relative; z-index: 1;"></iframe>
+      <!-- Self-hosted video fallback (hidden until needed) -->
+      <video id="heroLocalVideo" muted loop playsinline
+        style="position: relative; z-index: 1; display: none;"></video>
+      <!-- YouTube embed (primary) -->
+      <div id="heroYoutubeWrap">
+        <div id="heroYoutubePlayer"></div>
+      </div>
     </div>
     <script>
-        (function () {
-          const videoIds = ['Jox6R5-rIH0', 'TBsBq7298JU', '9vntypeV5QU', 'eI2PcZPZYKY'];
-          const randomVideoId = videoIds[Math.floor(Math.random() * videoIds.length)];
-          const iframe = document.getElementById('heroYoutube');
-          iframe.src = `https://www.youtube.com/embed/${randomVideoId}?autoplay=1&mute=1&loop=1&controls=0&playsinline=1&disablekb=1&rel=0&showinfo=0&modestbranding=1&playlist=${randomVideoId}`;
-        })();
+      // ── Hero Video Fallback Chain ──
+      // Priority: YouTube embed → self-hosted MP4 → static fallback image
+      (function () {
+        var heroVideoConfig = {
+          ytIds: ['Jox6R5-rIH0', 'TBsBq7298JU', '9vntypeV5QU', 'eI2PcZPZYKY'],
+          // Local MP4 fallback — single self-hosted video
+          localVideo: 'videos/liquid-shapes.mp4',
+          ytLoaded: false
+        };
+
+        var randomIndex = Math.floor(Math.random() * heroVideoConfig.ytIds.length);
+
+        // Skip YouTube entirely when viewing via file:// protocol
+        if (window.location.protocol === 'file:') {
+          console.warn('file:// protocol detected — skipping YouTube, trying local video.');
+          document.getElementById('heroYoutubeWrap').style.display = 'none';
+          activateLocalVideo();
+        } else {
+          // Load YouTube IFrame Player API
+          var tag = document.createElement('script');
+          tag.src = 'https://www.youtube.com/iframe_api';
+          var firstScriptTag = document.getElementsByTagName('script')[0];
+          firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
+
+          // Safety timeout: if YouTube hasn't confirmed playback within 6s, fall back
+          setTimeout(function () {
+            if (!heroVideoConfig.ytLoaded) {
+              console.warn('YouTube embed did not start within 6s — falling back to local video.');
+              var wrap = document.getElementById('heroYoutubeWrap');
+              if (wrap) wrap.style.display = 'none';
+              activateLocalVideo();
+            }
+          }, 6000);
+        }
+
+        // Called by YouTube IFrame API when ready
+        window.onYouTubeIframeAPIReady = function () {
+          var videoId = heroVideoConfig.ytIds[randomIndex];
+          new YT.Player('heroYoutubePlayer', {
+            videoId: videoId,
+            playerVars: {
+              autoplay: 1, mute: 1, loop: 1, controls: 0,
+              playsinline: 1, disablekb: 1, rel: 0, showinfo: 0,
+              modestbranding: 1, playlist: videoId
+            },
+            events: {
+              onReady: function (e) {
+                e.target.mute();
+                e.target.playVideo();
+              },
+              onStateChange: function (e) {
+                // YT.PlayerState.PLAYING === 1
+                if (e.data === 1) {
+                  heroVideoConfig.ytLoaded = true;
+                  // YouTube is playing — hide fallback image
+                  var fb = document.getElementById('videoFallback');
+                  if (fb) fb.style.opacity = '0';
+                }
+              },
+              onError: function (e) {
+                // Error codes: 2, 5, 100, 101, 150 (includes bot-detection blocks)
+                console.warn('YouTube embed error (code ' + e.data + ') — falling back to local video.');
+                var wrap = document.getElementById('heroYoutubeWrap');
+                if (wrap) wrap.style.display = 'none';
+                activateLocalVideo();
+              }
+            }
+          });
+        };
+
+        // Fallback: self-hosted MP4 video
+        function activateLocalVideo() {
+          var video = document.getElementById('heroLocalVideo');
+          if (!video) return;
+
+          var localSrc = heroVideoConfig.localVideo;
+          video.src = localSrc;
+          video.style.display = 'block';
+          video.play().then(function () {
+            // Local video playing — hide fallback image
+            var fb = document.getElementById('videoFallback');
+            if (fb) fb.style.opacity = '0';
+          }).catch(function (err) {
+            console.warn('Local video also failed (' + err.message + ') — showing static fallback image.');
+            video.style.display = 'none';
+            // Fallback image stays visible
+          });
+        }
+      })();
     </script>
     <canvas class="hero-grain" id="heroGrain"></canvas>
     <div class="hero-overlay"></div>
@@ -1901,29 +1996,6 @@
         </div>
       </div>
 
-      <div class="timeline-item">
-        <div class="timeline-header">
-          <div class="timeline-dot"></div>
-          <div class="timeline-period">June 2016 – June 2025</div>
-        </div>
-        <div class="timeline-company"><a href="https://vimeo.com" target="_blank" rel="noopener"
-            style="color: inherit; text-decoration: none;">Vimeo</a></div>
-        <div class="timeline-role">Senior Product Designer · New York, NY</div>
-        <p class="timeline-desc">
-          Nearly a decade at Vimeo, beginning with the integration of VHX post-acquisition. Architected end-to-end
-          design for Vimeo Streaming's cross-platform distribution — web, mobile, and TV apps — and shaped interaction
-          patterns for the Vimeo player supporting millions of daily plays. Maintained shared design systems for web and
-          mobile throughout the company's evolution from creator tool to B2B platform.
-        </p>
-        <div class="timeline-tags">
-          <span class="tag">OTT platform</span>
-          <span class="tag">Cross-platform</span>
-          <span class="tag">Design systems</span>
-          <span class="tag">Video player UX</span>
-          <span class="tag">Post-acquisition</span>
-        </div>
-      </div>
-
       <div class="timeline-item timeline-item--contract">
         <div class="timeline-header">
           <div class="timeline-dot timeline-dot--contract" data-tooltip="Recount Media"></div>
@@ -1965,6 +2037,29 @@
           <p class="timeline-contract-desc">Developed interaction models for holographic displays and a design system
             bridging 2D desktop workflows with 3D spatial visualization. Collaborated with graphics engineers on
             Unity-based applications.</p>
+        </div>
+      </div>
+
+      <div class="timeline-item">
+        <div class="timeline-header">
+          <div class="timeline-dot"></div>
+          <div class="timeline-period">June 2016 – June 2025</div>
+        </div>
+        <div class="timeline-company"><a href="https://vimeo.com" target="_blank" rel="noopener"
+            style="color: inherit; text-decoration: none;">Vimeo</a></div>
+        <div class="timeline-role">Senior Product Designer · New York, NY</div>
+        <p class="timeline-desc">
+          Nearly a decade at Vimeo, beginning with the integration of VHX post-acquisition. Architected end-to-end
+          design for Vimeo Streaming's cross-platform distribution — web, mobile, and TV apps — and shaped interaction
+          patterns for the Vimeo player supporting millions of daily plays. Maintained shared design systems for web and
+          mobile throughout the company's evolution from creator tool to B2B platform.
+        </p>
+        <div class="timeline-tags">
+          <span class="tag">OTT platform</span>
+          <span class="tag">Cross-platform</span>
+          <span class="tag">Design systems</span>
+          <span class="tag">Video player UX</span>
+          <span class="tag">Post-acquisition</span>
         </div>
       </div>
 
@@ -2484,20 +2579,9 @@
       }, 2500);
     }
 
-    // ── Local File Viewer Fallback for YouTube ──
-    // Error 153 happens when viewing a YouTube iframe via file:/// protocol.
-    // If the iframe fails to load (no message event from YT API), we show the fallback image.
-    if (window.location.protocol === 'file:') {
-      console.warn("Viewing via file:// protocol. YouTube background will be blocked (Error 153). Removing iframe and showing fallback image.");
-      const ytFrame = document.getElementById('heroYoutube');
-      if (ytFrame) ytFrame.remove();
-    } else {
-      // If on a real server, hide the fallback image once we assume it's working
-      setTimeout(() => {
-        const fallback = document.getElementById('videoFallback');
-        if (fallback) fallback.style.opacity = '0';
-      }, 2000);
-    }
+    // ── Hero video fallback is now handled by the YouTube IFrame Player API ──
+    // See the inline script in the hero section for the full fallback chain:
+    // YouTube embed → self-hosted MP4 → static fallback image
 
     // let entry animations finish before cursor takes over
     setTimeout(tick, 1400);
