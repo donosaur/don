@@ -461,18 +461,21 @@
         .h1-line {
             display: inline-block;
             overflow: hidden;
-            padding-bottom: 0.22em;
-            margin-bottom: -0.22em;
+            padding-bottom: 0.4em;
+            margin-bottom: -0.4em;
             padding-left: 0.15em;
-            padding-right: 0.15em;
+            padding-right: 0.5em;
             margin-left: -0.15em;
-            margin-right: -0.15em;
         }
 
         .h1-line-inner {
             display: inline-block;
+            padding-bottom: 0.4em;
+            margin-bottom: -0.4em;
+            padding-right: 0.5em;
+            margin-right: -0.5em;
             opacity: 0;
-            transform: translateY(110%);
+            transform: translateY(150%);
             animation: revealLine 1.1s cubic-bezier(0.16, 1, 0.3, 1) forwards;
             will-change: transform;
         }
@@ -485,12 +488,20 @@
         }
 
         .hero-title-em {
+            display: inline-block;
+            padding-bottom: 0.4em;
+            margin-bottom: -0.4em;
             font-style: italic;
             background: linear-gradient(90deg, #FFD123 0%, #f5c97a 38%, #fff0c0 50%, #f5c97a 62%, #FFD123 100%);
             background-size: 280% auto;
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
+            display: inline-block;
+            padding-right: 0.5em;
+            margin-right: -0.5em;
             background-clip: text;
+            -webkit-box-decoration-break: clone;
+            box-decoration-break: clone;
             animation: shimmerGold 4s linear infinite;
             animation-delay: 1.4s;
         }
@@ -1377,14 +1388,18 @@
         function renderHeadline(h) {
             const l1 = h.lines[0].split(' ').map(w => ({ text: w }));
             const l2 = h.lines[1].split(' ').map(w => ({ text: w }));
-            const chunks = [...l1, ...l2, { text: h.em, em: true }];
+            const emWords = h.em.split(' ').map(w => ({ text: w + '<span style="opacity:0.001">.</span>', em: true }));
+            const chunks = [...l1, ...l2, ...emWords];
             let html = '';
             chunks.forEach((chunk, i) => {
                 const delay = 0.1 + (i * 0.06);
+                const isJp = h.isJp; // or window.isJapanese logic if omitted
+                const margin = isJp ? 'margin-right: -0.5em;' : 'margin-right: -0.28em;';
+                
                 if (chunk.em) {
-                    html += `<span class="h1-line" style="margin-right:0.22em;"><span class="h1-line-inner" style="animation-delay:${delay}s"><span class="hero-title-em">${chunk.text}</span></span></span>`;
+                    html += `<span class="h1-line" style="${margin}"><span class="h1-line-inner" style="animation-delay:${delay}s"><span class="hero-title-em">${chunk.text}</span></span></span>`;
                 } else {
-                    html += `<span class="h1-line" style="margin-right:0.22em;"><span class="h1-line-inner" style="animation-delay:${delay}s">${chunk.text}</span></span>`;
+                    html += `<span class="h1-line" style="${margin}"><span class="h1-line-inner" style="animation-delay:${delay}s">${chunk.text}</span></span>`;
                 }
             });
             h1.innerHTML = html;
