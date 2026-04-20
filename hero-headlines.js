@@ -155,6 +155,33 @@ document.addEventListener('DOMContentLoaded', () => {
         }, { passive: true });
     });
 
+    // 3.5 Device Accelerometer Spline Tracking (Mobile Responsiveness)
+    if (window.DeviceOrientationEvent && /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) {
+        window.addEventListener('deviceorientation', (e) => {
+            if (!e.gamma && !e.beta) return;
+            
+            let gamma = e.gamma;
+            if (gamma < -45) gamma = -45;
+            if (gamma > 45) gamma = 45;
+            const clientX = ((gamma + 45) / 90) * window.innerWidth;
+            
+            let beta = e.beta;
+            if (beta < 0) beta = 0;
+            if (beta > 90) beta = 90;
+            const clientY = ((beta) / 90) * window.innerHeight;
+            
+            const pointerEvent = new PointerEvent('pointermove', {
+                clientX: clientX,
+                clientY: clientY,
+                bubbles: true,
+                cancelable: true,
+                view: window
+            });
+            
+            document.dispatchEvent(pointerEvent); 
+        }, { passive: true });
+    }
+
     // 4. Developer Configurator Overlay (Only loads on localhost)
     const isLocalhost = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
     if (isLocalhost) {
