@@ -34,4 +34,33 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Secondary pass in case custom elements trigger load late
     setTimeout(removeSplineLogos, 2000);
+
+    /*
+    * Performance enhancement: Spline 3D Viewer scroll jacking prevention.
+    * 1. Stops Spline's internal canvas from intercepting mousewheel/touchscroll events
+    * 2. Temporarily disables pointer-events while scrolling to boost FPS to 60.
+    */
+    const passThroughScroll = (e) => { e.stopPropagation(); };
+    let scrollTimeout;
+
+    const viewers = document.querySelectorAll('spline-viewer');
+    viewers.forEach(viewer => {
+        // Enforce capture-phase event stopping so Spline never receives the event
+        viewer.addEventListener('wheel', passThroughScroll, { capture: true, passive: true });
+        viewer.addEventListener('touchstart', passThroughScroll, { capture: true, passive: true });
+        viewer.addEventListener('touchmove', passThroughScroll, { capture: true, passive: true });
+
+        // Bind global scroll listener
+        window.addEventListener('scroll', () => {
+            if (!viewer.classList.contains('is-scrolling')) {
+                viewer.style.pointerEvents = 'none';
+                viewer.classList.add('is-scrolling');
+            }
+            clearTimeout(scrollTimeout);
+            scrollTimeout = setTimeout(() => {
+                viewer.style.pointerEvents = 'auto';
+                viewer.classList.remove('is-scrolling');
+            }, 100);
+        }, { passive: true });
+    });
 });
