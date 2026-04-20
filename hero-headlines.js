@@ -7,6 +7,7 @@ window.heroHeadlines = [
 ];
 
 /* --- SPLINE BACKGROUND VARIATIONS --- */
+// Randomly initialized on load, smoothly transitions every 30s
 window.heroBackgroundVariations = [
   { hue: 19, sat: 1.4, bri: 2, con: 2, grainOp: 0, grainSz: 20, bgCol: '#0091ff', glassCol: '#000000', glassOp: 0.04, glassBlur: 8 },
   { hue: 210, sat: 1.1, bri: 1.05, con: 2, grainOp: 0, grainSz: 20, bgCol: '#000000', glassCol: '#3b00a8', glassOp: 0.11, glassBlur: 40 },
@@ -18,27 +19,34 @@ window.heroBackgroundVariations = [
 // Helper to convert hex to rgb string for rgba usage
 function hexToRgb(hex) {
     var result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
-    return result ? `${parseInt(result[1], 16)}, ${parseInt(result[2], 16)}, ${parseInt(result[3], 16)}` : '250, 250, 248';
+    return result ? `${parseInt(result[1], 16)}, ${parseInt(result[2], 16)}, ${parseInt(result[3], 16)}` : '0, 0, 0';
 }
 
 document.addEventListener('DOMContentLoaded', () => {
     
-    // 1. Random Background Spawning Engine
+    // 1. Random Background Spawning Engine & Auto-Advancer
     const viewers = document.querySelectorAll('spline-viewer');
     const grainCanvas = document.getElementById('heroGrain');
-    const randomConfig = window.heroBackgroundVariations[Math.floor(Math.random() * window.heroBackgroundVariations.length)];
     
-    let activeSize = randomConfig.grainSz;
+    let currentConfigIndex = Math.floor(Math.random() * window.heroBackgroundVariations.length);
+    let activeConfig = window.heroBackgroundVariations[currentConfigIndex];
+    let activeSize = activeConfig.grainSz;
+
+    if (grainCanvas) {
+        grainCanvas.style.transition = 'opacity 1s ease-in-out';
+    }
 
     // Inject dynamic glass overlay div over each viewer
     viewers.forEach(viewer => {
-        viewer.parentElement.style.backgroundColor = randomConfig.bgCol; // Apply bg color defaults to parent
+        viewer.style.transition = 'filter 1s ease-in-out';
+        viewer.parentElement.style.transition = 'background-color 1s ease-in-out';
+        viewer.parentElement.style.backgroundColor = activeConfig.bgCol;
 
         const glassDiv = document.createElement('div');
         glassDiv.className = 'spline-glass-overlay';
-        glassDiv.style.cssText = 'position:absolute;inset:0;pointer-events:none;z-index:1;';
+        glassDiv.style.cssText = 'position:absolute;inset:0;pointer-events:none;z-index:1;transition:all 1s ease-in-out;';
         viewer.parentElement.appendChild(glassDiv);
-        viewer.glassOverlayRef = glassDiv; // save reference for configurator
+        viewer.glassOverlayRef = glassDiv; 
     });
 
     const applyFilters = (viewer, config) => {
@@ -55,7 +63,24 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     };
     
-    viewers.forEach(v => applyFilters(v, randomConfig));
+    viewers.forEach(v => applyFilters(v, activeConfig));
+
+    // Cycle through variants every 30 seconds smoothly
+    window.isConfiguratorActive = false;
+    setInterval(() => {
+        if (window.isConfiguratorActive) return; // Don't interrupt while tweaking
+
+        currentConfigIndex = (currentConfigIndex + 1) % window.heroBackgroundVariations.length;
+        activeConfig = window.heroBackgroundVariations[currentConfigIndex];
+        
+        viewers.forEach(v => applyFilters(v, activeConfig));
+        
+        // Push exact values to the local Dev UI if it exists
+        if (typeof window.updateConfiguratorUI === 'function') {
+            window.updateConfiguratorUI(activeConfig);
+        }
+    }, 30000);
+
 
     // 1.5 Dither Grain Rendering Engine
     if (grainCanvas) {
@@ -143,22 +168,26 @@ document.addEventListener('DOMContentLoaded', () => {
             max-height: 90vh; overflow-y: auto;
         `;
         ui.innerHTML = `
-            <h3 style="margin:0 0 15px;font-size:16px;color:#38bdf8;">Spline Configurator</h3>
+            <div style="display:flex;justify-content:space-between;align-items:center;margin:0 0 15px;">
+                <h3 style="margin:0;font-size:16px;color:#38bdf8;">Spline Configurator</h3>
+                <span style="font-size:10px;background:#38bdf822;color:#38bdf8;padding:2px 6px;border-radius:4px;display:inline-block;" id="autoStatus">Auto 30s</span>
+            </div>
+            
             <div style="margin-bottom:10px;">
-                <label style="display:flex;justify-content:space-between;margin-bottom:4px;">Hue <span id="valHue">${randomConfig.hue}</span>deg</label>
-                <input type="range" id="slHue" min="0" max="360" value="${randomConfig.hue}" style="width:100%;">
+                <label style="display:flex;justify-content:space-between;margin-bottom:4px;">Hue <span id="valHue">${activeConfig.hue}</span>deg</label>
+                <input type="range" id="slHue" min="0" max="360" value="${activeConfig.hue}" style="width:100%;">
             </div>
             <div style="margin-bottom:10px;">
-                <label style="display:flex;justify-content:space-between;margin-bottom:4px;">Saturate <span id="valSat">${randomConfig.sat}</span></label>
-                <input type="range" id="slSat" min="0" max="3" step="0.1" value="${randomConfig.sat}" style="width:100%;">
+                <label style="display:flex;justify-content:space-between;margin-bottom:4px;">Saturate <span id="valSat">${activeConfig.sat}</span></label>
+                <input type="range" id="slSat" min="0" max="3" step="0.1" value="${activeConfig.sat}" style="width:100%;">
             </div>
             <div style="margin-bottom:10px;">
-                <label style="display:flex;justify-content:space-between;margin-bottom:4px;">Brightness <span id="valBri">${randomConfig.bri}</span></label>
-                <input type="range" id="slBri" min="0.1" max="2" step="0.05" value="${randomConfig.bri}" style="width:100%;">
+                <label style="display:flex;justify-content:space-between;margin-bottom:4px;">Brightness <span id="valBri">${activeConfig.bri}</span></label>
+                <input type="range" id="slBri" min="0.1" max="2" step="0.05" value="${activeConfig.bri}" style="width:100%;">
             </div>
             <div style="margin-bottom:15px;">
-                <label style="display:flex;justify-content:space-between;margin-bottom:4px;">Contrast <span id="valCon">${randomConfig.con}</span></label>
-                <input type="range" id="slCon" min="0.1" max="2" step="0.05" value="${randomConfig.con}" style="width:100%;">
+                <label style="display:flex;justify-content:space-between;margin-bottom:4px;">Contrast <span id="valCon">${activeConfig.con}</span></label>
+                <input type="range" id="slCon" min="0.1" max="2" step="0.05" value="${activeConfig.con}" style="width:100%;">
             </div>
             
             <div style="height:1px;background:rgba(255,255,255,0.1);margin:15px 0;"></div>
@@ -166,39 +195,63 @@ document.addEventListener('DOMContentLoaded', () => {
             
             <div style="margin-bottom:10px;display:flex;justify-content:space-between;align-items:center;">
                 <label style="color:#cbd5e1;">Base Color</label>
-                <input type="color" id="inBgCol" value="${randomConfig.bgCol}" style="cursor:pointer;border:none;background:none;height:24px;width:24px;padding:0;">
+                <input type="color" id="inBgCol" value="${activeConfig.bgCol}" style="cursor:pointer;border:none;background:none;height:24px;width:24px;padding:0;">
             </div>
             <div style="margin-bottom:10px;display:flex;justify-content:space-between;align-items:center;">
                 <label style="color:#cbd5e1;">Glass Color</label>
-                <input type="color" id="inGlCol" value="${randomConfig.glassCol}" style="cursor:pointer;border:none;background:none;height:24px;width:24px;padding:0;">
+                <input type="color" id="inGlCol" value="${activeConfig.glassCol}" style="cursor:pointer;border:none;background:none;height:24px;width:24px;padding:0;">
             </div>
             <div style="margin-bottom:10px;">
-                <label style="display:flex;justify-content:space-between;margin-bottom:4px;color:#cbd5e1;">Glass Opacity <span id="valGlOp">${randomConfig.glassOp}</span></label>
-                <input type="range" id="slGlOp" min="0" max="1" step="0.01" value="${randomConfig.glassOp}" style="width:100%;">
+                <label style="display:flex;justify-content:space-between;margin-bottom:4px;color:#cbd5e1;">Glass Opacity <span id="valGlOp">${activeConfig.glassOp}</span></label>
+                <input type="range" id="slGlOp" min="0" max="1" step="0.01" value="${activeConfig.glassOp}" style="width:100%;">
             </div>
             <div style="margin-bottom:15px;">
-                <label style="display:flex;justify-content:space-between;margin-bottom:4px;color:#cbd5e1;">Glass Blur (px) <span id="valGlBl">${randomConfig.glassBlur}</span></label>
-                <input type="range" id="slGlBl" min="0" max="40" step="1" value="${randomConfig.glassBlur}" style="width:100%;">
+                <label style="display:flex;justify-content:space-between;margin-bottom:4px;color:#cbd5e1;">Glass Blur (px) <span id="valGlBl">${activeConfig.glassBlur}</span></label>
+                <input type="range" id="slGlBl" min="0" max="40" step="1" value="${activeConfig.glassBlur}" style="width:100%;">
             </div>
 
             <div style="height:1px;background:rgba(255,255,255,0.1);margin:15px 0;"></div>
             
             <div style="margin-bottom:10px;">
-                <label style="display:flex;justify-content:space-between;margin-bottom:4px;color:#cbd5e1;">Grain Opacity <span id="valGrOp">${randomConfig.grainOp}</span></label>
-                <input type="range" id="slGrOp" min="0" max="1" step="0.01" value="${randomConfig.grainOp}" style="width:100%;">
+                <label style="display:flex;justify-content:space-between;margin-bottom:4px;color:#cbd5e1;">Grain Opacity <span id="valGrOp">${activeConfig.grainOp}</span></label>
+                <input type="range" id="slGrOp" min="0" max="1" step="0.01" value="${activeConfig.grainOp}" style="width:100%;">
             </div>
             <div style="margin-bottom:15px;">
-                <label style="display:flex;justify-content:space-between;margin-bottom:4px;color:#cbd5e1;">Grain Scale (px) <span id="valGrSz">${randomConfig.grainSz}</span></label>
-                <input type="range" id="slGrSz" min="20" max="400" step="10" value="${randomConfig.grainSz}" style="width:100%;">
+                <label style="display:flex;justify-content:space-between;margin-bottom:4px;color:#cbd5e1;">Grain Scale (px) <span id="valGrSz">${activeConfig.grainSz}</span></label>
+                <input type="range" id="slGrSz" min="20" max="400" step="10" value="${activeConfig.grainSz}" style="width:100%;">
             </div>
             <div style="background:#0b1120;padding:10px;border-radius:6px;font-family:monospace;font-size:11px;color:#a5b4fc;word-break:break-all;" id="outCode">
-                { hue: ${randomConfig.hue}, sat: ${randomConfig.sat}, bri: ${randomConfig.bri}, con: ${randomConfig.con}, grainOp: ${randomConfig.grainOp}, grainSz: ${randomConfig.grainSz}, bgCol: '${randomConfig.bgCol}', glassCol: '${randomConfig.glassCol}', glassOp: ${randomConfig.glassOp}, glassBlur: ${randomConfig.glassBlur} }
+                { hue: ${activeConfig.hue}, sat: ${activeConfig.sat}, bri: ${activeConfig.bri}, con: ${activeConfig.con}, grainOp: ${activeConfig.grainOp}, grainSz: ${activeConfig.grainSz}, bgCol: '${activeConfig.bgCol}', glassCol: '${activeConfig.glassCol}', glassOp: ${activeConfig.glassOp}, glassBlur: ${activeConfig.glassBlur} }
             </div>
             <button onclick="this.parentElement.style.display='none'" style="margin-top:10px;width:100%;padding:8px;background:#334155;color:#fff;border:none;border-radius:6px;cursor:pointer;">Hide Panel</button>
         `;
         document.body.appendChild(ui);
 
-        const updateFilters = () => {
+        window.updateConfiguratorUI = (config) => {
+            document.getElementById('slHue').value = config.hue;
+            document.getElementById('slSat').value = config.sat;
+            document.getElementById('slBri').value = config.bri;
+            document.getElementById('slCon').value = config.con;
+            document.getElementById('slGrOp').value = config.grainOp;
+            document.getElementById('slGrSz').value = config.grainSz;
+            document.getElementById('inBgCol').value = config.bgCol;
+            document.getElementById('inGlCol').value = config.glassCol;
+            document.getElementById('slGlOp').value = config.glassOp;
+            document.getElementById('slGlBl').value = config.glassBlur;
+            
+            document.getElementById('valHue').innerText = config.hue;
+            document.getElementById('valSat').innerText = config.sat;
+            document.getElementById('valBri').innerText = config.bri;
+            document.getElementById('valCon').innerText = config.con;
+            document.getElementById('valGrOp').innerText = config.grainOp;
+            document.getElementById('valGrSz').innerText = config.grainSz;
+            document.getElementById('valGlOp').innerText = config.glassOp;
+            document.getElementById('valGlBl').innerText = config.glassBlur;
+            
+            document.getElementById('outCode').innerText = `{ hue: ${config.hue}, sat: ${config.sat}, bri: ${config.bri}, con: ${config.con}, grainOp: ${config.grainOp}, grainSz: ${config.grainSz}, bgCol: '${config.bgCol}', glassCol: '${config.glassCol}', glassOp: ${config.glassOp}, glassBlur: ${config.glassBlur} }`;
+        };
+
+        const updateFiltersFromUI = () => {
             const h = document.getElementById('slHue').value;
             const s = document.getElementById('slSat').value;
             const b = document.getElementById('slBri').value;
@@ -211,17 +264,11 @@ document.addEventListener('DOMContentLoaded', () => {
             const glo = document.getElementById('slGlOp').value;
             const glb = document.getElementById('slGlBl').value;
             
-            document.getElementById('valHue').innerText = h;
-            document.getElementById('valSat').innerText = s;
-            document.getElementById('valBri').innerText = b;
-            document.getElementById('valCon').innerText = c;
-            document.getElementById('valGrOp').innerText = go;
-            document.getElementById('valGrSz').innerText = gs;
-            
-            document.getElementById('valGlOp').innerText = glo;
-            document.getElementById('valGlBl').innerText = glb;
-            
-            document.getElementById('outCode').innerText = `{ hue: ${h}, sat: ${s}, bri: ${b}, con: ${c}, grainOp: ${go}, grainSz: ${gs}, bgCol: '${bgC}', glassCol: '${glC}', glassOp: ${glo}, glassBlur: ${glb} }`;
+            // Re-render UI readouts
+            window.updateConfiguratorUI({
+                hue: h, sat: s, bri: b, con: c, grainOp: go, grainSz: gs,
+                bgCol: bgC, glassCol: glC, glassOp: glo, glassBlur: glb
+            });
             
             viewers.forEach(v => applyFilters(v, {
                 hue: h, sat: s, bri: b, con: c, grainOp: go, grainSz: gs,
@@ -229,8 +276,24 @@ document.addEventListener('DOMContentLoaded', () => {
             }));
         };
 
-        ['slHue', 'slSat', 'slBri', 'slCon', 'slGrOp', 'slGrSz', 'slGlOp', 'slGlBl', 'inBgCol', 'inGlCol'].forEach(id => {
-            document.getElementById(id).addEventListener('input', updateFilters);
+        const inputs = ['slHue', 'slSat', 'slBri', 'slCon', 'slGrOp', 'slGrSz', 'slGlOp', 'slGlBl', 'inBgCol', 'inGlCol'];
+        inputs.forEach(id => {
+            document.getElementById(id).addEventListener('input', () => {
+                window.isConfiguratorActive = true;
+                document.getElementById('autoStatus').innerText = 'Paused';
+                document.getElementById('autoStatus').style.color = '#fbbf24';
+                document.getElementById('autoStatus').style.backgroundColor = '#fbbf2422';
+                updateFiltersFromUI();
+            });
+        });
+        
+        // Resume rotation when mouse leaves the UI completely
+        ui.addEventListener('mouseenter', () => window.isConfiguratorActive = true);
+        ui.addEventListener('mouseleave', () => {
+            window.isConfiguratorActive = false;
+            document.getElementById('autoStatus').innerText = 'Auto 30s';
+            document.getElementById('autoStatus').style.color = '#38bdf8';
+            document.getElementById('autoStatus').style.backgroundColor = '#38bdf822';
         });
     }
 });
