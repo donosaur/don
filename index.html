@@ -14,6 +14,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Lexend+Deca:wght@300;400;500;600;700&display=swap"
     rel="stylesheet" />
   <script src="https://mcp.figma.com/mcp/html-to-design/capture.js" async></script>
+  <link rel="preconnect" href="https://prod.spline.design" crossorigin />
   <script type="module" src="https://unpkg.com/@splinetool/viewer@1.12.86/build/spline-viewer.js"></script>
   <script src="hero-headlines.js"></script>
   <style>
@@ -166,6 +167,10 @@
       width: 100%;
       height: 100%;
       display: block;
+    }
+
+    spline-viewer::part(logo) {
+      display: none !important;
     }
 
     /* dither grain overlay */
@@ -1612,23 +1617,10 @@
   <section class="hero">
     <!-- 3D background: Spline scene -->
     <div class="hero-video-bg">
-      <spline-viewer url="https://prod.spline.design/opIVHlqzXj6HBHar/scene.splinecode"></spline-viewer>
-      <script>
-        // Remove the Spline logo from the shadow DOM aggressively
-        var removeLogoInterval = setInterval(function() {
-          var viewer = document.querySelector('spline-viewer');
-          if (viewer && viewer.shadowRoot) {
-            var logo = viewer.shadowRoot.querySelector('#logo');
-            if (logo) {
-              logo.remove();
-              clearInterval(removeLogoInterval);
-            }
-          }
-        }, 100);
-
-        // Fail-safe to stop checking after 10 seconds empty
-        setTimeout(function() { clearInterval(removeLogoInterval); }, 10000);
-      </script>
+      <spline-viewer 
+        aria-label="Interactive 3D liquid glass background" 
+        role="img" 
+        url="https://prod.spline.design/opIVHlqzXj6HBHar/scene.splinecode"></spline-viewer>
     </div>
     <canvas class="hero-grain" id="heroGrain"></canvas>
     <div class="hero-overlay"></div>
@@ -2601,30 +2593,42 @@
       const cta = document.querySelector('.hero-cta');
       if (!cta) return;
 
-      cta.addEventListener('mousemove', function(e) {
-        const rect = cta.getBoundingClientRect();
-        const x = e.clientX - rect.left; 
-        const y = e.clientY - rect.top; 
-        
-        const centerX = rect.width / 2;
-        const centerY = rect.height / 2;
-        
-        const deltaX = x - centerX;
-        const deltaY = y - centerY;
-        
-        const rotateX = (deltaY / centerY) * -15; 
-        const rotateY = (deltaX / centerX) * 15;
-        
-        const translateX = deltaX * 0.25;
-        const translateY = deltaY * 0.25;
+      let rafId = null;
 
-        cta.style.transform = 'perspective(1000px) translate3d(' + translateX + 'px, ' + translateY + 'px, 0) rotateX(' + rotateX + 'deg) rotateY(' + rotateY + 'deg)';
-        cta.style.transition = 'transform 0.1s ease-out';
+      cta.addEventListener('mousemove', function(e) {
+        // Skip heavy transformation on touch devices
+        if (window.matchMedia('(pointer: coarse)').matches) return;
+        
+        if (rafId) cancelAnimationFrame(rafId);
+        
+        rafId = requestAnimationFrame(() => {
+          const rect = cta.getBoundingClientRect();
+          const x = e.clientX - rect.left; 
+          const y = e.clientY - rect.top; 
+          
+          const centerX = rect.width / 2;
+          const centerY = rect.height / 2;
+          
+          const deltaX = x - centerX;
+          const deltaY = y - centerY;
+          
+          const rotateX = (deltaY / centerY) * -15; 
+          const rotateY = (deltaX / centerX) * 15;
+          
+          const translateX = deltaX * 0.25;
+          const translateY = deltaY * 0.25;
+
+          cta.style.transform = 'perspective(1000px) translate3d(' + translateX + 'px, ' + translateY + 'px, 0) rotateX(' + rotateX + 'deg) rotateY(' + rotateY + 'deg)';
+          cta.style.transition = 'transform 0.1s ease-out';
+        });
       });
 
       cta.addEventListener('mouseleave', function() {
-        cta.style.transform = 'perspective(1000px) translate3d(0, 0, 0) rotateX(0deg) rotateY(0deg)';
-        cta.style.transition = 'transform 0.6s cubic-bezier(0.34, 1.56, 0.64, 1)'; 
+        if (rafId) cancelAnimationFrame(rafId);
+        requestAnimationFrame(() => {
+          cta.style.transform = 'perspective(1000px) translate3d(0, 0, 0) rotateX(0deg) rotateY(0deg)';
+          cta.style.transition = 'transform 0.6s cubic-bezier(0.34, 1.56, 0.64, 1)'; 
+        });
       });
     });
   </script>

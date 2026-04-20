@@ -8,6 +8,8 @@
     <link rel="icon" type="image/png" href="images/avatar.png" />
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="preconnect" href="https://prod.spline.design" crossorigin />
+    <script type="module" src="https://unpkg.com/@splinetool/viewer@1.12.86/build/spline-viewer.js"></script>
     <link href="https://fonts.googleapis.com/css2?family=Lexend+Deca:wght@400;500;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <script>
@@ -63,6 +65,10 @@
             min-height: 100vh;
             padding: 40px 0;
             place-items: center;
+        }
+
+        spline-viewer::part(logo) {
+            display: none !important;
         }
 
         /* 1.1 SLIDE CONTAINER ROOT */
@@ -675,11 +681,13 @@
     <!-- Slide 1: Hero -->
     <div class="slide-container" id="slide1" style="padding:0;overflow:hidden;">
         <!-- Video Background -->
-        <div style="position:absolute;inset:-3%;z-index:0;overflow:hidden;pointer-events:none;">
-
-            <iframe id="heroYoutube" allow="autoplay; encrypted-media" referrerpolicy="strict-origin-when-cross-origin"
-                allowfullscreen
-                style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:1600px;height:900px;min-height:100%;min-width:100%;pointer-events:none;border:0;z-index:1;"></iframe>
+        <div style="position:absolute;inset:0;z-index:0;overflow:hidden;pointer-events:none;">
+            <spline-viewer 
+                aria-label="Interactive 3D liquid glass background" 
+                role="img" 
+                url="https://prod.spline.design/opIVHlqzXj6HBHar/scene.splinecode"
+                style="width: 100%; height: 100%; display: block; position: absolute; z-index: 1;">
+            </spline-viewer>
         </div>
         <!-- Grain Canvas -->
         <canvas id="heroGrain"
@@ -1349,14 +1357,6 @@
     });
 
     (function () {
-        // Video background
-        const videoIds = ['Jox6R5-rIH0', 'TBsBq7298JU', '9vntypeV5QU', 'eI2PcZPZYKY'];
-        const randomVideoId = videoIds[Math.floor(Math.random() * videoIds.length)];
-        const iframe = document.getElementById('heroYoutube');
-        if (iframe) {
-            iframe.src = `https://www.youtube.com/embed/${randomVideoId}?autoplay=1&mute=1&loop=1&controls=0&playsinline=1&disablekb=1&rel=0&showinfo=0&modestbranding=1&playlist=${randomVideoId}`;
-        }
-
         // Grain canvas
         const canvas = document.getElementById('heroGrain');
         if (canvas) {

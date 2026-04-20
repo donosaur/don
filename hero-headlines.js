@@ -5,3 +5,33 @@ window.heroHeadlines = [
   { lines: ['Transforming complex', 'streaming tech into'], em: 'intuitive products.', jpLines: ['複雑なストリーミング技術を', '直感的なプロダクトに'], jpEm: '変える。' },
   { lines: ['The intersection of', 'craft, product,'], em: 'and storytelling.', jpLines: ['技術、製品、そして', 'ストーリーテリングの'], jpEm: '交差点。' },
 ];
+
+// Aggressive Spline Logo Removal
+// Applies to all pages importing this script (index.html, slides.html, slides-cnbc.html)
+document.addEventListener('DOMContentLoaded', () => {
+    const removeSplineLogos = () => {
+        const viewers = document.querySelectorAll('spline-viewer');
+        viewers.forEach(viewer => {
+            let attempts = 0;
+            const interval = setInterval(() => {
+                attempts++;
+                if (viewer.shadowRoot) {
+                    const logo = viewer.shadowRoot.querySelector('#logo');
+                    if (logo) {
+                        logo.remove();
+                        clearInterval(interval);
+                        return;
+                    }
+                }
+                // Stop trying after 10 seconds empty 
+                if (attempts > 100) clearInterval(interval);
+            }, 100);
+        });
+    };
+    
+    // Initial removal pass
+    removeSplineLogos();
+
+    // Secondary pass in case custom elements trigger load late
+    setTimeout(removeSplineLogos, 2000);
+});
