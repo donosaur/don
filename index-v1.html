@@ -14,7 +14,6 @@
   <link href="https://fonts.googleapis.com/css2?family=Lexend+Deca:wght@300;400;500;600;700&display=swap"
     rel="stylesheet" />
   <script src="https://mcp.figma.com/mcp/html-to-design/capture.js" async></script>
-  <script type="module" src="https://unpkg.com/@splinetool/viewer@1.12.86/build/spline-viewer.js"></script>
   <script src="hero-headlines.js"></script>
   <style>
     *,
@@ -152,20 +151,34 @@
       box-sizing: border-box;
     }
 
-    /* 3D layer */
+    /* video layer */
     .hero-video-bg {
       position: absolute;
-      inset: 0;
+      inset: -3%;
       z-index: 0;
       overflow: hidden;
-      pointer-events: auto;
+      pointer-events: none;
       will-change: transform;
     }
 
-    .hero-video-bg spline-viewer {
-      width: 100%;
-      height: 100%;
-      display: block;
+    #heroYoutubeWrap {
+      position: absolute;
+      inset: 0;
+    }
+
+    .hero-video-bg iframe,
+    .hero-video-bg video {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 100vw;
+      height: 56.25vw;
+      min-height: 100%;
+      min-width: 177.78vh;
+      pointer-events: none;
+      border: 0;
+      object-fit: cover;
     }
 
     /* dither grain overlay */
@@ -1610,26 +1623,121 @@
 
   <!-- HERO -->
   <section class="hero">
-    <!-- 3D background: Spline scene -->
+    <!-- video background: YouTube → self-hosted MP4 → static image fallback chain -->
     <div class="hero-video-bg">
-      <spline-viewer url="https://prod.spline.design/opIVHlqzXj6HBHar/scene.splinecode"></spline-viewer>
-      <script>
-        // Remove the Spline logo from the shadow DOM aggressively
-        var removeLogoInterval = setInterval(function() {
-          var viewer = document.querySelector('spline-viewer');
-          if (viewer && viewer.shadowRoot) {
-            var logo = viewer.shadowRoot.querySelector('#logo');
-            if (logo) {
-              logo.remove();
-              clearInterval(removeLogoInterval);
-            }
-          }
-        }, 100);
-
-        // Fail-safe to stop checking after 10 seconds empty
-        setTimeout(function() { clearInterval(removeLogoInterval); }, 10000);
-      </script>
+      <div id="videoFallback"
+        style="position: absolute; inset: 0; background: url('videos/fallback.png') center/cover no-repeat; z-index: 0; opacity: 0.5;">
+      </div>
+      <!-- Self-hosted video fallback (hidden until needed) -->
+      <video id="heroLocalVideo" muted loop playsinline
+        style="position: relative; z-index: 1; display: none;"></video>
+      <!-- YouTube embed (primary) -->
+      <div id="heroYoutubeWrap">
+        <div id="heroYoutubePlayer"></div>
+      </div>
     </div>
+    <script>
+      // ── Hero Video Fallback Chain ──
+      // Priority: YouTube embed → self-hosted MP4 → static fallback image
+      (function () {
+        var heroVideoConfig = {
+          ytIds: ['Jox6R5-rIH0', 'TBsBq7298JU', '9vntypeV5QU', 'eI2PcZPZYKY'],
+          // Local MP4 fallback — single self-hosted video
+          localVideo: 'videos/liquid-shapes.mp4',
+          ytLoaded: false
+        };
+
+        var randomIndex = Math.floor(Math.random() * heroVideoConfig.ytIds.length);
+
+        // ?fallback=video → force MP4 fallback | ?fallback=image → force static image
+        var forcedFallback = new URLSearchParams(window.location.search).get('fallback');
+
+        if (forcedFallback === 'image') {
+          console.info('[hero] Forced static image fallback via ?fallback=image');
+          document.getElementById('heroYoutubeWrap').style.display = 'none';
+          // leave fallback image visible, don't activate local video
+        } else if (forcedFallback === 'video') {
+          console.info('[hero] Forced local video fallback via ?fallback=video');
+          document.getElementById('heroYoutubeWrap').style.display = 'none';
+          activateLocalVideo();
+        } else if (window.location.protocol === 'file:') {
+          // Skip YouTube entirely when viewing via file:// protocol
+          console.warn('file:// protocol detected — skipping YouTube, trying local video.');
+          document.getElementById('heroYoutubeWrap').style.display = 'none';
+          activateLocalVideo();
+        } else {
+          // Load YouTube IFrame Player API
+          var tag = document.createElement('script');
+          tag.src = 'https://www.youtube.com/iframe_api';
+          var firstScriptTag = document.getElementsByTagName('script')[0];
+          firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
+
+          // Safety timeout: if YouTube hasn't confirmed playback within 6s, fall back
+          setTimeout(function () {
+            if (!heroVideoConfig.ytLoaded) {
+              console.warn('YouTube embed did not start within 6s — falling back to local video.');
+              var wrap = document.getElementById('heroYoutubeWrap');
+              if (wrap) wrap.style.display = 'none';
+              activateLocalVideo();
+            }
+          }, 6000);
+        }
+
+        // Called by YouTube IFrame API when ready
+        window.onYouTubeIframeAPIReady = function () {
+          var videoId = heroVideoConfig.ytIds[randomIndex];
+          new YT.Player('heroYoutubePlayer', {
+            videoId: videoId,
+            playerVars: {
+              autoplay: 1, mute: 1, loop: 1, controls: 0,
+              playsinline: 1, disablekb: 1, rel: 0, showinfo: 0,
+              modestbranding: 1, playlist: videoId
+            },
+            events: {
+              onReady: function (e) {
+                e.target.mute();
+                e.target.playVideo();
+              },
+              onStateChange: function (e) {
+                // YT.PlayerState.PLAYING === 1
+                if (e.data === 1) {
+                  heroVideoConfig.ytLoaded = true;
+                  // YouTube is playing — hide fallback image
+                  var fb = document.getElementById('videoFallback');
+                  if (fb) fb.style.opacity = '0';
+                }
+              },
+              onError: function (e) {
+                // Error codes: 2, 5, 100, 101, 150 (includes bot-detection blocks)
+                console.warn('YouTube embed error (code ' + e.data + ') — falling back to local video.');
+                var wrap = document.getElementById('heroYoutubeWrap');
+                if (wrap) wrap.style.display = 'none';
+                activateLocalVideo();
+              }
+            }
+          });
+        };
+
+        // Fallback: self-hosted MP4 video
+        function activateLocalVideo() {
+          var video = document.getElementById('heroLocalVideo');
+          if (!video) return;
+
+          var localSrc = heroVideoConfig.localVideo;
+          video.src = localSrc;
+          video.style.display = 'block';
+          video.play().then(function () {
+            // Local video playing — hide fallback image
+            var fb = document.getElementById('videoFallback');
+            if (fb) fb.style.opacity = '0';
+          }).catch(function (err) {
+            console.warn('Local video also failed (' + err.message + ') — showing static fallback image.');
+            video.style.display = 'none';
+            // Fallback image stays visible
+          });
+        }
+      })();
+    </script>
     <canvas class="hero-grain" id="heroGrain"></canvas>
     <div class="hero-overlay"></div>
 
@@ -2595,39 +2703,6 @@
     */
   </script>
 
-  <!-- Magnetic CTA Effect -->
-  <script>
-    document.addEventListener('DOMContentLoaded', function() {
-      const cta = document.querySelector('.hero-cta');
-      if (!cta) return;
-
-      cta.addEventListener('mousemove', function(e) {
-        const rect = cta.getBoundingClientRect();
-        const x = e.clientX - rect.left; 
-        const y = e.clientY - rect.top; 
-        
-        const centerX = rect.width / 2;
-        const centerY = rect.height / 2;
-        
-        const deltaX = x - centerX;
-        const deltaY = y - centerY;
-        
-        const rotateX = (deltaY / centerY) * -15; 
-        const rotateY = (deltaX / centerX) * 15;
-        
-        const translateX = deltaX * 0.25;
-        const translateY = deltaY * 0.25;
-
-        cta.style.transform = 'perspective(1000px) translate3d(' + translateX + 'px, ' + translateY + 'px, 0) rotateX(' + rotateX + 'deg) rotateY(' + rotateY + 'deg)';
-        cta.style.transition = 'transform 0.1s ease-out';
-      });
-
-      cta.addEventListener('mouseleave', function() {
-        cta.style.transform = 'perspective(1000px) translate3d(0, 0, 0) rotateX(0deg) rotateY(0deg)';
-        cta.style.transition = 'transform 0.6s cubic-bezier(0.34, 1.56, 0.64, 1)'; 
-      });
-    });
-  </script>
 </body>
 
 </html>
