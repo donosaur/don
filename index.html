@@ -55,10 +55,15 @@
       background: var(--bg);
       color: var(--ink);
       -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
     }
 
-    p, h1, h2, h3, h4, h5, h6, li, span, div, a {
+    p, h4, h5, h6, li, span, div, a {
       text-wrap: pretty;
+    }
+
+    h1, h2, h3 {
+      text-wrap: balance;
     }
 
     /* ── NAV ── */
@@ -317,6 +322,7 @@
       font-size: clamp(24px, min(3.5vw, 4vh), 30px);
       font-weight: 600;
       color: #fff;
+      font-variant-numeric: tabular-nums;
     }
 
     .hero-stat-label {
@@ -335,6 +341,7 @@
       margin-top: clamp(20px, 5vh, 40px);
       margin-left: -8px;
       padding: 23px 32px;
+      padding-right: 28px; /* Optical alignment for the trailing icon */
       background: transparent;
       color: #fff;
       font-size: 13px;
@@ -827,7 +834,8 @@
       position: relative;
       overflow: hidden;
       background: var(--white);
-      border: 1px solid var(--line);
+      border: 0;
+      box-shadow: 0px 0px 0px 1px rgba(0, 0, 0, 0.04), 0px 2px 8px -2px rgba(0, 0, 0, 0.06), 0px 8px 24px -4px rgba(0, 0, 0, 0.04);
       text-decoration: none;
       color: inherit;
       display: block;
@@ -851,13 +859,12 @@
     }
 
     .work-card:hover {
-      border-color: #17D5FF;
-      box-shadow: 0 4px 32px rgba(23, 213, 255, 0.12);
+      box-shadow: inset 0 0 0 1px #17D5FF, 0 4px 32px rgba(23, 213, 255, 0.12);
     }
 
     .work-card.tag-highlight {
       animation: cardHighlight 2.5s ease-out;
-      border-color: var(--accent);
+      box-shadow: inset 0 0 0 1px var(--accent);
     }
 
     @keyframes cardHighlight {
@@ -903,8 +910,7 @@
     /* Per-card accent colors on hover */
     a.work-card[href="case-study-looking-glass.html"]:hover,
     #card-lookingglass:hover {
-      border-color: #8B5CF6 !important;
-      box-shadow: 0 4px 32px rgba(139, 92, 246, 0.15) !important;
+      box-shadow: inset 0 0 0 1px #8B5CF6, 0 4px 32px rgba(139, 92, 246, 0.15) !important;
     }
 
     a.work-card[href="case-study-looking-glass.html"]:hover .work-card-type,
@@ -913,8 +919,7 @@
     }
 
     .work-grid .work-card:nth-child(3):hover {
-      border-color: #4ade80;
-      box-shadow: 0 4px 32px rgba(74, 222, 128, 0.12);
+      box-shadow: inset 0 0 0 1px #4ade80, 0 4px 32px rgba(74, 222, 128, 0.12);
     }
 
     .work-grid .work-card:nth-child(3):hover .work-card-type {
@@ -922,8 +927,7 @@
     }
 
     .work-grid .work-card:nth-child(4):hover {
-      border-color: #facc15;
-      box-shadow: 0 4px 32px rgba(250, 204, 21, 0.12);
+      box-shadow: inset 0 0 0 1px #facc15, 0 4px 32px rgba(250, 204, 21, 0.12);
     }
 
     .work-grid .work-card:nth-child(4):hover .work-card-type {
@@ -931,8 +935,7 @@
     }
 
     .work-grid .work-card:nth-child(5):hover {
-      border-color: #f87171;
-      box-shadow: 0 4px 32px rgba(248, 113, 113, 0.12);
+      box-shadow: inset 0 0 0 1px #f87171, 0 4px 32px rgba(248, 113, 113, 0.12);
     }
 
     .work-grid .work-card:nth-child(5):hover .work-card-type {
@@ -955,6 +958,8 @@
     }
 
     .work-card-img img {
+      outline: 1px solid rgba(0, 0, 0, 0.06);
+      outline-offset: -1px;
       transition: transform 0.35s ease, opacity 0.2s;
       will-change: transform;
     }
@@ -2587,11 +2592,11 @@
           const deltaX = x - centerX;
           const deltaY = y - centerY;
           
-          const rotateX = (deltaY / centerY) * -15; 
-          const rotateY = (deltaX / centerX) * 15;
+          const rotateX = (deltaY / centerY) * -7.5; 
+          const rotateY = (deltaX / centerX) * 7.5;
           
-          const translateX = deltaX * 0.25;
-          const translateY = deltaY * 0.25;
+          const translateX = deltaX * 0.125;
+          const translateY = deltaY * 0.125;
 
           cta.style.transform = 'perspective(1000px) translate3d(' + translateX + 'px, ' + translateY + 'px, 0) rotateX(' + rotateX + 'deg) rotateY(' + rotateY + 'deg)';
           cta.style.transition = 'transform 0.1s ease-out';

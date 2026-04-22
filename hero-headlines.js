@@ -67,8 +67,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Cycle through variants every 30 seconds smoothly
     window.isConfiguratorActive = false;
+    window.isConfiguratorPaused = false;
     setInterval(() => {
-        if (window.isConfiguratorActive) return; // Don't interrupt while tweaking
+        if (window.isConfiguratorActive || window.isConfiguratorPaused) return; // Don't interrupt while tweaking
 
         currentConfigIndex = (currentConfigIndex + 1) % window.heroBackgroundVariations.length;
         activeConfig = window.heroBackgroundVariations[currentConfigIndex];
@@ -155,6 +156,51 @@ document.addEventListener('DOMContentLoaded', () => {
         }, { passive: true });
     });
 
+    // 3.8 Subtle Magnetic Text Effect (25% strength of CTA)
+    const attachMagneticEffect = () => {
+        // Target all relevant text containers in the hero sections across different files
+        const nodes = document.querySelectorAll('.hero-label, .hero h1, .hero-sub, .hero-stat, #heroH1, #heroLabel, .hero-grid > div:last-child > div');
+        const magneticTargets = Array.from(nodes).filter(el => !el.classList.contains('hero-cta') && !el.closest('.hero-cta'));
+        
+        magneticTargets.forEach(el => {
+            let rafId = null;
+            el.addEventListener('mousemove', function(e) {
+                if (window.matchMedia('(pointer: coarse)').matches) return;
+                if (rafId) cancelAnimationFrame(rafId);
+                
+                rafId = requestAnimationFrame(() => {
+                    const rect = el.getBoundingClientRect();
+                    const x = e.clientX - rect.left; 
+                    const y = e.clientY - rect.top; 
+                    
+                    const centerX = rect.width / 2;
+                    const centerY = rect.height / 2;
+                    
+                    const deltaX = x - centerX;
+                    const deltaY = y - centerY;
+                    
+                    // Scaled down to 25% of the original CTA effect
+                    const rotateX = (deltaY / centerY) * -3.75; 
+                    const rotateY = (deltaX / centerX) * 3.75;
+                    const translateX = deltaX * 0.0625;
+                    const translateY = deltaY * 0.0625;
+
+                    el.style.transform = `perspective(1000px) translate3d(${translateX}px, ${translateY}px, 0) rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
+                    el.style.transition = 'transform 0.1s ease-out';
+                });
+            });
+
+            el.addEventListener('mouseleave', function() {
+                if (rafId) cancelAnimationFrame(rafId);
+                requestAnimationFrame(() => {
+                    el.style.transform = 'perspective(1000px) translate3d(0, 0, 0) rotateX(0deg) rotateY(0deg)';
+                    el.style.transition = 'transform 0.6s cubic-bezier(0.34, 1.56, 0.64, 1)'; 
+                });
+            });
+        });
+    };
+    setTimeout(attachMagneticEffect, 800);
+
     // 3.5 Device Accelerometer Spline Tracking (Mobile Responsiveness)
     if (window.DeviceOrientationEvent && /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) {
         window.addEventListener('deviceorientation', (e) => {
@@ -189,68 +235,68 @@ document.addEventListener('DOMContentLoaded', () => {
         ui.style.cssText = `
             position: fixed; bottom: 20px; right: 20px; z-index: 9999;
             background: rgba(15, 23, 42, 0.95); backdrop-filter: blur(10px);
-            border: 1px solid rgba(255,255,255,0.1); border-radius: 12px;
-            padding: 20px; width: 330px; color: #fff; font-family: 'Inter', sans-serif;
-            box-shadow: 0 20px 40px rgba(0,0,0,0.5); font-size: 13px;
+            border: 1px solid rgba(255,255,255,0.1); border-radius: 8px;
+            padding: 12px; width: 220px; color: #fff; font-family: 'Inter', sans-serif;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5); font-size: 11px;
             max-height: 90vh; overflow-y: auto;
         `;
         ui.innerHTML = `
-            <div style="display:flex;justify-content:space-between;align-items:center;margin:0 0 15px;">
-                <h3 style="margin:0;font-size:16px;color:#38bdf8;">Spline Configurator</h3>
-                <span style="font-size:10px;background:#38bdf822;color:#38bdf8;padding:2px 6px;border-radius:4px;display:inline-block;" id="autoStatus">Auto 30s</span>
+            <div style="display:flex;justify-content:space-between;align-items:center;margin:0 0 10px;">
+                <h3 style="margin:0;font-size:13px;color:#38bdf8;">Spline Configurator</h3>
+                <span style="font-size:9px;background:#38bdf822;color:#38bdf8;padding:2px 6px;border-radius:4px;display:inline-block;cursor:pointer;user-select:none;transition:all 0.2s;" id="autoStatus">Auto 30s</span>
             </div>
             
-            <div style="margin-bottom:10px;">
-                <label style="display:flex;justify-content:space-between;margin-bottom:4px;">Hue <span id="valHue">${activeConfig.hue}</span>deg</label>
+            <div style="margin-bottom:6px;">
+                <label style="display:flex;justify-content:space-between;margin-bottom:2px;">Hue <span id="valHue">${activeConfig.hue}</span>deg</label>
                 <input type="range" id="slHue" min="0" max="360" value="${activeConfig.hue}" style="width:100%;">
             </div>
-            <div style="margin-bottom:10px;">
-                <label style="display:flex;justify-content:space-between;margin-bottom:4px;">Saturate <span id="valSat">${activeConfig.sat}</span></label>
+            <div style="margin-bottom:6px;">
+                <label style="display:flex;justify-content:space-between;margin-bottom:2px;">Saturate <span id="valSat">${activeConfig.sat}</span></label>
                 <input type="range" id="slSat" min="0" max="3" step="0.1" value="${activeConfig.sat}" style="width:100%;">
             </div>
-            <div style="margin-bottom:10px;">
-                <label style="display:flex;justify-content:space-between;margin-bottom:4px;">Brightness <span id="valBri">${activeConfig.bri}</span></label>
+            <div style="margin-bottom:6px;">
+                <label style="display:flex;justify-content:space-between;margin-bottom:2px;">Brightness <span id="valBri">${activeConfig.bri}</span></label>
                 <input type="range" id="slBri" min="0.1" max="2" step="0.05" value="${activeConfig.bri}" style="width:100%;">
             </div>
-            <div style="margin-bottom:15px;">
-                <label style="display:flex;justify-content:space-between;margin-bottom:4px;">Contrast <span id="valCon">${activeConfig.con}</span></label>
+            <div style="margin-bottom:10px;">
+                <label style="display:flex;justify-content:space-between;margin-bottom:2px;">Contrast <span id="valCon">${activeConfig.con}</span></label>
                 <input type="range" id="slCon" min="0.1" max="2" step="0.05" value="${activeConfig.con}" style="width:100%;">
             </div>
             
-            <div style="height:1px;background:rgba(255,255,255,0.1);margin:15px 0;"></div>
-            <h4 style="margin:0 0 10px;font-size:14px;color:#cbd5e1;">Environment & Glass</h4>
+            <div style="height:1px;background:rgba(255,255,255,0.1);margin:10px 0;"></div>
+            <h4 style="margin:0 0 6px;font-size:11px;color:#cbd5e1;">Environment & Glass</h4>
             
-            <div style="margin-bottom:10px;display:flex;justify-content:space-between;align-items:center;">
+            <div style="margin-bottom:6px;display:flex;justify-content:space-between;align-items:center;">
                 <label style="color:#cbd5e1;">Base Color</label>
-                <input type="color" id="inBgCol" value="${activeConfig.bgCol}" style="cursor:pointer;border:none;background:none;height:24px;width:24px;padding:0;">
+                <input type="color" id="inBgCol" value="${activeConfig.bgCol}" style="cursor:pointer;border:none;background:none;height:18px;width:18px;padding:0;">
             </div>
-            <div style="margin-bottom:10px;display:flex;justify-content:space-between;align-items:center;">
+            <div style="margin-bottom:6px;display:flex;justify-content:space-between;align-items:center;">
                 <label style="color:#cbd5e1;">Glass Color</label>
-                <input type="color" id="inGlCol" value="${activeConfig.glassCol}" style="cursor:pointer;border:none;background:none;height:24px;width:24px;padding:0;">
+                <input type="color" id="inGlCol" value="${activeConfig.glassCol}" style="cursor:pointer;border:none;background:none;height:18px;width:18px;padding:0;">
             </div>
-            <div style="margin-bottom:10px;">
-                <label style="display:flex;justify-content:space-between;margin-bottom:4px;color:#cbd5e1;">Glass Opacity <span id="valGlOp">${activeConfig.glassOp}</span></label>
+            <div style="margin-bottom:6px;">
+                <label style="display:flex;justify-content:space-between;margin-bottom:2px;color:#cbd5e1;">Glass Opacity <span id="valGlOp">${activeConfig.glassOp}</span></label>
                 <input type="range" id="slGlOp" min="0" max="1" step="0.01" value="${activeConfig.glassOp}" style="width:100%;">
             </div>
-            <div style="margin-bottom:15px;">
-                <label style="display:flex;justify-content:space-between;margin-bottom:4px;color:#cbd5e1;">Glass Blur (px) <span id="valGlBl">${activeConfig.glassBlur}</span></label>
+            <div style="margin-bottom:10px;">
+                <label style="display:flex;justify-content:space-between;margin-bottom:2px;color:#cbd5e1;">Glass Blur (px) <span id="valGlBl">${activeConfig.glassBlur}</span></label>
                 <input type="range" id="slGlBl" min="0" max="40" step="1" value="${activeConfig.glassBlur}" style="width:100%;">
             </div>
 
-            <div style="height:1px;background:rgba(255,255,255,0.1);margin:15px 0;"></div>
+            <div style="height:1px;background:rgba(255,255,255,0.1);margin:10px 0;"></div>
             
-            <div style="margin-bottom:10px;">
-                <label style="display:flex;justify-content:space-between;margin-bottom:4px;color:#cbd5e1;">Grain Opacity <span id="valGrOp">${activeConfig.grainOp}</span></label>
+            <div style="margin-bottom:6px;">
+                <label style="display:flex;justify-content:space-between;margin-bottom:2px;color:#cbd5e1;">Grain Opacity <span id="valGrOp">${activeConfig.grainOp}</span></label>
                 <input type="range" id="slGrOp" min="0" max="1" step="0.01" value="${activeConfig.grainOp}" style="width:100%;">
             </div>
-            <div style="margin-bottom:15px;">
-                <label style="display:flex;justify-content:space-between;margin-bottom:4px;color:#cbd5e1;">Grain Scale (px) <span id="valGrSz">${activeConfig.grainSz}</span></label>
+            <div style="margin-bottom:10px;">
+                <label style="display:flex;justify-content:space-between;margin-bottom:2px;color:#cbd5e1;">Grain Scale (px) <span id="valGrSz">${activeConfig.grainSz}</span></label>
                 <input type="range" id="slGrSz" min="20" max="400" step="10" value="${activeConfig.grainSz}" style="width:100%;">
             </div>
-            <div style="background:#0b1120;padding:10px;border-radius:6px;font-family:monospace;font-size:11px;color:#a5b4fc;word-break:break-all;" id="outCode">
+            <div style="background:#0b1120;padding:6px;border-radius:4px;font-family:monospace;font-size:9px;color:#a5b4fc;word-break:break-all;" id="outCode">
                 { hue: ${activeConfig.hue}, sat: ${activeConfig.sat}, bri: ${activeConfig.bri}, con: ${activeConfig.con}, grainOp: ${activeConfig.grainOp}, grainSz: ${activeConfig.grainSz}, bgCol: '${activeConfig.bgCol}', glassCol: '${activeConfig.glassCol}', glassOp: ${activeConfig.glassOp}, glassBlur: ${activeConfig.glassBlur} }
             </div>
-            <button onclick="this.parentElement.style.display='none'" style="margin-top:10px;width:100%;padding:8px;background:#334155;color:#fff;border:none;border-radius:6px;cursor:pointer;">Hide Panel</button>
+            <button onclick="this.parentElement.style.display='none'" style="margin-top:8px;width:100%;padding:6px;background:#334155;color:#fff;border:none;border-radius:4px;cursor:pointer;font-size:10px;">Hide Panel</button>
         `;
         document.body.appendChild(ui);
 
@@ -303,24 +349,42 @@ document.addEventListener('DOMContentLoaded', () => {
             }));
         };
 
+        const autoStatus = document.getElementById('autoStatus');
+        autoStatus.addEventListener('click', () => {
+            window.isConfiguratorPaused = !window.isConfiguratorPaused;
+            if (window.isConfiguratorPaused) {
+                autoStatus.innerText = 'Paused';
+                autoStatus.style.color = '#fbbf24';
+                autoStatus.style.backgroundColor = '#fbbf2422';
+            } else {
+                autoStatus.innerText = 'Auto 30s';
+                autoStatus.style.color = '#38bdf8';
+                autoStatus.style.backgroundColor = '#38bdf822';
+            }
+        });
+
         const inputs = ['slHue', 'slSat', 'slBri', 'slCon', 'slGrOp', 'slGrSz', 'slGlOp', 'slGlBl', 'inBgCol', 'inGlCol'];
         inputs.forEach(id => {
             document.getElementById(id).addEventListener('input', () => {
                 window.isConfiguratorActive = true;
-                document.getElementById('autoStatus').innerText = 'Paused';
-                document.getElementById('autoStatus').style.color = '#fbbf24';
-                document.getElementById('autoStatus').style.backgroundColor = '#fbbf2422';
+                if (!window.isConfiguratorPaused) {
+                    autoStatus.innerText = 'Interacting';
+                    autoStatus.style.color = '#94a3b8';
+                    autoStatus.style.backgroundColor = '#94a3b822';
+                }
                 updateFiltersFromUI();
             });
         });
         
-        // Resume rotation when mouse leaves the UI completely
+        // Resume rotation when mouse leaves the UI completely unless forcefully paused
         ui.addEventListener('mouseenter', () => window.isConfiguratorActive = true);
         ui.addEventListener('mouseleave', () => {
             window.isConfiguratorActive = false;
-            document.getElementById('autoStatus').innerText = 'Auto 30s';
-            document.getElementById('autoStatus').style.color = '#38bdf8';
-            document.getElementById('autoStatus').style.backgroundColor = '#38bdf822';
+            if (!window.isConfiguratorPaused) {
+                autoStatus.innerText = 'Auto 30s';
+                autoStatus.style.color = '#38bdf8';
+                autoStatus.style.backgroundColor = '#38bdf822';
+            }
         });
     }
 });
