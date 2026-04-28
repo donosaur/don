@@ -169,6 +169,15 @@
       filter: saturate(1.2) contrast(1.1);
     }
 
+    /* Triggered via JS for physical mobile devices only */
+    body.is-mobile-device #heroSpline {
+      display: none !important;
+    }
+
+    body.is-mobile-device #heroYoutube {
+      display: block !important;
+    }
+
     spline-viewer::part(logo) {
       display: none !important;
     }
@@ -1427,14 +1436,6 @@
 
       .hero-stat-num {
         font-size: 24px;
-      }
-
-      #heroSpline {
-        display: none !important;
-      }
-
-      #heroYoutube {
-        display: block !important;
       }
 
       .hero-stat-label {

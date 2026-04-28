@@ -412,9 +412,15 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // 3.6 Mobile Video Fallback
+    // 3.6 Mobile Video Fallback (Strictly physical mobile devices)
+    const isMobileDevice = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+    
+    if (isMobileDevice) {
+        document.body.classList.add('is-mobile-device');
+    }
+
     const initMobileVideoFallback = () => {
-        if (window.innerWidth <= 768) {
+        if (isMobileDevice) {
             const videoIds = ['Jox6R5-rIH0', 'TBsBq7298JU', '9vntypeV5QU', 'eI2PcZPZYKY'];
             const randomVideoId = videoIds[Math.floor(Math.random() * videoIds.length)];
             const iframe = document.getElementById('heroYoutube');
@@ -424,11 +430,4 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     };
     initMobileVideoFallback();
-    
-    // Re-check on resize in case of orientation change or DevTools toggle
-    window.addEventListener('resize', () => {
-        if (window.innerWidth <= 768) {
-            initMobileVideoFallback();
-        }
-    }, { passive: true });
 });
