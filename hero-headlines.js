@@ -203,28 +203,52 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // 3.5 Device Accelerometer Spline Tracking (Mobile Responsiveness)
     if (window.DeviceOrientationEvent && /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) {
+        const viewerContainer = document.querySelector('.hero-video-bg');
+        let targetX = 0;
+        let targetY = 0;
+        let currentX = 0;
+        let currentY = 0;
+        let ticking = false;
+
+        const lerp = (start, end, factor) => start + (end - start) * factor;
+
+        const updateParallax = () => {
+            currentX = lerp(currentX, targetX, 0.1);
+            currentY = lerp(currentY, targetY, 0.1);
+
+            if (viewerContainer) {
+                // Scale slightly to create a bleed area, then translate via hardware acceleration
+                viewerContainer.style.transform = `translate3d(${currentX}px, ${currentY}px, 0) scale(1.05)`;
+            }
+
+            if (Math.abs(targetX - currentX) > 0.1 || Math.abs(targetY - currentY) > 0.1) {
+                requestAnimationFrame(updateParallax);
+            } else {
+                ticking = false;
+            }
+        };
+
         window.addEventListener('deviceorientation', (e) => {
             if (!e.gamma && !e.beta) return;
             
+            // Constrain tilt angles
             let gamma = e.gamma;
-            if (gamma < -45) gamma = -45;
-            if (gamma > 45) gamma = 45;
-            const clientX = ((gamma + 45) / 90) * window.innerWidth;
+            if (gamma < -30) gamma = -30;
+            if (gamma > 30) gamma = 30;
             
             let beta = e.beta;
-            if (beta < 0) beta = 0;
-            if (beta > 90) beta = 90;
-            const clientY = ((beta) / 90) * window.innerHeight;
+            let betaOffset = beta - 45; // center on typical holding angle
+            if (betaOffset < -30) betaOffset = -30;
+            if (betaOffset > 30) betaOffset = 30;
+
+            // Map angles to a max physical displacement of 15 pixels
+            targetX = (gamma / 30) * 15;
+            targetY = (betaOffset / 30) * 15;
             
-            const pointerEvent = new PointerEvent('pointermove', {
-                clientX: clientX,
-                clientY: clientY,
-                bubbles: true,
-                cancelable: true,
-                view: window
-            });
-            
-            document.dispatchEvent(pointerEvent); 
+            if (!ticking) {
+                ticking = true;
+                requestAnimationFrame(updateParallax);
+            }
         }, { passive: true });
     }
 
@@ -387,4 +411,24 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         });
     }
+
+    // 3.6 Mobile Video Fallback
+    const initMobileVideoFallback = () => {
+        if (window.innerWidth <= 768) {
+            const videoIds = ['Jox6R5-rIH0', 'TBsBq7298JU', '9vntypeV5QU', 'eI2PcZPZYKY'];
+            const randomVideoId = videoIds[Math.floor(Math.random() * videoIds.length)];
+            const iframe = document.getElementById('heroYoutube');
+            if (iframe && !iframe.src) {
+                iframe.src = `https://www.youtube-nocookie.com/embed/${randomVideoId}?autoplay=1&mute=1&loop=1&controls=0&playsinline=1&disablekb=1&rel=0&showinfo=0&modestbranding=1&playlist=${randomVideoId}`;
+            }
+        }
+    };
+    initMobileVideoFallback();
+    
+    // Re-check on resize in case of orientation change or DevTools toggle
+    window.addEventListener('resize', () => {
+        if (window.innerWidth <= 768) {
+            initMobileVideoFallback();
+        }
+    }, { passive: true });
 });

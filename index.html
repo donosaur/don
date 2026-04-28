@@ -31,11 +31,11 @@
   <!-- gooey SVG filter for hero CTA -->
   <svg style="display:none" aria-hidden="true">
     <defs>
-      <filter id="hero-goo" x="-20%" y="-50%" width="140%" height="200%">
+      <filter id="hero-goo" x="-50%" y="-50%" width="200%" height="200%">
         <feGaussianBlur in="SourceGraphic" stdDeviation="10" result="blur" />
         <feColorMatrix in="blur" mode="matrix" values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 20 -7" result="goo" />
       </filter>
-      <filter id="hero-goo-stroke" x="-20%" y="-50%" width="140%" height="200%">
+      <filter id="hero-goo-stroke" x="-50%" y="-50%" width="200%" height="200%">
         <feGaussianBlur in="SourceGraphic" stdDeviation="10" result="blur" />
         <feColorMatrix in="blur" mode="matrix" values="0 0 0 0 1  0 0 0 0 1  0 0 0 0 1  0 0 0 20 -7" result="outer" />
         <feColorMatrix in="blur" mode="matrix" values="0 0 0 0 1  0 0 0 0 1  0 0 0 0 1  0 0 0 20 -8" result="inner" />
@@ -80,7 +80,9 @@
       <spline-viewer 
         aria-label="Interactive 3D liquid glass background" 
         role="img" 
-        url="https://prod.spline.design/opIVHlqzXj6HBHar/scene.splinecode"></spline-viewer>
+        url="https://prod.spline.design/opIVHlqzXj6HBHar/scene.splinecode"
+        id="heroSpline"></spline-viewer>
+      <iframe id="heroYoutube" allow="autoplay; encrypted-media" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
     </div>
     <canvas class="hero-grain" id="heroGrain"></canvas>
     <div class="hero-overlay"></div>

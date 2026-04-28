@@ -148,10 +148,25 @@
       will-change: transform;
     }
 
-    .hero-video-bg spline-viewer {
+    #heroSpline {
       width: 100%;
       height: 100%;
       display: block;
+    }
+
+    #heroYoutube {
+      display: none;
+      width: 300vw;
+      height: 300vh;
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      border: none;
+      pointer-events: none;
+      z-index: -1;
+      opacity: 0.6;
+      filter: saturate(1.2) contrast(1.1);
     }
 
     spline-viewer::part(logo) {
@@ -1412,6 +1427,14 @@
 
       .hero-stat-num {
         font-size: 24px;
+      }
+
+      #heroSpline {
+        display: none !important;
+      }
+
+      #heroYoutube {
+        display: block !important;
       }
 
       .hero-stat-label {

@@ -8,5 +8,6 @@ module.exports = {
     files: ["**/*.html", "**/*.css", "**/*.js"],
     port: 8000,
     open: false,
-    notify: false
+    notify: false,
+    https: true
 };
