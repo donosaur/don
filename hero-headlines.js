@@ -9,13 +9,15 @@ window.heroHeadlines = [
 /* --- SPLINE BACKGROUND VARIATIONS --- */
 // Randomly initialized on load, smoothly transitions every 30s
 window.heroBackgroundVariations = [
-  { hue: 19, sat: 1.4, bri: 2, con: 2, grainOp: 0, grainSz: 20, bgCol: '#0091ff', glassCol: '#000000', glassOp: 0.04, glassBlur: 8 },
-  { hue: 210, sat: 1.1, bri: 1.05, con: 2, grainOp: 0, grainSz: 20, bgCol: '#000000', glassCol: '#3b00a8', glassOp: 0.11, glassBlur: 40 },
-  { hue: 320, sat: 1.1, bri: 0.9, con: 1.1, grainOp: 0.15, grainSz: 220, bgCol: '#ffd500', glassCol: '#000000', glassOp: 0.04, glassBlur: 22 },
-  { hue: 80,  sat: 0.8, bri: 1.1,  con: 1.0, grainOp: 0.25, grainSz: 140, bgCol: '#000000', glassCol: '#fafaf8', glassOp: 0, glassBlur: 0 },
-  { hue: 168, sat: 0,   bri: 2,    con: 2, grainOp: 0.07, grainSz: 20,  bgCol: '#000000', glassCol: '#fafaf8', glassOp: 0, glassBlur: 0 },
-  { hue: 202, sat: 2.6, bri: 1.85, con: 2, grainOp: 0.08, grainSz: 50,  bgCol: '#ff000d', glassCol: '#000000', glassOp: 0.04, glassBlur: 0 },
-  { hue: 248, sat: 2.6, bri: 1.25, con: 2, grainOp: 0.21, grainSz: 240, bgCol: '#c800ff', glassCol: '#000000', glassOp: 0.19, glassBlur: 0 }
+  { hue: 19,  sat: 1.4,  bri: 2,    con: 2,   grainOp: 0,    grainSz: 20,  bgCol: '#0091ff', glassCol: '#000000', glassOp: 0.04, glassBlur: 8,  themeCol: '#0091ff' },
+  { hue: 210, sat: 1.1,  bri: 1.05, con: 2,   grainOp: 0,    grainSz: 20,  bgCol: '#000000', glassCol: '#3b00a8', glassOp: 0.11, glassBlur: 40, themeCol: '#3b00a8' },
+  { hue: 320, sat: 1.1,  bri: 0.9,  con: 1.1, grainOp: 0.15, grainSz: 180, bgCol: '#ffd500', glassCol: '#000000', glassOp: 0.04, glassBlur: 6,  themeCol: '#ffd500' },
+  { hue: 80,  sat: 0.8,  bri: 1.1,  con: 1.0, grainOp: 0.25, grainSz: 140, bgCol: '#000000', glassCol: '#fafaf8', glassOp: 0,    glassBlur: 0,  themeCol: '#a1a1aa' },
+  { hue: 168, sat: 0,    bri: 2,    con: 2,   grainOp: 0.07, grainSz: 20,  bgCol: '#000000', glassCol: '#fafaf8', glassOp: 0,    glassBlur: 0,  themeCol: '#e4e4e7' },
+  { hue: 202, sat: 2.6,  bri: 1.85, con: 2,   grainOp: 0.08, grainSz: 50,  bgCol: '#ff000d', glassCol: '#000000', glassOp: 0.04, glassBlur: 0,  themeCol: '#ff000d' },
+  { hue: 248, sat: 2.6,  bri: 1.25, con: 2,   grainOp: 0.21, grainSz: 240, bgCol: '#c800ff', glassCol: '#000000', glassOp: 0.19, glassBlur: 0,  themeCol: '#c800ff' },
+  { hue: 12,  sat: 3,    bri: 2,    con: 2,   grainOp: 0.22, grainSz: 20,  bgCol: '#ffffff', glassCol: '#ffffff', glassOp: 0.12, glassBlur: 9,  themeCol: '#f97316' },
+  { hue: 287, sat: 2.3,  bri: 1.65, con: 1.6, grainOp: 0.13, grainSz: 20,  bgCol: '#00ff00', glassCol: '#ffffff', glassOp: 0.05, glassBlur: 8,  themeCol: '#00ff00' }
 ];
 
 // Helper to convert hex to rgb string for rgba usage
@@ -78,9 +80,9 @@ document.addEventListener('DOMContentLoaded', () => {
     const updateCursorMaskPreview = () => {
         if (!cursorBg) return;
         const nextConfig = window.heroBackgroundVariations[nextConfigIndex];
-        // Create an abstract representation of the next config
-        cursorBg.style.background = `linear-gradient(135deg, ${nextConfig.bgCol} 0%, rgba(${hexToRgb(nextConfig.glassCol)}, 0.8) 100%)`;
-        cursorBg.style.filter = `hue-rotate(${nextConfig.hue}deg) saturate(${nextConfig.sat})`;
+        // Use the explicitly defined themeCol to ensure perfect color matching
+        cursorBg.style.background = `linear-gradient(135deg, ${nextConfig.themeCol} 0%, rgba(${hexToRgb(nextConfig.themeCol)}, 0.4) 100%)`;
+        cursorBg.style.filter = 'none'; // Remove hue-rotate to avoid double-shifting the colors
     };
     updateCursorMaskPreview();
     
