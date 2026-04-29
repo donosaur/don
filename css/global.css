@@ -156,8 +156,8 @@
 
     #heroYoutube {
       display: none;
-      width: 300vw;
-      height: 300vh;
+      width: 300vh;
+      height: 168.75vh; /* Strict 16:9 ratio to prevent internal letterboxing */
       position: absolute;
       top: 50%;
       left: 50%;
@@ -165,8 +165,13 @@
       border: none;
       pointer-events: none;
       z-index: -1;
-      opacity: 0.6;
+      opacity: 0;
+      transition: opacity 1.5s ease-in-out;
       filter: saturate(1.2) contrast(1.1);
+    }
+
+    #heroYoutube.is-playing {
+      opacity: 0.6;
     }
 
     /* Triggered via JS for physical mobile devices only */
@@ -1428,6 +1433,7 @@
         display: grid;
         grid-template-columns: repeat(2, minmax(0, 1fr));
         gap: 0 16px;
+        padding-bottom: 24px;
       }
 
       .hero-stat {
@@ -1458,7 +1464,7 @@
 
       .work-grid {
         grid-template-columns: 1fr;
-        gap: 2px;
+        gap: 16px;
       }
 
       .work-intro,
@@ -1473,6 +1479,10 @@
 
       .timeline-contract-desc {
         font-size: 13px;
+      }
+
+      .timeline-dot--contract::after {
+        display: none !important;
       }
 
       .philosophy-grid {

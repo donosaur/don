@@ -423,10 +423,53 @@ document.addEventListener('DOMContentLoaded', () => {
         if (isMobileDevice) {
             const videoIds = ['Jox6R5-rIH0', 'TBsBq7298JU', '9vntypeV5QU', 'eI2PcZPZYKY'];
             const randomVideoId = videoIds[Math.floor(Math.random() * videoIds.length)];
-            const iframe = document.getElementById('heroYoutube');
-            if (iframe && !iframe.src) {
-                iframe.src = `https://www.youtube-nocookie.com/embed/${randomVideoId}?autoplay=1&mute=1&loop=1&controls=0&playsinline=1&disablekb=1&rel=0&showinfo=0&modestbranding=1&playlist=${randomVideoId}`;
-            }
+            
+            // Define API callback before injecting the script
+            window.onYouTubeIframeAPIReady = function() {
+                let fallbackTimeout;
+                const player = new YT.Player('heroYoutube', {
+                    videoId: randomVideoId,
+                    playerVars: {
+                        'autoplay': 1,
+                        'mute': 1,
+                        'loop': 1,
+                        'controls': 0,
+                        'playsinline': 1,
+                        'disablekb': 1,
+                        'rel': 0,
+                        'showinfo': 0,
+                        'modestbranding': 1,
+                        'playlist': randomVideoId,
+                        'enablejsapi': 1
+                    },
+                    events: {
+                        'onReady': function(event) {
+                            // Explicitly mute and play to bypass strict mobile autoplay policies
+                            event.target.mute();
+                            event.target.playVideo();
+                            
+                            // Safety fallback: if video is stuck buffering, reveal it anyway after 3s
+                            fallbackTimeout = setTimeout(() => {
+                                const ytEl = document.getElementById('heroYoutube');
+                                if (ytEl) ytEl.classList.add('is-playing');
+                            }, 3000);
+                        },
+                        'onStateChange': function(event) {
+                            if (event.data === YT.PlayerState.PLAYING) {
+                                clearTimeout(fallbackTimeout);
+                                const ytEl = document.getElementById('heroYoutube');
+                                if (ytEl) ytEl.classList.add('is-playing');
+                            }
+                        }
+                    }
+                });
+            };
+
+            // Load YouTube IFrame API
+            const tag = document.createElement('script');
+            tag.src = 'https://www.youtube.com/iframe_api';
+            const firstScriptTag = document.getElementsByTagName('script')[0];
+            firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
         }
     };
     initMobileVideoFallback();
