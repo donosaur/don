@@ -215,6 +215,76 @@
     }
 
     /* content sits above video + overlay */
+    
+    /* ── CURSOR MASK ── */
+    .hero:hover .hero-cursor-mask {
+      opacity: 0.5;
+    }
+    .hero-cursor-mask {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 176px;
+      height: 176px;
+      pointer-events: none;
+      z-index: 1; /* Behind text (z-index: 2) but above background */
+      opacity: 0;
+      transition: opacity 0.3s ease;
+      will-change: transform;
+      /* offset so the mouse is in the center */
+      margin-top: -88px;
+      margin-left: -88px;
+    }
+
+    @keyframes blobMorph {
+      0% { border-radius: 40% 60% 70% 30% / 40% 40% 60% 50%; }
+      25% { border-radius: 60% 40% 30% 70% / 60% 30% 70% 40%; }
+      50% { border-radius: 30% 70% 50% 50% / 30% 70% 30% 70%; }
+      75% { border-radius: 70% 30% 60% 40% / 50% 60% 40% 50%; }
+      100% { border-radius: 40% 60% 70% 30% / 40% 40% 60% 50%; }
+    }
+
+    .hero-cursor-expander {
+      width: 100%;
+      height: 100%;
+      border-radius: 40% 60% 70% 30% / 40% 40% 60% 50%;
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      transform: scale(0.8);
+      transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+      will-change: transform;
+      animation: blobMorph 5s ease-in-out infinite alternate;
+    }
+
+    .hero:hover .hero-cursor-expander {
+      transform: scale(1);
+    }
+    
+    /* When cycling, the mask expands rapidly */
+    .hero-cursor-expander.is-expanding {
+      transform: scale(25) !important; /* expand to cover screen */
+      transition: transform 0.8s cubic-bezier(0.7, 0, 0.3, 1), opacity 0.8s ease;
+      opacity: 0;
+    }
+
+    .hero-cursor-bg {
+      position: absolute;
+      inset: 0;
+      z-index: -1;
+      background: #000;
+      transition: filter 1s ease, background 1s ease;
+    }
+
+    /* Keep pointer cursor for interactive elements like the CTA */
+    .hero-cta {
+      cursor: pointer;
+    }
+
     .hero-content {
       position: relative;
       z-index: 2;
@@ -843,7 +913,7 @@
     .work-grid {
       display: grid;
       grid-template-columns: 1fr 1fr;
-      gap: 2px;
+      gap: 16px;
     }
 
     .work-card {

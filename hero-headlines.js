@@ -13,7 +13,9 @@ window.heroBackgroundVariations = [
   { hue: 210, sat: 1.1, bri: 1.05, con: 2, grainOp: 0, grainSz: 20, bgCol: '#000000', glassCol: '#3b00a8', glassOp: 0.11, glassBlur: 40 },
   { hue: 320, sat: 1.1, bri: 0.9, con: 1.1, grainOp: 0.15, grainSz: 220, bgCol: '#ffd500', glassCol: '#000000', glassOp: 0.04, glassBlur: 22 },
   { hue: 80,  sat: 0.8, bri: 1.1,  con: 1.0, grainOp: 0.25, grainSz: 140, bgCol: '#000000', glassCol: '#fafaf8', glassOp: 0, glassBlur: 0 },
-  { hue: 168, sat: 0,   bri: 2,    con: 2, grainOp: 0.07, grainSz: 20,  bgCol: '#000000', glassCol: '#fafaf8', glassOp: 0, glassBlur: 0 }
+  { hue: 168, sat: 0,   bri: 2,    con: 2, grainOp: 0.07, grainSz: 20,  bgCol: '#000000', glassCol: '#fafaf8', glassOp: 0, glassBlur: 0 },
+  { hue: 202, sat: 2.6, bri: 1.85, con: 2, grainOp: 0.08, grainSz: 50,  bgCol: '#ff000d', glassCol: '#000000', glassOp: 0.04, glassBlur: 0 },
+  { hue: 248, sat: 2.6, bri: 1.25, con: 2, grainOp: 0.21, grainSz: 240, bgCol: '#c800ff', glassCol: '#000000', glassOp: 0.19, glassBlur: 0 }
 ];
 
 // Helper to convert hex to rgb string for rgba usage
@@ -65,22 +67,101 @@ document.addEventListener('DOMContentLoaded', () => {
     
     viewers.forEach(v => applyFilters(v, activeConfig));
 
+    // 1.2 Cursor Mask Preview Engine
+    const cursorMask = document.getElementById('hero-cursor-mask');
+    const cursorExpander = cursorMask ? cursorMask.querySelector('.hero-cursor-expander') : null;
+    const cursorBg = document.querySelector('.hero-cursor-bg');
+    const heroSection = document.querySelector('.hero');
+    
+    let nextConfigIndex = (currentConfigIndex + 1) % window.heroBackgroundVariations.length;
+    
+    const updateCursorMaskPreview = () => {
+        if (!cursorBg) return;
+        const nextConfig = window.heroBackgroundVariations[nextConfigIndex];
+        // Create an abstract representation of the next config
+        cursorBg.style.background = `linear-gradient(135deg, ${nextConfig.bgCol} 0%, rgba(${hexToRgb(nextConfig.glassCol)}, 0.8) 100%)`;
+        cursorBg.style.filter = `hue-rotate(${nextConfig.hue}deg) saturate(${nextConfig.sat})`;
+    };
+    updateCursorMaskPreview();
+    
+    if (heroSection && cursorMask) {
+        heroSection.addEventListener('mousemove', (e) => {
+            // Only show/move mask if it's a fine pointer (mouse)
+            if (window.matchMedia('(pointer: coarse)').matches) return;
+            const rect = heroSection.getBoundingClientRect();
+            // Position exactly at cursor
+            cursorMask.style.transform = `translate(${e.clientX - rect.left}px, ${e.clientY - rect.top}px)`;
+        });
+    }
+
+    const advanceBackground = () => {
+        if (window.isConfiguratorActive || window.isConfiguratorPaused) return;
+
+        // Animate mask expansion
+        if (cursorExpander && !window.matchMedia('(pointer: coarse)').matches) {
+            cursorExpander.classList.add('is-expanding');
+            
+            // Wait for expansion to cover screen before swapping underlying background
+            setTimeout(() => {
+                currentConfigIndex = nextConfigIndex;
+                nextConfigIndex = (currentConfigIndex + 1) % window.heroBackgroundVariations.length;
+                activeConfig = window.heroBackgroundVariations[currentConfigIndex];
+                
+                viewers.forEach(v => applyFilters(v, activeConfig));
+                updateCursorMaskPreview();
+                
+                if (typeof window.updateConfiguratorUI === 'function') {
+                    window.updateConfiguratorUI(activeConfig);
+                }
+                
+                // Reset mask to scale(0) instantly
+                cursorExpander.style.transition = 'none'; 
+                cursorExpander.classList.remove('is-expanding');
+                cursorExpander.style.transform = 'scale(0)';
+                
+                // Force reflow
+                void cursorExpander.offsetWidth;
+                
+                // Animate growth from cursor center
+                cursorExpander.style.transition = 'transform 0.6s cubic-bezier(0.34, 1.56, 0.64, 1)'; 
+                cursorExpander.style.transform = ''; // clears inline style, letting CSS hover (scale(1)) take over
+                
+                // Clean up inline transition after animation completes
+                setTimeout(() => {
+                    cursorExpander.style.transition = '';
+                }, 600);
+            }, 400); // Trigger swap midway through 0.8s expansion
+        } else {
+            // Fallback for mobile or missing mask
+            currentConfigIndex = nextConfigIndex;
+            nextConfigIndex = (currentConfigIndex + 1) % window.heroBackgroundVariations.length;
+            activeConfig = window.heroBackgroundVariations[currentConfigIndex];
+            viewers.forEach(v => applyFilters(v, activeConfig));
+            if (typeof window.updateConfiguratorUI === 'function') {
+                window.updateConfiguratorUI(activeConfig);
+            }
+            updateCursorMaskPreview();
+        }
+    };
+
     // Cycle through variants every 30 seconds smoothly
     window.isConfiguratorActive = false;
     window.isConfiguratorPaused = false;
-    setInterval(() => {
-        if (window.isConfiguratorActive || window.isConfiguratorPaused) return; // Don't interrupt while tweaking
+    let backgroundCycleInterval = setInterval(advanceBackground, 30000);
 
-        currentConfigIndex = (currentConfigIndex + 1) % window.heroBackgroundVariations.length;
-        activeConfig = window.heroBackgroundVariations[currentConfigIndex];
-        
-        viewers.forEach(v => applyFilters(v, activeConfig));
-        
-        // Push exact values to the local Dev UI if it exists
-        if (typeof window.updateConfiguratorUI === 'function') {
-            window.updateConfiguratorUI(activeConfig);
-        }
-    }, 30000);
+    const resetCycleInterval = () => {
+        clearInterval(backgroundCycleInterval);
+        backgroundCycleInterval = setInterval(advanceBackground, 30000);
+    };
+
+    if (heroSection) {
+        heroSection.addEventListener('click', (e) => {
+            // Prevent triggering if clicking on the CTA or Nav
+            if (e.target.closest('.hero-cta') || e.target.closest('nav')) return;
+            advanceBackground();
+            resetCycleInterval();
+        });
+    }
 
 
     // 1.5 Dither Grain Rendering Engine
@@ -256,71 +337,106 @@ document.addEventListener('DOMContentLoaded', () => {
     const isLocalhost = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
     if (isLocalhost) {
         const ui = document.createElement('div');
-        ui.style.cssText = `
-            position: fixed; bottom: 20px; right: 20px; z-index: 9999;
-            background: rgba(15, 23, 42, 0.95); backdrop-filter: blur(10px);
-            border: 1px solid rgba(255,255,255,0.1); border-radius: 8px;
-            padding: 12px; width: 220px; color: #fff; font-family: 'Inter', sans-serif;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.5); font-size: 11px;
-            max-height: 90vh; overflow-y: auto;
-        `;
+        ui.className = 'shadcn-panel';
         ui.innerHTML = `
-            <div style="display:flex;justify-content:space-between;align-items:center;margin:0 0 10px;">
-                <h3 style="margin:0;font-size:13px;color:#38bdf8;">Spline Configurator</h3>
-                <span style="font-size:9px;background:#38bdf822;color:#38bdf8;padding:2px 6px;border-radius:4px;display:inline-block;cursor:pointer;user-select:none;transition:all 0.2s;" id="autoStatus">Auto 30s</span>
+            <style>
+                .shadcn-panel {
+                    position: fixed; bottom: 20px; right: 20px; z-index: 9999;
+                    background: rgba(9, 9, 11, 0.95); backdrop-filter: blur(12px);
+                    border: 1px solid #27272a; border-radius: 6px;
+                    padding: 8px; width: 140px; color: #fafafa; font-family: 'Inter', sans-serif;
+                    box-shadow: 0 10px 40px rgba(0,0,0,0.5);
+                    max-height: 90vh; overflow-y: auto;
+                    transition: opacity 0.3s ease, transform 0.3s ease;
+                    opacity: 1; transform: translateY(0);
+                }
+                .shadcn-panel * { box-sizing: border-box; }
+                .shadcn-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; }
+                .shadcn-title { font-size: 11px; font-weight: 600; margin: 0; letter-spacing: -0.02em; }
+                .shadcn-controls { display: flex; align-items: center; gap: 4px; }
+                .shadcn-badge {
+                    font-size: 8px; background: #27272a; color: #a1a1aa; padding: 1px 4px;
+                    border-radius: 9999px; cursor: pointer; user-select: none; transition: all 0.2s; font-weight: 500;
+                }
+                .shadcn-badge.active { background: #fafafa; color: #09090b; }
+                .shadcn-badge.paused { background: #f59e0b33; color: #f59e0b; }
+                .shadcn-close { cursor: pointer; color: #a1a1aa; font-size: 12px; line-height: 1; transition: color 0.2s; }
+                .shadcn-close:hover { color: #fafafa; }
+                
+                .shadcn-label { display: flex; justify-content: space-between; align-items: center; font-size: 9px; font-weight: 500; margin-bottom: 4px; }
+                .shadcn-value { color: #a1a1aa; font-weight: 400; font-variant-numeric: tabular-nums; }
+                
+                .shadcn-range { -webkit-appearance: none; width: 100%; height: 3px; background: #27272a; border-radius: 9999px; outline: none; margin-bottom: 8px; cursor: pointer; }
+                .shadcn-range::-webkit-slider-thumb {
+                    -webkit-appearance: none; width: 10px; height: 10px; border-radius: 50%;
+                    background: #fafafa; cursor: grab; border: 1px solid #09090b; box-shadow: 0 0 0 1px #fafafa; transition: transform 0.1s;
+                }
+                .shadcn-range::-webkit-slider-thumb:active { cursor: grabbing; transform: scale(1.1); }
+                
+                .shadcn-color-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px; }
+                .shadcn-color { -webkit-appearance: none; width: 16px; height: 16px; border: 1px solid #27272a; border-radius: 4px; padding: 0; background: none; cursor: pointer; overflow: hidden; }
+                .shadcn-color::-webkit-color-swatch-wrapper { padding: 0; }
+                .shadcn-color::-webkit-color-swatch { border: none; border-radius: 3px; }
+                
+                .shadcn-separator { height: 1px; background: #27272a; margin: 8px -8px; }
+                .shadcn-group-title { font-size: 10px; font-weight: 600; margin: 0 0 6px 0; letter-spacing: -0.01em; }
+            </style>
+
+            <div class="shadcn-header">
+                <h3 class="shadcn-title">Hero BG</h3>
+                <div class="shadcn-controls">
+                    <span class="shadcn-badge active" id="autoStatus">Auto 30s</span>
+                    <span class="shadcn-close" onclick="this.closest('.shadcn-panel').style.display='none'">&times;</span>
+                </div>
             </div>
             
-            <div style="margin-bottom:6px;">
-                <label style="display:flex;justify-content:space-between;margin-bottom:2px;">Hue <span id="valHue">${activeConfig.hue}</span>deg</label>
-                <input type="range" id="slHue" min="0" max="360" value="${activeConfig.hue}" style="width:100%;">
+            <div>
+                <label class="shadcn-label">Hue <span class="shadcn-value" id="valHue">${activeConfig.hue}&deg;</span></label>
+                <input type="range" class="shadcn-range" id="slHue" min="0" max="360" value="${activeConfig.hue}">
             </div>
-            <div style="margin-bottom:6px;">
-                <label style="display:flex;justify-content:space-between;margin-bottom:2px;">Saturate <span id="valSat">${activeConfig.sat}</span></label>
-                <input type="range" id="slSat" min="0" max="3" step="0.1" value="${activeConfig.sat}" style="width:100%;">
+            <div>
+                <label class="shadcn-label">Saturate <span class="shadcn-value" id="valSat">${activeConfig.sat}</span></label>
+                <input type="range" class="shadcn-range" id="slSat" min="0" max="3" step="0.1" value="${activeConfig.sat}">
             </div>
-            <div style="margin-bottom:6px;">
-                <label style="display:flex;justify-content:space-between;margin-bottom:2px;">Brightness <span id="valBri">${activeConfig.bri}</span></label>
-                <input type="range" id="slBri" min="0.1" max="2" step="0.05" value="${activeConfig.bri}" style="width:100%;">
+            <div>
+                <label class="shadcn-label">Brightness <span class="shadcn-value" id="valBri">${activeConfig.bri}</span></label>
+                <input type="range" class="shadcn-range" id="slBri" min="0.1" max="2" step="0.05" value="${activeConfig.bri}">
             </div>
-            <div style="margin-bottom:10px;">
-                <label style="display:flex;justify-content:space-between;margin-bottom:2px;">Contrast <span id="valCon">${activeConfig.con}</span></label>
-                <input type="range" id="slCon" min="0.1" max="2" step="0.05" value="${activeConfig.con}" style="width:100%;">
+            <div>
+                <label class="shadcn-label">Contrast <span class="shadcn-value" id="valCon">${activeConfig.con}</span></label>
+                <input type="range" class="shadcn-range" id="slCon" min="0.1" max="2" step="0.05" value="${activeConfig.con}" style="margin-bottom:0;">
             </div>
             
-            <div style="height:1px;background:rgba(255,255,255,0.1);margin:10px 0;"></div>
-            <h4 style="margin:0 0 6px;font-size:11px;color:#cbd5e1;">Environment & Glass</h4>
+            <div class="shadcn-separator"></div>
+            <h4 class="shadcn-group-title">Environment & glass</h4>
             
-            <div style="margin-bottom:6px;display:flex;justify-content:space-between;align-items:center;">
-                <label style="color:#cbd5e1;">Base Color</label>
-                <input type="color" id="inBgCol" value="${activeConfig.bgCol}" style="cursor:pointer;border:none;background:none;height:18px;width:18px;padding:0;">
+            <div class="shadcn-color-row">
+                <label class="shadcn-label" style="margin-bottom:0;">Base color</label>
+                <input type="color" class="shadcn-color" id="inBgCol" value="${activeConfig.bgCol}">
             </div>
-            <div style="margin-bottom:6px;display:flex;justify-content:space-between;align-items:center;">
-                <label style="color:#cbd5e1;">Glass Color</label>
-                <input type="color" id="inGlCol" value="${activeConfig.glassCol}" style="cursor:pointer;border:none;background:none;height:18px;width:18px;padding:0;">
+            <div class="shadcn-color-row" style="margin-bottom:16px;">
+                <label class="shadcn-label" style="margin-bottom:0;">Glass color</label>
+                <input type="color" class="shadcn-color" id="inGlCol" value="${activeConfig.glassCol}">
             </div>
-            <div style="margin-bottom:6px;">
-                <label style="display:flex;justify-content:space-between;margin-bottom:2px;color:#cbd5e1;">Glass Opacity <span id="valGlOp">${activeConfig.glassOp}</span></label>
-                <input type="range" id="slGlOp" min="0" max="1" step="0.01" value="${activeConfig.glassOp}" style="width:100%;">
+            <div>
+                <label class="shadcn-label">Glass opacity <span class="shadcn-value" id="valGlOp">${activeConfig.glassOp}</span></label>
+                <input type="range" class="shadcn-range" id="slGlOp" min="0" max="1" step="0.01" value="${activeConfig.glassOp}">
             </div>
-            <div style="margin-bottom:10px;">
-                <label style="display:flex;justify-content:space-between;margin-bottom:2px;color:#cbd5e1;">Glass Blur (px) <span id="valGlBl">${activeConfig.glassBlur}</span></label>
-                <input type="range" id="slGlBl" min="0" max="40" step="1" value="${activeConfig.glassBlur}" style="width:100%;">
+            <div>
+                <label class="shadcn-label">Glass blur (px) <span class="shadcn-value" id="valGlBl">${activeConfig.glassBlur}</span></label>
+                <input type="range" class="shadcn-range" id="slGlBl" min="0" max="40" step="1" value="${activeConfig.glassBlur}" style="margin-bottom:0;">
             </div>
 
-            <div style="height:1px;background:rgba(255,255,255,0.1);margin:10px 0;"></div>
+            <div class="shadcn-separator"></div>
             
-            <div style="margin-bottom:6px;">
-                <label style="display:flex;justify-content:space-between;margin-bottom:2px;color:#cbd5e1;">Grain Opacity <span id="valGrOp">${activeConfig.grainOp}</span></label>
-                <input type="range" id="slGrOp" min="0" max="1" step="0.01" value="${activeConfig.grainOp}" style="width:100%;">
+            <div>
+                <label class="shadcn-label">Grain opacity <span class="shadcn-value" id="valGrOp">${activeConfig.grainOp}</span></label>
+                <input type="range" class="shadcn-range" id="slGrOp" min="0" max="1" step="0.01" value="${activeConfig.grainOp}">
             </div>
-            <div style="margin-bottom:10px;">
-                <label style="display:flex;justify-content:space-between;margin-bottom:2px;color:#cbd5e1;">Grain Scale (px) <span id="valGrSz">${activeConfig.grainSz}</span></label>
-                <input type="range" id="slGrSz" min="20" max="400" step="10" value="${activeConfig.grainSz}" style="width:100%;">
+            <div>
+                <label class="shadcn-label">Grain scale (px) <span class="shadcn-value" id="valGrSz">${activeConfig.grainSz}</span></label>
+                <input type="range" class="shadcn-range" id="slGrSz" min="20" max="400" step="10" value="${activeConfig.grainSz}">
             </div>
-            <div style="background:#0b1120;padding:6px;border-radius:4px;font-family:monospace;font-size:9px;color:#a5b4fc;word-break:break-all;" id="outCode">
-                { hue: ${activeConfig.hue}, sat: ${activeConfig.sat}, bri: ${activeConfig.bri}, con: ${activeConfig.con}, grainOp: ${activeConfig.grainOp}, grainSz: ${activeConfig.grainSz}, bgCol: '${activeConfig.bgCol}', glassCol: '${activeConfig.glassCol}', glassOp: ${activeConfig.glassOp}, glassBlur: ${activeConfig.glassBlur} }
-            </div>
-            <button onclick="this.parentElement.style.display='none'" style="margin-top:8px;width:100%;padding:6px;background:#334155;color:#fff;border:none;border-radius:4px;cursor:pointer;font-size:10px;">Hide Panel</button>
         `;
         document.body.appendChild(ui);
 
@@ -344,8 +460,6 @@ document.addEventListener('DOMContentLoaded', () => {
             document.getElementById('valGrSz').innerText = config.grainSz;
             document.getElementById('valGlOp').innerText = config.glassOp;
             document.getElementById('valGlBl').innerText = config.glassBlur;
-            
-            document.getElementById('outCode').innerText = `{ hue: ${config.hue}, sat: ${config.sat}, bri: ${config.bri}, con: ${config.con}, grainOp: ${config.grainOp}, grainSz: ${config.grainSz}, bgCol: '${config.bgCol}', glassCol: '${config.glassCol}', glassOp: ${config.glassOp}, glassBlur: ${config.glassBlur} }`;
         };
 
         const updateFiltersFromUI = () => {
@@ -378,12 +492,10 @@ document.addEventListener('DOMContentLoaded', () => {
             window.isConfiguratorPaused = !window.isConfiguratorPaused;
             if (window.isConfiguratorPaused) {
                 autoStatus.innerText = 'Paused';
-                autoStatus.style.color = '#fbbf24';
-                autoStatus.style.backgroundColor = '#fbbf2422';
+                autoStatus.className = 'shadcn-badge paused';
             } else {
                 autoStatus.innerText = 'Auto 30s';
-                autoStatus.style.color = '#38bdf8';
-                autoStatus.style.backgroundColor = '#38bdf822';
+                autoStatus.className = 'shadcn-badge active';
             }
         });
 
@@ -393,8 +505,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 window.isConfiguratorActive = true;
                 if (!window.isConfiguratorPaused) {
                     autoStatus.innerText = 'Interacting';
-                    autoStatus.style.color = '#94a3b8';
-                    autoStatus.style.backgroundColor = '#94a3b822';
+                    autoStatus.className = 'shadcn-badge';
                 }
                 updateFiltersFromUI();
             });
@@ -406,10 +517,28 @@ document.addEventListener('DOMContentLoaded', () => {
             window.isConfiguratorActive = false;
             if (!window.isConfiguratorPaused) {
                 autoStatus.innerText = 'Auto 30s';
-                autoStatus.style.color = '#38bdf8';
-                autoStatus.style.backgroundColor = '#38bdf822';
+                autoStatus.className = 'shadcn-badge active';
             }
         });
+
+        // Auto-hide panel when hero section is not visible
+        const heroObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (!entry.isIntersecting) {
+                    ui.style.opacity = '0';
+                    ui.style.pointerEvents = 'none';
+                    ui.style.transform = 'translateY(10px)';
+                } else {
+                    ui.style.opacity = '1';
+                    ui.style.pointerEvents = 'auto';
+                    ui.style.transform = 'translateY(0)';
+                }
+            });
+        }, { threshold: 0 }); // 0 means when completely out of view
+        
+        if (heroSection) {
+            heroObserver.observe(heroSection);
+        }
     }
 
     // 3.6 Mobile Video Fallback (Strictly physical mobile devices)
