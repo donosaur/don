@@ -590,9 +590,9 @@
   <div style="background:var(--bg);border-bottom:1px solid var(--border);">
     <div class="hero">
       <div class="hero-eyebrow">Emerging tech · Looking Glass · 2023–2024</div>
-      <h1>Designing for a display<br>that shows <em>depth</em> —<br>not just pixels.</h1>
+      <h1>Designing for a display<br>that shows <em>depth</em>,<br>not just pixels.</h1>
       <p class="hero-sub">
-        The Looking Glass Go is a holographic display that sits on your desk. My job was to design the mobile companion app that bridges a phone camera to a 3D lenticular screen — a problem with no existing playbook.
+        The Looking Glass Go is a holographic display that sits on your desk. My job was to design the mobile companion app that connects a phone camera to a 3D lenticular screen. There was no existing playbook for this.
       </p>
       <div class="hero-stats">
         <div class="stat-item">
@@ -636,13 +636,13 @@
       <div class="section-label">Design constraints</div>
       <h2>Design constraints that<br>didn't exist in any playbook.</h2>
       <p class="lead">
-        This wasn't a standard mobile app. Every design decision had to account for four constraints simultaneously — hardware, network, AI processing, and a completely unfamiliar output format.
+        This wasn't a standard mobile app. Every design decision had to account for four things at once: hardware, network, AI processing, and a completely unfamiliar output format.
       </p>
       <div class="constraint-grid">
         <div class="constraint-card">
           <div class="constraint-icon">📡</div>
           <h3>Wi-Fi only architecture</h3>
-          <p>The display connects over local Wi-Fi — not Bluetooth, not USB. The app had to make an invisible connection feel reliable. Any latency in the setup flow would read as broken hardware.</p>
+          <p>The display connects over local Wi-Fi, not Bluetooth, not USB. The app had to make an invisible connection feel reliable. Any latency in the setup flow would read as broken hardware.</p>
         </div>
         <div class="constraint-card">
           <div class="constraint-icon">🧠</div>
@@ -652,12 +652,12 @@
         <div class="constraint-card">
           <div class="constraint-icon">📺</div>
           <h3>Unfamiliar output</h3>
-          <p>Users had never seen their photos as holograms before. The first "wow" moment was also the moment they needed to understand how to control the display — an onboarding challenge unlike any I'd faced.</p>
+          <p>Users had never seen their photos as holograms before. The first "wow" moment was also the moment they needed to understand how to control the display. That's an unusual onboarding problem.</p>
         </div>
         <div class="constraint-card">
           <div class="constraint-icon">⚡</div>
           <h3>Hardware state complexity</h3>
-          <p>The device had multiple distinct states — searching, connecting, syncing, firmware updating, ready — each requiring explicit design treatment. One vague "loading" state would destroy trust.</p>
+          <p>The device had multiple distinct states (searching, connecting, syncing, firmware updating, ready), each requiring its own design treatment. One vague "loading" state would kill trust.</p>
         </div>
       </div>
     </div>
@@ -669,11 +669,11 @@
       <div class="section-label">Key trade-off</div>
       <h2>The AI wait problem:<br>hide it or explain it?</h2>
       <p class="lead">
-        The most consequential design decision was how to handle 3–8 seconds of cloud AI processing. Two fundamentally different philosophies — and only one that actually built user trust.
+        The biggest design decision was how to handle 3–8 seconds of cloud AI processing. We tried two very different approaches, and only one actually built trust.
       </p>
       <div class="compare-grid">
         <div class="compare-card">
-          <div class="compare-label rejected">✕ Direction 1 — Rejected</div>
+          <div class="compare-label rejected">✕ Direction 1: Rejected</div>
           <h3>Hidden processing</h3>
           <p>A spinner with "Processing your photo…" — no progress indication, no preview of what's being created.</p>
           <ul>
@@ -686,7 +686,7 @@
         </div>
         <div class="compare-pivot">→</div>
         <div class="compare-card">
-          <div class="compare-label shipped">✓ Direction 2 — Shipped</div>
+          <div class="compare-label shipped">✓ Direction 2: Shipped</div>
           <h3>Transparent progress + preview</h3>
           <p>A progress indicator with a real-time 2D depth preview — showing the AI's work before the hologram renders on the display.</p>
           <ul>
@@ -700,7 +700,7 @@
       </div>
 
       <div class="pull-quote">
-        "The wait isn't dead time — it's the moment users form their mental model of how holographic conversion works. Design for the understanding, not just the outcome."
+        "The wait isn't dead time. It's when users start to understand how the conversion actually works. Design for that understanding, not just the final result."
       </div>
     </div>
   </div>
@@ -709,7 +709,7 @@
   <div style="background:var(--bg-2);border-bottom:1px solid var(--border);">
     <div class="section">
       <div class="section-label">Hardware state design</div>
-      <h2>Every state named.<br>Every state designed.</h2>
+      <h2>Every state named<br>and designed.</h2>
       <p class="lead">
         Hardware products punish vague loading states. I defined four explicit device states, each with distinct visual treatment and clear user guidance.
       </p>
@@ -723,7 +723,7 @@
         <div class="state-card">
           <div class="state-icon">⚡</div>
           <h3>Syncing</h3>
-          <p>Progress bar with file count. User knows exactly how long and why — content is being transferred to the display's local storage.</p>
+          <p>Progress bar with file count. Users know exactly how long and why: content is being transferred to the display's local storage.</p>
           <span class="state-badge">Active</span>
         </div>
         <div class="state-card">
