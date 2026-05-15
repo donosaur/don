@@ -149,12 +149,46 @@ document.addEventListener('DOMContentLoaded', () => {
     // Cycle through variants every 30 seconds smoothly
     window.isConfiguratorActive = false;
     window.isConfiguratorPaused = false;
-    let backgroundCycleInterval = setInterval(advanceBackground, 30000);
+    window.timeRemaining = 30;
+
+    window.updateAutoStatusText = () => {
+        const autoStatus = document.getElementById('autoStatus');
+        if (!autoStatus) return;
+        
+        if (window.isConfiguratorPaused) {
+            autoStatus.innerText = 'Paused';
+            autoStatus.className = 'shadcn-badge paused';
+        } else if (window.isConfiguratorActive) {
+            autoStatus.innerText = 'Interacting';
+            autoStatus.className = 'shadcn-badge';
+        } else {
+            autoStatus.innerText = `Auto ${window.timeRemaining}s`;
+            autoStatus.className = 'shadcn-badge active';
+        }
+    };
+
+    let backgroundCycleInterval;
+    const startCycleInterval = () => {
+        clearInterval(backgroundCycleInterval);
+        backgroundCycleInterval = setInterval(() => {
+            if (!window.isConfiguratorPaused && !window.isConfiguratorActive) {
+                window.timeRemaining--;
+                if (window.timeRemaining <= 0) {
+                    advanceBackground();
+                    window.timeRemaining = 30;
+                }
+            }
+            window.updateAutoStatusText();
+        }, 1000);
+    };
 
     const resetCycleInterval = () => {
-        clearInterval(backgroundCycleInterval);
-        backgroundCycleInterval = setInterval(advanceBackground, 30000);
+        window.timeRemaining = 30;
+        window.updateAutoStatusText();
+        startCycleInterval();
     };
+
+    startCycleInterval();
 
     if (heroSection) {
         heroSection.addEventListener('click', (e) => {
@@ -387,7 +421,7 @@ document.addEventListener('DOMContentLoaded', () => {
             <div class="shadcn-header">
                 <h3 class="shadcn-title">Hero BG</h3>
                 <div class="shadcn-controls">
-                    <span class="shadcn-badge active" id="autoStatus">Auto 30s</span>
+                    <span class="shadcn-badge active" id="autoStatus">Auto ${window.timeRemaining}s</span>
                     <span class="shadcn-close" onclick="this.closest('.shadcn-panel').style.display='none'">&times;</span>
                 </div>
             </div>
@@ -492,35 +526,26 @@ document.addEventListener('DOMContentLoaded', () => {
         const autoStatus = document.getElementById('autoStatus');
         autoStatus.addEventListener('click', () => {
             window.isConfiguratorPaused = !window.isConfiguratorPaused;
-            if (window.isConfiguratorPaused) {
-                autoStatus.innerText = 'Paused';
-                autoStatus.className = 'shadcn-badge paused';
-            } else {
-                autoStatus.innerText = 'Auto 30s';
-                autoStatus.className = 'shadcn-badge active';
-            }
+            window.updateAutoStatusText();
         });
 
         const inputs = ['slHue', 'slSat', 'slBri', 'slCon', 'slGrOp', 'slGrSz', 'slGlOp', 'slGlBl', 'inBgCol', 'inGlCol'];
         inputs.forEach(id => {
             document.getElementById(id).addEventListener('input', () => {
                 window.isConfiguratorActive = true;
-                if (!window.isConfiguratorPaused) {
-                    autoStatus.innerText = 'Interacting';
-                    autoStatus.className = 'shadcn-badge';
-                }
+                window.updateAutoStatusText();
                 updateFiltersFromUI();
             });
         });
         
         // Resume rotation when mouse leaves the UI completely unless forcefully paused
-        ui.addEventListener('mouseenter', () => window.isConfiguratorActive = true);
+        ui.addEventListener('mouseenter', () => {
+            window.isConfiguratorActive = true;
+            window.updateAutoStatusText();
+        });
         ui.addEventListener('mouseleave', () => {
             window.isConfiguratorActive = false;
-            if (!window.isConfiguratorPaused) {
-                autoStatus.innerText = 'Auto 30s';
-                autoStatus.className = 'shadcn-badge active';
-            }
+            window.updateAutoStatusText();
         });
 
         // Auto-hide panel when hero section is not visible
