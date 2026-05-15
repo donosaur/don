@@ -485,17 +485,17 @@
       overflow: hidden;
       border-radius: 4px;
       border: 1px solid var(--border);
-      aspect-ratio: 16/10;
       background: var(--bg-2);
     }
     .screen-thumb img {
       width: 100%;
       height: 100%;
-      object-fit: cover;
+      object-fit: contain;
       display: block;
       transition: transform 0.3s ease, opacity 0.2s;
     }
     .screen-thumb:hover img { transform: scale(1.03); opacity: 0.85; }
+    .screen-thumb.full-width { grid-column: 1 / -1; }
 
     /* ── LIGHTBOX ── */
     .lightbox {
@@ -574,7 +574,6 @@
       .col-card, .exploration-card, .platform-card { padding: 28px 24px; }
       .results-grid { grid-template-columns: 1fr; }
       .screens-grid { grid-template-columns: 1fr; }
-      .screen-thumb { aspect-ratio: 16/9; }
       .tradeoff-table { font-size: 13px; }
       .tradeoff-table th, .tradeoff-table td { padding: 12px 14px; }
       .pull-quote { font-size: clamp(18px, 4.5vw, 24px); padding-left: 20px; margin: 32px 0; }
@@ -820,11 +819,17 @@
       <h2>The product,<br>in detail.</h2>
       <p class="lead">A look at the shipped interfaces across the Vimeo Streaming platform.</p>
       <div class="screens-grid">
-        <div class="screen-thumb" onclick="openLightbox(0)"><img loading="lazy" src="images/vimeo 04A.png" alt="Vimeo screen 1"></div>
-        <div class="screen-thumb" onclick="openLightbox(1)"><img loading="lazy" src="images/vimeo 04B.png" alt="Vimeo screen 2"></div>
-        <div class="screen-thumb" onclick="openLightbox(2)"><img loading="lazy" src="images/vimeo 04C2.png" alt="Vimeo screen 3"></div>
-        <div class="screen-thumb" onclick="openLightbox(3)"><img loading="lazy" src="images/vimeo 04E.png" alt="Vimeo screen 4"></div>
-        <div class="screen-thumb" onclick="openLightbox(4)"><img loading="lazy" src="images/vimeo 04F.png" alt="Vimeo screen 5"></div>
+        <div class="screen-thumb full-width" onclick="openLightbox(0)"><img loading="lazy" src="images/tv-loop.gif" alt="TV app loop"></div>
+        <div class="screen-thumb full-width" onclick="openLightbox(1)"><img loading="lazy" src="images/mobile-loop.gif" alt="Mobile app loop"></div>
+        <div class="screen-thumb" onclick="openLightbox(2)"><img loading="lazy" src="images/dropout tv.png" alt="Dropout TV app"></div>
+        <div class="screen-thumb" onclick="openLightbox(3)"><img loading="lazy" src="images/dropout mobile.png" alt="Dropout mobile app"></div>
+        <div class="screen-thumb" onclick="openLightbox(4)"><img loading="lazy" src="images/criterion tv.png" alt="Criterion TV app"></div>
+        <div class="screen-thumb" onclick="openLightbox(5)"><img loading="lazy" src="images/criterion mobile.png" alt="Criterion mobile app"></div>
+        <div class="screen-thumb" onclick="openLightbox(6)"><img loading="lazy" src="images/2nd try tv.png" alt="2nd Try TV app"></div>
+        <div class="screen-thumb" onclick="openLightbox(7)"><img loading="lazy" src="images/2nd try mobile.png" alt="2nd Try mobile app"></div>
+        <div class="screen-thumb" onclick="openLightbox(8)"><img loading="lazy" src="images/vimeo 04C2.png" alt="Vimeo screen 3"></div>
+        <div class="screen-thumb" onclick="openLightbox(9)"><img loading="lazy" src="images/vimeo 04E.png" alt="Vimeo screen 4"></div>
+        <div class="screen-thumb" onclick="openLightbox(10)"><img loading="lazy" src="images/vimeo 04F.png" alt="Vimeo screen 5"></div>
       </div>
     </div>
   </div>
@@ -902,8 +907,14 @@
 
   <script>
     const images = [
-      'images/vimeo 04A.png',
-      'images/vimeo 04B.png',
+      'images/tv-loop.gif',
+      'images/mobile-loop.gif',
+      'images/dropout tv.png',
+      'images/dropout mobile.png',
+      'images/criterion tv.png',
+      'images/criterion mobile.png',
+      'images/2nd try tv.png',
+      'images/2nd try mobile.png',
       'images/vimeo 04C2.png',
       'images/vimeo 04E.png',
       'images/vimeo 04F.png'
