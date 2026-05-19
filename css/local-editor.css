@@ -1,0 +1,192 @@
+/* WYSIWYG Editor Styles - LOCAL ONLY */
+#local-editor-panel {
+  position: fixed;
+  bottom: 24px;
+  right: 24px;
+  width: 300px;
+  background: rgba(15, 15, 15, 0.95);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 12px;
+  box-shadow: 0 20px 40px rgba(0,0,0,0.5), 0 0 0 1px rgba(0,0,0,1);
+  color: #fff;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  z-index: 999999;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+#local-editor-panel.minimized {
+  transform: translateY(calc(100% - 44px));
+}
+
+#local-editor-header {
+  padding: 14px 16px;
+  background: rgba(255, 255, 255, 0.05);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+#local-editor-title {
+  font-size: 11px;
+  font-weight: 600;
+  color: #888;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+}
+
+#le-status {
+  color: #555;
+  font-weight: 400;
+}
+
+#local-editor-minimize {
+  background: none;
+  border: none;
+  color: #888;
+  cursor: pointer;
+  padding: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+#local-editor-minimize:hover {
+  color: #fff;
+}
+
+#local-editor-body {
+  padding: 16px;
+  max-height: 500px;
+  overflow-y: auto;
+}
+
+.le-control-group {
+  margin-bottom: 20px;
+}
+
+.le-control-group label {
+  display: block;
+  font-size: 10px;
+  color: #888;
+  margin-bottom: 8px;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.le-input-row {
+  display: flex;
+  gap: 8px;
+}
+
+.le-input-wrap {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.le-input-wrap span {
+  font-size: 10px;
+  color: #555;
+  text-align: center;
+  margin-top: 6px;
+  font-weight: 500;
+}
+
+.le-input {
+  width: 100%;
+  background: #000;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  color: #fff;
+  padding: 8px 6px;
+  border-radius: 6px;
+  font-size: 12px;
+  text-align: center;
+  font-family: monospace;
+  transition: border-color 0.2s;
+}
+
+.le-input:focus {
+  outline: none;
+  border-color: #007aff;
+  background: #0a0a0a;
+}
+
+#local-editor-actions {
+  display: flex;
+  gap: 8px;
+  padding-top: 12px;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  margin-top: 8px;
+}
+
+.le-btn {
+  flex: 1;
+  background: rgba(255, 255, 255, 0.1);
+  color: #fff;
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  padding: 10px;
+  border-radius: 6px;
+  font-size: 12px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.le-btn:hover {
+  background: rgba(255, 255, 255, 0.15);
+}
+
+.le-btn.primary {
+  background: #007aff;
+  border-color: #007aff;
+  color: #fff;
+}
+.le-btn.primary:hover {
+  background: #0066d6;
+  border-color: #0066d6;
+}
+
+#le-target-info {
+  font-size: 11px;
+  color: #007aff;
+  margin-bottom: 16px;
+  font-family: monospace;
+  background: rgba(0, 122, 255, 0.1);
+  padding: 6px 8px;
+  border-radius: 4px;
+  word-break: break-all;
+}
+
+/* Edit Mode Overlay Styles */
+body.le-edit-mode * {
+  cursor: crosshair !important;
+}
+
+/* Don't apply to the editor itself */
+body.le-edit-mode #local-editor-panel * {
+  cursor: default !important;
+}
+
+/* Disable pointer events on links so they don't navigate when clicked in edit mode */
+body.le-edit-mode a {
+  pointer-events: none !important;
+}
+
+/* Hover outline */
+.le-hover-target {
+  outline: 2px dashed rgba(0, 122, 255, 0.6) !important;
+  outline-offset: -2px;
+}
+
+/* Selected outline */
+.le-selected-target {
+  outline: 2px solid #007aff !important;
+  outline-offset: -2px;
+  box-shadow: inset 0 0 0 1000px rgba(0, 122, 255, 0.05) !important;
+}

@@ -561,3 +561,15 @@
         });
       });
     });
+
+    // ── Local WYSIWYG Editor Injection ──────────────────────────────
+    if (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') {
+      const cssLink = document.createElement('link');
+      cssLink.rel = 'stylesheet';
+      cssLink.href = 'css/local-editor.css';
+      document.head.appendChild(cssLink);
+
+      const jsScript = document.createElement('script');
+      jsScript.src = 'js/local-editor.js';
+      document.body.appendChild(jsScript);
+    }
