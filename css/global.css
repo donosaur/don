@@ -217,9 +217,6 @@
     /* content sits above video + overlay */
     
     /* ── CURSOR MASK ── */
-    .hero:hover .hero-cursor-mask {
-      opacity: 0.5;
-    }
     .hero-cursor-mask {
       position: absolute;
       top: 0;
@@ -229,12 +226,18 @@
       pointer-events: none;
       z-index: 1; /* Behind text (z-index: 2) but above background */
       opacity: 0;
-      transition: opacity 0.3s ease;
-      will-change: transform;
+      transition: opacity 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+      will-change: transform, opacity;
       /* offset so the mouse is in the center */
       margin-top: -88px;
       margin-left: -88px;
     }
+    /* Fade in while cursor is moving, fade out when idle */
+    .hero-cursor-mask.is-trailing {
+      opacity: 0.5;
+      transition: opacity 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
 
     @keyframes blobMorph {
       0% { border-radius: 40% 60% 70% 30% / 40% 40% 60% 50%; }
@@ -261,7 +264,7 @@
       animation: blobMorph 5s ease-in-out infinite alternate;
     }
 
-    .hero:hover .hero-cursor-expander {
+    .hero-cursor-mask.is-trailing .hero-cursor-expander {
       transform: scale(1);
     }
     

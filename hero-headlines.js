@@ -86,14 +86,101 @@ document.addEventListener('DOMContentLoaded', () => {
     };
     updateCursorMaskPreview();
     
+    // ── Trailing cursor mask with fade-in / fade-out (Highly Optimized) ──
     if (heroSection && cursorMask) {
-        heroSection.addEventListener('mousemove', (e) => {
-            // Only show/move mask if it's a fine pointer (mouse)
-            if (window.matchMedia('(pointer: coarse)').matches) return;
+        let maskTargetX = 0, maskTargetY = 0;
+        let maskCurrentX = 0, maskCurrentY = 0;
+        let maskInitialized = false;
+        let maskIdleTimer = null;
+        let maskRafId = null;
+        let isLooping = false;
+        let isTrailing = false;
+
+        const MASK_LERP = 0.10;
+        const IDLE_DELAY = 400;
+
+        // Cache hero bounding rect to avoid layout thrashing on mousemove
+        const cachedRect = { left: 0, top: 0 };
+        const updateCachedRect = () => {
             const rect = heroSection.getBoundingClientRect();
-            // Position exactly at cursor
-            cursorMask.style.transform = `translate(${e.clientX - rect.left}px, ${e.clientY - rect.top}px)`;
-        });
+            cachedRect.left = rect.left;
+            cachedRect.top = rect.top;
+        };
+
+        // Initialize rect and set up passive listeners for updates
+        updateCachedRect();
+        window.addEventListener('resize', updateCachedRect, { passive: true });
+        window.addEventListener('scroll', updateCachedRect, { passive: true });
+        heroSection.addEventListener('mouseenter', updateCachedRect, { passive: true });
+
+        const startTrailing = () => {
+            if (!isTrailing) {
+                isTrailing = true;
+                cursorMask.classList.add('is-trailing');
+            }
+        };
+
+        const stopTrailing = () => {
+            isTrailing = false;
+            cursorMask.classList.remove('is-trailing');
+        };
+
+        const maskTick = () => {
+            const dx = maskTargetX - maskCurrentX;
+            const dy = maskTargetY - maskCurrentY;
+
+            maskCurrentX += dx * MASK_LERP;
+            maskCurrentY += dy * MASK_LERP;
+
+            // Use translate3d for hardware acceleration
+            cursorMask.style.transform = `translate3d(${maskCurrentX}px, ${maskCurrentY}px, 0)`;
+
+            const distanceSq = dx * dx + dy * dy;
+            // Stop RAF loop if the cursor mask has caught up and is idle
+            if (distanceSq < 0.0025 && !isTrailing) {
+                maskCurrentX = maskTargetX;
+                maskCurrentY = maskTargetY;
+                cursorMask.style.transform = `translate3d(${maskCurrentX}px, ${maskCurrentY}px, 0)`;
+                isLooping = false;
+                maskRafId = null;
+                return;
+            }
+
+            maskRafId = requestAnimationFrame(maskTick);
+        };
+
+        const startLoop = () => {
+            if (!isLooping) {
+                isLooping = true;
+                if (maskRafId) cancelAnimationFrame(maskRafId);
+                maskRafId = requestAnimationFrame(maskTick);
+            }
+        };
+
+        heroSection.addEventListener('mousemove', (e) => {
+            if (window.matchMedia('(pointer: coarse)').matches) return;
+
+            maskTargetX = e.clientX - cachedRect.left;
+            maskTargetY = e.clientY - cachedRect.top;
+
+            if (!maskInitialized) {
+                maskCurrentX = maskTargetX;
+                maskCurrentY = maskTargetY;
+                cursorMask.style.transform = `translate3d(${maskCurrentX}px, ${maskCurrentY}px, 0)`;
+                maskInitialized = true;
+            }
+
+            startTrailing();
+            startLoop();
+
+            clearTimeout(maskIdleTimer);
+            maskIdleTimer = setTimeout(stopTrailing, IDLE_DELAY);
+        }, { passive: true });
+
+        heroSection.addEventListener('mouseleave', () => {
+            clearTimeout(maskIdleTimer);
+            stopTrailing();
+        }, { passive: true });
     }
 
     const advanceBackground = () => {
