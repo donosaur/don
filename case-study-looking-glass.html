@@ -3,7 +3,14 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>looking glass go</title>
+  <title>Looking Glass Go — Don Polistico</title>
+  <meta name="description" content="Designing the mobile companion app that connects a phone camera to a 3D lenticular screen for the Looking Glass Go." />
+  <meta property="og:title" content="Looking Glass Go — Don Polistico" />
+  <meta property="og:description" content="Designing the mobile companion app that connects a phone camera to a 3D lenticular screen for the Looking Glass Go." />
+  <meta property="og:type" content="article" />
+  <meta property="og:url" content="https://don.polisti.co/case-study-looking-glass.html" />
+  <meta property="og:image" content="https://don.polisti.co/images/lkg-04c.png" />
+  <meta name="twitter:card" content="summary_large_image" />
   <link rel="icon" type="image/png" href="images/avatar.png" />
   <link href="https://fonts.googleapis.com/css2?family=Lexend+Deca:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="css/slideshow.css" />
@@ -588,7 +595,7 @@
   <!-- HERO -->
   <div style="background:var(--bg);border-bottom:1px solid var(--border);">
     <div class="hero">
-      <div class="hero-eyebrow">Emerging tech · Looking Glass · 2023–2024</div>
+      <div class="hero-eyebrow">Emerging tech · Looking Glass · 2022–2024</div>
       <h1>Designing for a display<br>that shows <em>depth</em>,<br>not just pixels.</h1>
       <p class="hero-sub">
         The Looking Glass Go is a holographic display that sits on your desk. My job was to design the mobile companion app that connects a phone camera to a 3D lenticular screen. There was no existing playbook for this.
@@ -745,9 +752,9 @@
       <h2>The app, in detail.</h2>
       <p class="lead">A look at the shipped iOS interface for the Looking Glass Go companion app.</p>
       <div class="screens-grid">
-        <div class="screen-thumb" onclick="openLightbox(0)"><img loading="lazy" src="images/LKG 04A.png" alt="Looking Glass screen 1"></div>
-        <div class="screen-thumb" onclick="openLightbox(1)"><img loading="lazy" src="images/LKG 04B.png" alt="Looking Glass screen 2"></div>
-        <div class="screen-thumb" onclick="openLightbox(2)"><img loading="lazy" src="images/LKG 04C.png" alt="Looking Glass screen 3"></div>
+        <div class="screen-thumb" onclick="openLightbox(0)"><img loading="lazy" src="images/lkg-04a.png" alt="Looking Glass screen 1"></div>
+        <div class="screen-thumb" onclick="openLightbox(1)"><img loading="lazy" src="images/lkg-04b.png" alt="Looking Glass screen 2"></div>
+        <div class="screen-thumb" onclick="openLightbox(2)"><img loading="lazy" src="images/lkg-04c.png" alt="Looking Glass screen 3"></div>
       </div>
     </div>
   </div>
@@ -810,24 +817,24 @@
   </div>
 
   <footer>
-    <span><span class="hide-mobile">don polistico · </span><span class="hide-mobile">senior </span>product designer · <a href="mailto:don@polisti.co">don@polisti.co</a></span>
-    <span>© 2025</span>
+    <span><span class="hide-mobile">don polistico · </span>product designer · <a href="mailto:don@polisti.co">don@polisti.co</a></span>
+    <span>© <script>document.write(new Date().getFullYear())</script></span>
   </footer>
 
   <!-- LIGHTBOX -->
-  <div class="lightbox" id="lightbox" onclick="handleLightboxClick(event)">
+  <div class="lightbox" id="lightbox" onclick="handleLightboxClick(event)" hidden>
     <button class="lightbox-close" onclick="closeLightbox()">✕</button>
     <button class="lightbox-arrow prev" onclick="event.stopPropagation(); stepLightbox(-1)">&#8592;</button>
-    <img loading="lazy" class="lightbox-img" id="lightbox-img" src="" alt="">
+    <img loading="lazy" class="lightbox-img" id="lightbox-img" alt="">
     <button class="lightbox-arrow next" onclick="event.stopPropagation(); stepLightbox(1)">&#8594;</button>
     <div class="lightbox-counter" id="lightbox-counter"></div>
   </div>
 
   <script>
     const images = [
-      'images/LKG 04A.png',
-      'images/LKG 04B.png',
-      'images/LKG 04C.png'
+      'images/lkg-04a.png',
+      'images/lkg-04b.png',
+      'images/lkg-04c.png'
     ];
     let current = 0;
 
@@ -835,10 +842,12 @@
       current = index;
       document.getElementById('lightbox-img').src = images[current];
       document.getElementById('lightbox-counter').textContent = (current + 1) + ' / ' + images.length;
+      document.getElementById('lightbox').removeAttribute('hidden');
       document.getElementById('lightbox').classList.add('open');
       document.body.style.overflow = 'hidden';
     }
     function closeLightbox() {
+      document.getElementById('lightbox').setAttribute('hidden', '');
       document.getElementById('lightbox').classList.remove('open');
       document.body.style.overflow = '';
     }

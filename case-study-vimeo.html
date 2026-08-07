@@ -3,7 +3,14 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>vimeo streaming</title>
+  <title>Vimeo Streaming — Don Polistico</title>
+  <meta name="description" content="Designing Vimeo's OTT distribution product across web, TV, and mobile, giving creators the tools to launch and manage their own streaming channels." />
+  <meta property="og:title" content="Vimeo Streaming — Don Polistico" />
+  <meta property="og:description" content="Designing Vimeo's OTT distribution product across web, TV, and mobile, giving creators the tools to launch and manage their own streaming channels." />
+  <meta property="og:type" content="article" />
+  <meta property="og:url" content="https://don.polisti.co/case-study-vimeo.html" />
+  <meta property="og:image" content="https://don.polisti.co/images/vimeo-04e.png" />
+  <meta name="twitter:card" content="summary_large_image" />
   <link rel="icon" type="image/png" href="images/avatar.png" />
   <link href="https://fonts.googleapis.com/css2?family=Lexend+Deca:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="css/slideshow.css" />
@@ -822,15 +829,15 @@
       <div class="screens-grid">
         <div class="screen-thumb full-width" onclick="openLightbox(0)"><img loading="lazy" src="images/tv-loop.gif" alt="TV app loop"></div>
         <div class="screen-thumb full-width" onclick="openLightbox(1)"><img loading="lazy" src="images/mobile-loop.gif" alt="Mobile app loop"></div>
-        <div class="screen-thumb" onclick="openLightbox(2)"><img loading="lazy" src="images/dropout tv.png" alt="Dropout TV app"></div>
-        <div class="screen-thumb" onclick="openLightbox(3)"><img loading="lazy" src="images/dropout mobile.png" alt="Dropout mobile app"></div>
-        <div class="screen-thumb" onclick="openLightbox(4)"><img loading="lazy" src="images/criterion tv.png" alt="Criterion TV app"></div>
-        <div class="screen-thumb" onclick="openLightbox(5)"><img loading="lazy" src="images/criterion mobile.png" alt="Criterion mobile app"></div>
-        <div class="screen-thumb" onclick="openLightbox(6)"><img loading="lazy" src="images/2nd try tv.png" alt="2nd Try TV app"></div>
-        <div class="screen-thumb" onclick="openLightbox(7)"><img loading="lazy" src="images/2nd try mobile.png" alt="2nd Try mobile app"></div>
-        <div class="screen-thumb" onclick="openLightbox(8)"><img loading="lazy" src="images/vimeo 04C2.png" alt="Vimeo screen 3"></div>
-        <div class="screen-thumb" onclick="openLightbox(9)"><img loading="lazy" src="images/vimeo 04E.png" alt="Vimeo screen 4"></div>
-        <div class="screen-thumb" onclick="openLightbox(10)"><img loading="lazy" src="images/vimeo 04F.png" alt="Vimeo screen 5"></div>
+        <div class="screen-thumb" onclick="openLightbox(2)"><img loading="lazy" src="images/dropout-tv.png" alt="Dropout TV app"></div>
+        <div class="screen-thumb" onclick="openLightbox(3)"><img loading="lazy" src="images/dropout-mobile.png" alt="Dropout mobile app"></div>
+        <div class="screen-thumb" onclick="openLightbox(4)"><img loading="lazy" src="images/criterion-tv.png" alt="Criterion TV app"></div>
+        <div class="screen-thumb" onclick="openLightbox(5)"><img loading="lazy" src="images/criterion-mobile.png" alt="Criterion mobile app"></div>
+        <div class="screen-thumb" onclick="openLightbox(6)"><img loading="lazy" src="images/2nd-try-tv.png" alt="2nd Try TV app"></div>
+        <div class="screen-thumb" onclick="openLightbox(7)"><img loading="lazy" src="images/2nd-try-mobile.png" alt="2nd Try mobile app"></div>
+        <div class="screen-thumb" onclick="openLightbox(8)"><img loading="lazy" src="images/vimeo-04c2.png" alt="Vimeo screen 3"></div>
+        <div class="screen-thumb" onclick="openLightbox(9)"><img loading="lazy" src="images/vimeo-04e.png" alt="Vimeo screen 4"></div>
+        <div class="screen-thumb" onclick="openLightbox(10)"><img loading="lazy" src="images/vimeo-04f.png" alt="Vimeo screen 5"></div>
       </div>
     </div>
   </div>
@@ -893,15 +900,15 @@
   </div>
 
   <footer>
-    <span><span class="hide-mobile">don polistico · </span><span class="hide-mobile">senior </span>product designer · <a href="mailto:don@polisti.co">don@polisti.co</a></span>
-    <span>© 2025</span>
+    <span><span class="hide-mobile">don polistico · </span>product designer · <a href="mailto:don@polisti.co">don@polisti.co</a></span>
+    <span>© <script>document.write(new Date().getFullYear())</script></span>
   </footer>
 
   <!-- LIGHTBOX -->
-  <div class="lightbox" id="lightbox" onclick="handleLightboxClick(event)">
+  <div class="lightbox" id="lightbox" onclick="handleLightboxClick(event)" hidden>
     <button class="lightbox-close" onclick="closeLightbox()">✕</button>
     <button class="lightbox-arrow prev" onclick="event.stopPropagation(); stepLightbox(-1)">&#8592;</button>
-    <img loading="lazy" class="lightbox-img" id="lightbox-img" src="" alt="">
+    <img loading="lazy" class="lightbox-img" id="lightbox-img" alt="">
     <button class="lightbox-arrow next" onclick="event.stopPropagation(); stepLightbox(1)">&#8594;</button>
     <div class="lightbox-counter" id="lightbox-counter"></div>
   </div>
@@ -910,15 +917,15 @@
     const images = [
       'images/tv-loop.gif',
       'images/mobile-loop.gif',
-      'images/dropout tv.png',
-      'images/dropout mobile.png',
-      'images/criterion tv.png',
-      'images/criterion mobile.png',
-      'images/2nd try tv.png',
-      'images/2nd try mobile.png',
-      'images/vimeo 04C2.png',
-      'images/vimeo 04E.png',
-      'images/vimeo 04F.png'
+      'images/dropout-tv.png',
+      'images/dropout-mobile.png',
+      'images/criterion-tv.png',
+      'images/criterion-mobile.png',
+      'images/2nd-try-tv.png',
+      'images/2nd-try-mobile.png',
+      'images/vimeo-04c2.png',
+      'images/vimeo-04e.png',
+      'images/vimeo-04f.png'
     ];
     let current = 0;
 
@@ -926,10 +933,12 @@
       current = index;
       document.getElementById('lightbox-img').src = images[current];
       document.getElementById('lightbox-counter').textContent = (current + 1) + ' / ' + images.length;
+      document.getElementById('lightbox').removeAttribute('hidden');
       document.getElementById('lightbox').classList.add('open');
       document.body.style.overflow = 'hidden';
     }
     function closeLightbox() {
+      document.getElementById('lightbox').setAttribute('hidden', '');
       document.getElementById('lightbox').classList.remove('open');
       document.body.style.overflow = '';
     }

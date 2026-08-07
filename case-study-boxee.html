@@ -3,8 +3,14 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>boxee + samsung — 10-foot ui for the living room</title>
+  <title>Boxee — Don Polistico</title>
   <meta name="description" content="Designing Cloud DVR, social TV, and D-pad-driven interfaces for the living room — from Boxee's startup days through Samsung's acquisition." />
+  <meta property="og:title" content="Boxee — Don Polistico" />
+  <meta property="og:description" content="Designing Cloud DVR, social TV, and D-pad-driven interfaces for the living room — from Boxee's startup days through Samsung's acquisition." />
+  <meta property="og:type" content="article" />
+  <meta property="og:url" content="https://don.polisti.co/case-study-boxee.html" />
+  <meta property="og:image" content="https://don.polisti.co/images/boxee-tv-04.png" />
+  <meta name="twitter:card" content="summary_large_image" />
   <link rel="icon" type="image/png" href="images/avatar.png" />
   <link href="https://fonts.googleapis.com/css2?family=Lexend+Deca:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="css/slideshow.css" />
@@ -877,15 +883,15 @@
   </div>
 
   <footer>
-    <span>don polistico · product designer · brooklyn, ny · <a href="mailto:don@polisti.co">don@polisti.co</a></span>
-    <span>bfa, mica · ai for ux design cert. 2025</span>
+    <span><span class="hide-mobile">don polistico · </span>product designer · <a href="mailto:don@polisti.co">don@polisti.co</a></span>
+    <span>© <script>document.write(new Date().getFullYear())</script></span>
   </footer>
 
   <!-- LIGHTBOX -->
-  <div class="lightbox" id="lightbox" onclick="handleLightboxClick(event)">
+  <div class="lightbox" id="lightbox" onclick="handleLightboxClick(event)" hidden>
     <button class="lightbox-close" onclick="closeLightbox()">✕</button>
     <button class="lightbox-arrow prev" onclick="event.stopPropagation(); stepLightbox(-1)">&#8592;</button>
-    <img loading="lazy" class="lightbox-img" id="lightbox-img" src="" alt="">
+    <img loading="lazy" class="lightbox-img" id="lightbox-img" alt="">
     <button class="lightbox-arrow next" onclick="event.stopPropagation(); stepLightbox(1)">&#8594;</button>
     <div class="lightbox-counter" id="lightbox-counter"></div>
   </div>
@@ -929,10 +935,12 @@
       current = index;
       document.getElementById('lightbox-img').src = images[current];
       document.getElementById('lightbox-counter').textContent = (current + 1) + ' / ' + images.length;
+      document.getElementById('lightbox').removeAttribute('hidden');
       document.getElementById('lightbox').classList.add('open');
       document.body.style.overflow = 'hidden';
     }
     function closeLightbox() {
+      document.getElementById('lightbox').setAttribute('hidden', '');
       document.getElementById('lightbox').classList.remove('open');
       document.body.style.overflow = '';
     }
