@@ -1,3 +1,8 @@
+.DS_Store
+node_modules/
+dist/
+build/
+
 # Secrets and credentials (from don-os/gitignore-template)
 # Append this block to .gitignore in new prototype repos right after scaffolding.
 .env
