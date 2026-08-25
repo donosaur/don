@@ -1,0 +1,16 @@
+# Secrets and credentials (from don-os/gitignore-template)
+# Append this block to .gitignore in new prototype repos right after scaffolding.
+.env
+.env.*
+# Template files belong in version control
+!.env.example
+!.env.sample
+*.pem
+*.key
+*.p12
+*.pfx
+id_rsa
+id_ed25519
+credentials.json
+service-account*.json
+*.keystore
