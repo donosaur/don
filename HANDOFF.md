@@ -1,7 +1,7 @@
 # Portfolio (hi.polisti.co / don.polisti.co) — Handoff
 
-- Last save: fix(git): untrack .DS_Store files and add standard ignores to root .gitignore (antigravity on MBP M3, 2026-08-25 13:45 EDT)
-- Completed: Drafted AI workflow case study (\`case-study-ai-workflow.html\`), updated \`robots.txt\` and \`sitemap.xml\`, refined typography and color tokens in \`global.css\`, and updated project navigation across Boxee, Looking Glass, and Vimeo case studies.
-- In flight: Polish and final review of the AI workflow case study layout.
+- Last save: feat: move AI workflow case study to wip/case-study-ai-workflow and hide from live site (antigravity, 2026-09-01 21:04 EDT)
+- Completed: Moved AI workflow case study to dedicated branch (\`wip/case-study-ai-workflow\`), removed case study page and cover image from \`main\`, updated \`sitemap.xml\`, restored 3-way case study navigation between Vimeo, Looking Glass, and Boxee, and cleaned up \`index.html\` and \`global.css\`.
+- In flight: Iterating on AI workflow case study in \`wip/case-study-ai-workflow\` branch.
 - Inbound: none.
-- Next: Commit and push updates to \`origin/main\` and verify live deployment at \`hi.polisti.co\`.
+- Next: Continue local development on \`wip/case-study-ai-workflow\` branch.
