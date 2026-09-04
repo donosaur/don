@@ -91,17 +91,7 @@
       letter-spacing: 0.16em;
       text-transform: lowercase;
       color: var(--purple);
-      margin-bottom: 28px;
-      display: flex;
-      align-items: center;
-      gap: 12px;
-    }
-    .hero-eyebrow::before {
-      content: '';
-      width: 32px;
-      height: 1px;
-      background: var(--purple);
-      display: block;
+      margin-bottom: 24px;
     }
     .hero h1 {
       font-family: 'Lexend Deca', sans-serif;
@@ -156,23 +146,6 @@
       border-bottom: 1px solid var(--border);
       max-width: 1200px;
       margin: 0 auto;
-    }
-    .section-label {
-      font-size: 11px;
-      font-weight: 600;
-      letter-spacing: 0.16em;
-      text-transform: lowercase;
-      color: var(--purple);
-      margin-bottom: 48px;
-      display: flex;
-      align-items: center;
-      gap: 16px;
-    }
-    .section-label::after {
-      content: '';
-      flex: 1;
-      height: 1px;
-      background: var(--border);
     }
     h2 {
       font-family: 'Lexend Deca', sans-serif;
@@ -541,7 +514,6 @@
       .stat-item { padding: 24px 20px; }
       .stat-num { font-size: 32px; }
       .section { padding: 64px 24px; }
-      .section-label { margin-bottom: 32px; }
       h2 { font-size: clamp(28px, 7vw, 40px); }
       .lead { font-size: 16px; margin-bottom: 40px; }
       .constraint-grid { grid-template-columns: 1fr; }
@@ -640,7 +612,6 @@
   <!-- CONSTRAINTS -->
   <div style="background:var(--bg-2);border-bottom:1px solid var(--border);">
     <div class="section">
-      <div class="section-label">Design constraints</div>
       <h2>Design constraints that<br>didn't exist in any playbook.</h2>
       <p class="lead">
         This wasn't a standard mobile app. Every design decision had to account for four things at once: hardware, network, AI processing, and a completely unfamiliar output format.
@@ -673,7 +644,6 @@
   <!-- AI LATENCY TRADEOFFS -->
   <div style="background:var(--bg);border-bottom:1px solid var(--border);">
     <div class="section">
-      <div class="section-label">Key trade-off</div>
       <h2>The AI wait problem:<br>hide it or explain it?</h2>
       <p class="lead">
         The biggest design decision was how to handle 3–8 seconds of cloud AI processing. We tried two very different approaches, and only one actually built trust.
@@ -712,7 +682,6 @@
   <!-- HARDWARE STATES -->
   <div style="background:var(--bg-2);border-bottom:1px solid var(--border);">
     <div class="section">
-      <div class="section-label">Hardware state design</div>
       <h2>Every state named<br>and designed.</h2>
       <p class="lead">
         Hardware products punish vague loading states. I defined four explicit device states, each with distinct visual treatment and clear user guidance.
@@ -749,7 +718,6 @@
   <!-- SCREENS -->
   <div style="background:var(--bg);border-bottom:1px solid var(--border);">
     <div class="section">
-      <div class="section-label">Product screens</div>
       <h2>The app in detail.</h2>
       <p class="lead">A look at the shipped iOS interface for the Looking Glass Go companion app.</p>
       <div class="screens-grid">
@@ -763,7 +731,6 @@
   <!-- RESULTS -->
   <div style="background:var(--bg);border-bottom:1px solid var(--border);">
     <div class="section">
-      <div class="section-label">Results &amp; retrospective</div>
       <h2>What shipped. What I carried forward.</h2>
       <div class="results-grid">
         <div class="metric-row">

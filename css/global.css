@@ -606,25 +606,6 @@
       border-bottom: 1px solid var(--line);
     }
 
-    .section-label {
-      font-size: 11px;
-      font-weight: 600;
-      letter-spacing: 0.16em;
-      text-transform: lowercase;
-      color: var(--accent);
-      margin-bottom: 48px;
-      display: flex;
-      align-items: center;
-      gap: 16px;
-    }
-
-    .section-label::after {
-      content: '';
-      flex: 1;
-      height: 1px;
-      background: var(--line);
-    }
-
     h2 {
       font-family: 'Lexend Deca', sans-serif;
       font-size: clamp(32px, 3.5vw, 48px);
@@ -1123,14 +1104,6 @@
     .philosophy {
       background: var(--ink);
       color: var(--white);
-    }
-
-    .philosophy .section-label {
-      color: var(--accent);
-    }
-
-    .philosophy .section-label::after {
-      background: rgba(255, 255, 255, 0.12);
     }
 
     .philosophy h2 {

@@ -219,7 +219,6 @@
       { sel: '.hero-stat:nth-child(3) .hero-stat-num', jp: '数百万' },
       { sel: '.hero-stat:nth-child(4) .hero-stat-label', jp: 'AIワークフロー & コンシューマーエレクトロニクス' },
       // Work section
-      { sel: '#work > .section-label', jp: '作品集' },
       { sel: '#work > h2', html: 'ケーススタディと<br>ハイライト。' },
       { sel: '.work-intro', jp: '各プロジェクトは独自のデザイン課題を表しています — 新しいプラットフォーム向けのUXパターンの創造から、変革期の企業におけるデザインシステムの拡張まで。' },
       // Vimeo card
@@ -257,7 +256,6 @@
       { sel: '.work-grid .work-card:nth-child(5) .work-card-desc', jp: 'シュテンペル論文賞受賞：優れた卒業制作を発表したMICA4年生に毎年授与される奨学金。' },
       { sel: '.work-grid .work-card:nth-child(5) .work-card-stat span', jp: 'Vimeo.com' },
       // About section
-      { sel: '#about > .section-label', jp: '紹介' },
       { sel: '#about h2', html: '映像と<br>プラットフォームの深い技。' },
       { sel: '.pull-quote', jp: '「映像が私の出発点でした。プラットフォーム思考こそが刺激を与えてくれるものです。画面、ヘッドセット、ホログラム — 表面は常に変わり続け、私はその先端にいたいと思っています。」' },
       { sel: '.about-text > p', jp: 'こんにちは、ドンです。ブルックリンを拠点とするプロダクトデザイナーで、15年以上ストリーミングビデオと家電に携わってきました。Boxeeの10フィートTVインターフェースのデザインから始まり、SamsungのSmart TVへの統合、VimeoのOTTクリエイタープラットフォームの構築に至るまで。Looking Glassでのホログラフィックディスプレイのデザインや、AIツールを活用したデザインプロセスにも取り組んでいます。' },
@@ -275,7 +273,6 @@
       { sel: '.tool-tag:nth-child(8)', jp: '0→1' },
       { sel: '.tool-tag:nth-child(9)', jp: 'ライガーを描く' },
       // Career section
-      { sel: '#career > .section-label', jp: 'キャリア物語' },
       { sel: '#career > h2', jp: 'ここに至るまで。' },
       { sel: '.career-intro', jp: '私のデザインの旅は小さなハードウェアスタートアップから始まり、大規模なストリーミングプラットフォームへと発展しました。すべてのステップで多くを学びました。2度の買収を経ても、プロダクトと共に歩み、私たちの仕事が人々に届き続けるようにしました。' },
       // Timeline – Boxee
@@ -337,7 +334,6 @@
       // Download resume
       { sel: '.contact-label', jp: '履歴書をダウンロード', all: true },
       // Contact section
-      { sel: '#contact .section-label', jp: '連絡先' },
       { sel: '#contact h2', jp: '話しましょう。' },
       { sel: '.contact-sub', jp: '新しい分野の難しい問題に最もやりがいを感じます — 特に、自分を成長させてくれるデザイナーたちと一緒に。動画や新技術の分野で野心的なものを作っているなら、ぜひお話ししましょう。' },
       // Footer

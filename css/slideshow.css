@@ -182,7 +182,6 @@ body.slideshow-active {
 }
 
 /* ── Pinned Slide Titles ── */
-.slideshow-frame .section-label,
 .slideshow-frame .hero-eyebrow {
   position: absolute;
   top: 48px;
@@ -191,27 +190,11 @@ body.slideshow-active {
   margin: 0;
   padding: 0;
   border: none;
-  display: flex;
-  align-items: center;
-  gap: 16px;
   font-size: 14px;
   letter-spacing: 0.1em;
   text-transform: lowercase;
   color: var(--accent);
   z-index: 10;
-}
-
-.slideshow-frame .section-label::before,
-.slideshow-frame .hero-eyebrow::before {
-  display: none;
-}
-
-.slideshow-frame .section-label::after,
-.slideshow-frame .hero-eyebrow::after {
-  content: '';
-  flex: 1;
-  height: 1px;
-  background: var(--border);
 }
 
 .slideshow-frame h1,
@@ -319,9 +302,6 @@ body.slideshow-active {
   grid-template-rows: auto auto 1fr;
   gap: 0 64px;
   align-content: center;
-}
-.slideshow-frame .section:has(.tradeoff-table) > .section-label {
-  grid-column: 1 / -1;
 }
 .slideshow-frame .section:has(.tradeoff-table) > h2 {
   grid-column: 1;
