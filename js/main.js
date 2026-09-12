@@ -23,7 +23,7 @@
         } else {
           const l1 = h.lines[0].split(' ').map(w => ({ text: w }));
           const l2 = h.lines[1].split(' ').map(w => ({ text: w }));
-          const emWords = h.em.split(' ').map(w => ({ text: w + '<span style="opacity:0.001">.</span>', em: true }));
+          const emWords = h.em.split(' ').map(w => ({ text: w, em: true }));
           textChunks = [...l1, ...l2, ...emWords];
         }
 
