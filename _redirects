@@ -1,1 +1,18 @@
 https://boards.polisti.co/* https://github.com/users/donosaur/projects/1 302!
+
+# 301 redirects for legacy case study pages
+/vimeo-ott.html            /case-study-vimeo            301!
+/vimeo-ott                 /case-study-vimeo            301!
+/looking-glass.html        /case-study-looking-glass    301!
+/looking-glass             /case-study-looking-glass    301!
+/app-builder.html          /case-study-vimeo            301!
+/app-builder               /case-study-vimeo            301!
+
+# Explicit 404 rules for internal files, tooling & sub-projects
+/HANDOFF.md                /404                         404!
+/CHANGELOG.md              /404                         404!
+/bs-config.js              /404                         404!
+/css/local-editor.css      /404                         404!
+/js/local-editor.js        /404                         404!
+/don-next/*                /404                         404!
+/figma-slides-plugin/*     /404                         404!
