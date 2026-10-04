@@ -786,7 +786,8 @@
 
   <footer>
     <span><span class="hide-mobile">don polistico · </span>product designer · <a href="mailto:don@polisti.co">don@polisti.co</a></span>
-    <span>© <script>document.write(new Date().getFullYear())</script></span>
+    <span>© <span class="footer-year">2026</span></span>
+    <script>document.querySelectorAll('.footer-year').forEach(function(el){el.textContent=new Date().getFullYear();});</script>
   </footer>
 
   <!-- LIGHTBOX -->
