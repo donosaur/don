@@ -795,8 +795,18 @@
       <h2>The product in detail.</h2>
       <p class="lead">A look at the shipped interfaces across the Vimeo Streaming platform.</p>
       <div class="screens-grid">
-        <div class="screen-thumb full-width" onclick="openLightbox(0)"><img loading="lazy" src="images/tv-loop.gif" alt="Vimeo 10-foot TV app interface in motion showing content rails"></div>
-        <div class="screen-thumb full-width" onclick="openLightbox(1)"><img loading="lazy" src="images/mobile-loop.gif" alt="Vimeo mobile app interface in motion showing video player"></div>
+        <div class="screen-thumb full-width" onclick="openLightbox(0)">
+          <video autoplay loop muted playsinline poster="images/tv-loop-poster.jpg" aria-label="Vimeo 10-foot TV app interface in motion showing content rails" style="width:100%;height:auto;display:block;">
+            <source src="images/tv-loop.webm" type="video/webm">
+            <source src="images/tv-loop.mp4" type="video/mp4">
+          </video>
+        </div>
+        <div class="screen-thumb full-width" onclick="openLightbox(1)">
+          <video autoplay loop muted playsinline poster="images/mobile-loop-poster.jpg" aria-label="Vimeo mobile app interface in motion showing video player" style="width:100%;height:auto;display:block;">
+            <source src="images/mobile-loop.webm" type="video/webm">
+            <source src="images/mobile-loop.mp4" type="video/mp4">
+          </video>
+        </div>
         <div class="screen-thumb" onclick="openLightbox(2)"><img loading="lazy" src="images/dropout-tv.png" alt="Dropout TV app home screen with content rails"></div>
         <div class="screen-thumb" onclick="openLightbox(3)"><img loading="lazy" src="images/dropout-mobile.png" alt="Dropout mobile app home screen showing continue watching"></div>
         <div class="screen-thumb" onclick="openLightbox(4)"><img loading="lazy" src="images/criterion-tv.png" alt="Criterion Channel TV app home screen with cinematic hero unit"></div>
@@ -877,47 +887,79 @@
     <button class="lightbox-close" onclick="closeLightbox()">✕</button>
     <button class="lightbox-arrow prev" onclick="event.stopPropagation(); stepLightbox(-1)">&#8592;</button>
     <img loading="lazy" class="lightbox-img" id="lightbox-img" alt="">
+    <video class="lightbox-img" id="lightbox-video" autoplay loop muted playsinline controls style="display:none;"></video>
     <button class="lightbox-arrow next" onclick="event.stopPropagation(); stepLightbox(1)">&#8594;</button>
     <div class="lightbox-counter" id="lightbox-counter"></div>
   </div>
 
   <script>
-    const images = [
-      'images/tv-loop.gif',
-      'images/mobile-loop.gif',
-      'images/dropout-tv.png',
-      'images/dropout-mobile.png',
-      'images/criterion-tv.png',
-      'images/criterion-mobile.png',
-      'images/2nd-try-tv.png',
-      'images/2nd-try-mobile.png',
-      'images/vimeo-04c2.png',
-      'images/vimeo-04e.png',
-      'images/vimeo-04f.png'
+    const mediaItems = [
+      { type: 'video', mp4: 'images/tv-loop.mp4', webm: 'images/tv-loop.webm', poster: 'images/tv-loop-poster.jpg' },
+      { type: 'video', mp4: 'images/mobile-loop.mp4', webm: 'images/mobile-loop.webm', poster: 'images/mobile-loop-poster.jpg' },
+      { type: 'image', src: 'images/dropout-tv.png' },
+      { type: 'image', src: 'images/dropout-mobile.png' },
+      { type: 'image', src: 'images/criterion-tv.png' },
+      { type: 'image', src: 'images/criterion-mobile.png' },
+      { type: 'image', src: 'images/2nd-try-tv.png' },
+      { type: 'image', src: 'images/2nd-try-mobile.png' },
+      { type: 'image', src: 'images/vimeo-04c2.png' },
+      { type: 'image', src: 'images/vimeo-04e.png' },
+      { type: 'image', src: 'images/vimeo-04f.png' }
     ];
     let current = 0;
 
+    function renderLightboxItem() {
+      const item = mediaItems[current];
+      const imgEl = document.getElementById('lightbox-img');
+      const videoEl = document.getElementById('lightbox-video');
+      document.getElementById('lightbox-counter').textContent = (current + 1) + ' / ' + mediaItems.length;
+
+      if (item.type === 'video') {
+        imgEl.style.display = 'none';
+        videoEl.style.display = 'block';
+        videoEl.poster = item.poster;
+        videoEl.innerHTML = '<source src="' + item.webm + '" type="video/webm"><source src="' + item.mp4 + '" type="video/mp4">';
+        videoEl.load();
+        videoEl.play().catch(function(){});
+      } else {
+        if (videoEl) {
+          videoEl.pause();
+          videoEl.style.display = 'none';
+        }
+        imgEl.style.display = 'block';
+        imgEl.src = item.src;
+      }
+    }
+
     function openLightbox(index) {
       current = index;
-      document.getElementById('lightbox-img').src = images[current];
-      document.getElementById('lightbox-counter').textContent = (current + 1) + ' / ' + images.length;
+      renderLightboxItem();
       document.getElementById('lightbox').removeAttribute('hidden');
       document.getElementById('lightbox').classList.add('open');
       document.body.style.overflow = 'hidden';
     }
+    window.openLightbox = openLightbox;
+
     function closeLightbox() {
+      const videoEl = document.getElementById('lightbox-video');
+      if (videoEl) videoEl.pause();
       document.getElementById('lightbox').setAttribute('hidden', '');
       document.getElementById('lightbox').classList.remove('open');
       document.body.style.overflow = '';
     }
+    window.closeLightbox = closeLightbox;
+
     function stepLightbox(dir) {
-      current = (current + dir + images.length) % images.length;
-      document.getElementById('lightbox-img').src = images[current];
-      document.getElementById('lightbox-counter').textContent = (current + 1) + ' / ' + images.length;
+      current = (current + dir + mediaItems.length) % mediaItems.length;
+      renderLightboxItem();
     }
+    window.stepLightbox = stepLightbox;
+
     function handleLightboxClick(e) {
       if (e.target === document.getElementById('lightbox')) closeLightbox();
     }
+    window.handleLightboxClick = handleLightboxClick;
+
     document.addEventListener('keydown', function(e) {
       if (!document.getElementById('lightbox').classList.contains('open')) return;
       if (e.key === 'ArrowRight') stepLightbox(1);

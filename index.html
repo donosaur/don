@@ -61,8 +61,10 @@
   <!-- NAV -->
   <nav>
     <div class="nav-logo">
-      <img loading="lazy" class="nav-avatar" id="navAvatar" src="images/avatar.gif" style="cursor: pointer;"
-        onclick="toggleJapanese()" alt="Don Polistico">
+      <video class="nav-avatar" id="navAvatar" autoplay loop muted playsinline poster="images/avatar-poster.png" aria-label="Don Polistico avatar animation" style="cursor: pointer;" onclick="toggleJapanese()">
+        <source id="navAvatarWebm" src="images/avatar.webm" type="video/webm">
+        <source id="navAvatarMp4" src="images/avatar.mp4" type="video/mp4">
+      </video>
       <a href="#"
         style="font-family:'Lexend Deca',sans-serif;font-size:18px;font-weight:600;color:var(--ink);text-decoration:none;">don
         polistico</a>

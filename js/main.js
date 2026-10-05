@@ -351,12 +351,35 @@
       });
     }
 
+    // ── Reduced-motion preference for avatar video ──
+    const avatarMotionQuery = window.matchMedia('(prefers-reduced-motion: reduce)');
+    function syncAvatarMotion() {
+      const avatar = document.getElementById('navAvatar');
+      if (!avatar || avatar.tagName !== 'VIDEO') return;
+      if (avatarMotionQuery.matches) {
+        avatar.pause();
+        avatar.currentTime = 0;
+      } else {
+        avatar.play().catch(() => {});
+      }
+    }
+    avatarMotionQuery.addEventListener('change', syncAvatarMotion);
+    syncAvatarMotion();
+
     function toggleJapanese() {
       const avatar = document.getElementById('navAvatar');
+      const srcWebm = document.getElementById('navAvatarWebm');
+      const srcMp4 = document.getElementById('navAvatarMp4');
       if (!isJapanese) {
         // Switch to Japanese
         if (!originals) storeOriginals();
-        avatar.src = 'images/avatar-taiko.gif';
+        if (avatar && srcWebm && srcMp4) {
+          avatar.poster = 'images/avatar-taiko-poster.png';
+          srcWebm.src = 'images/avatar-taiko.webm';
+          srcMp4.src = 'images/avatar-taiko.mp4';
+          avatar.load();
+          if (!avatarMotionQuery.matches) avatar.play().catch(() => {});
+        }
         document.documentElement.lang = 'ja';
         jpMap.forEach(entry => {
           const el = document.querySelector(entry.sel);
@@ -375,7 +398,13 @@
         if (window.updateHeroHeadline) window.updateHeroHeadline();
       } else {
         // Switch back to English
-        avatar.src = 'images/avatar.gif';
+        if (avatar && srcWebm && srcMp4) {
+          avatar.poster = 'images/avatar-poster.png';
+          srcWebm.src = 'images/avatar.webm';
+          srcMp4.src = 'images/avatar.mp4';
+          avatar.load();
+          if (!avatarMotionQuery.matches) avatar.play().catch(() => {});
+        }
         document.documentElement.lang = 'en';
         jpMap.forEach((entry, i) => {
           const el = document.querySelector(entry.sel);
