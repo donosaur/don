@@ -472,7 +472,7 @@
     .hero-cta-glow {
       position: absolute;
       inset: 0;
-      animation: ctaGlow 8s linear infinite;
+      animation: none;
     }
 
     @keyframes ctaGlow {
@@ -930,6 +930,16 @@
 
     .work-card:hover {
       box-shadow: inset 0 0 0 1px #17D5FF, 0 4px 32px rgba(23, 213, 255, 0.12);
+    }
+
+    .work-card--coverage {
+      box-shadow: inset 0 0 0 1px rgba(0, 0, 0, 0.08), 0 2px 8px rgba(0, 0, 0, 0.03);
+      border: 1px dashed rgba(0, 0, 0, 0.16);
+      background: rgba(0, 0, 0, 0.015);
+    }
+
+    .work-card--coverage:hover {
+      box-shadow: inset 0 0 0 1px rgba(0, 0, 0, 0.25), 0 4px 16px rgba(0, 0, 0, 0.06);
     }
 
     .work-card.tag-highlight {

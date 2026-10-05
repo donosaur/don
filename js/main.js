@@ -1,12 +1,10 @@
 
-    // ── Hero headline rotation ──
+    // ── Hero headline (stable, no rotation) ──
     (function () {
       const headlines = window.heroHeadlines || [
-        { lines: ['15+ years shaping', 'how people'], em: 'watch video.', jpLines: ['15年以上にわたり', '人々の映像体験を'], jpEm: '創造する。' },
+        { lines: ['15+ years designing', 'how people'], em: 'watch video.', jpLines: ['15年以上にわたり', '人々の映像体験を'], jpEm: '創造する。' },
       ];
-      const key = 'hlIdx';
-      let idx = parseInt(localStorage.getItem(key) || '0') % headlines.length;
-      localStorage.setItem(key, (idx + 1) % headlines.length);
+      let idx = 0;
 
       window.updateHeroHeadline = function () {
         const h = headlines[idx];
