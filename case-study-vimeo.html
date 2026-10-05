@@ -796,13 +796,13 @@
       <p class="lead">A look at the shipped interfaces across the Vimeo Streaming platform.</p>
       <div class="screens-grid">
         <div class="screen-thumb full-width" onclick="openLightbox(0)">
-          <video autoplay loop muted playsinline poster="images/tv-loop-poster.jpg" aria-label="Vimeo 10-foot TV app interface in motion showing content rails" style="width:100%;height:auto;display:block;">
+          <video loop muted playsinline poster="images/tv-loop-poster.jpg" aria-label="Vimeo 10-foot TV app interface in motion showing content rails" style="width:100%;height:auto;display:block;">
             <source src="images/tv-loop.webm" type="video/webm">
             <source src="images/tv-loop.mp4" type="video/mp4">
           </video>
         </div>
         <div class="screen-thumb full-width" onclick="openLightbox(1)">
-          <video autoplay loop muted playsinline poster="images/mobile-loop-poster.jpg" aria-label="Vimeo mobile app interface in motion showing video player" style="width:100%;height:auto;display:block;">
+          <video loop muted playsinline poster="images/mobile-loop-poster.jpg" aria-label="Vimeo mobile app interface in motion showing video player" style="width:100%;height:auto;display:block;">
             <source src="images/mobile-loop.webm" type="video/webm">
             <source src="images/mobile-loop.mp4" type="video/mp4">
           </video>
@@ -966,6 +966,22 @@
       if (e.key === 'ArrowLeft') stepLightbox(-1);
       if (e.key === 'Escape') closeLightbox();
     });
+
+    // ── Reduced-motion preference for inline screen-thumb videos ──
+    const vimeoMotionQuery = window.matchMedia('(prefers-reduced-motion: reduce)');
+    function syncVimeoVideos() {
+      const videos = document.querySelectorAll('.screen-thumb video');
+      videos.forEach(function(v) {
+        if (vimeoMotionQuery.matches) {
+          v.pause();
+          v.currentTime = 0;
+        } else {
+          v.play().catch(function(){});
+        }
+      });
+    }
+    vimeoMotionQuery.addEventListener('change', syncVimeoVideos);
+    syncVimeoVideos();
   </script>
   <script src="js/slideshow.js"></script>
 
