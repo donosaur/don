@@ -78,6 +78,7 @@
       if (h1El) {
         setHeadline(headlines[idx]);
 
+        const key = 'hlIdx';
         setInterval(function () {
           idx = (idx + 1) % headlines.length;
           localStorage.setItem(key, (idx + 1) % headlines.length);
@@ -139,7 +140,9 @@
       curY += (targetY - curY) * 0.055;
 
       h1Lines.forEach((line, i) => {
-        const [str, amp, spd, phase] = cfg[i];
+        const c = cfg[i % cfg.length];
+        if (!c) return;
+        const [str, amp, spd, phase] = c;
         const floatY = Math.sin(time * spd + phase) * amp;
         const floatX = Math.cos(time * spd * 0.6 + phase) * (amp * 0.4);
         const tx = curX * str + floatX;

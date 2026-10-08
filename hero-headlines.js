@@ -66,6 +66,53 @@ document.addEventListener('DOMContentLoaded', () => {
     
     viewers.forEach(v => applyFilters(v, activeConfig));
 
+    // 1.1 Spline scene load watchdog & graceful video fallback
+    const splineEl = document.getElementById('heroSpline');
+    const fallbackVideoEl = document.getElementById('heroFallbackVideo');
+    let splineLoaded = false;
+    const heroMotionQuery = window.matchMedia('(prefers-reduced-motion: reduce)');
+
+    function activateHeroFallback() {
+        if (splineLoaded) return;
+        if (fallbackVideoEl) {
+            fallbackVideoEl.classList.add('is-active');
+            fallbackVideoEl.load();
+            if (!heroMotionQuery.matches) {
+                fallbackVideoEl.play().catch(() => {});
+            }
+        }
+        if (splineEl) {
+            splineEl.style.opacity = '0';
+            splineEl.style.pointerEvents = 'none';
+        }
+    }
+
+    if (splineEl) {
+        splineEl.addEventListener('load-complete', () => {
+            splineLoaded = true;
+            splineEl.style.opacity = '1';
+        });
+
+        splineEl.addEventListener('error', activateHeroFallback);
+
+        // Fallback if WebGL context is lost
+        window.addEventListener('webglcontextlost', () => {
+            splineLoaded = false;
+            activateHeroFallback();
+        }, true);
+
+        // Fail-safe watchdog: if Spline has not finished rendering within 3.5s, activate fallback
+        setTimeout(() => {
+            if (!splineLoaded) {
+                const shadow = splineEl.shadowRoot;
+                const canvas = shadow ? shadow.querySelector('canvas') : null;
+                if (!canvas || canvas.width === 0 || canvas.height === 0) {
+                    activateHeroFallback();
+                }
+            }
+        }, 3500);
+    }
+
     // 1.2 Cursor Mask Preview Engine
     const cursorMask = document.getElementById('hero-cursor-mask');
     const cursorExpander = cursorMask ? cursorMask.querySelector('.hero-cursor-expander') : null;
@@ -316,26 +363,8 @@ document.addEventListener('DOMContentLoaded', () => {
         drawGrain();
     }
 
-    // 2. Aggressive Spline Logo Removal
-    const removeSplineLogos = () => {
-        viewers.forEach(viewer => {
-            let attempts = 0;
-            const interval = setInterval(() => {
-                attempts++;
-                if (viewer.shadowRoot) {
-                    const logo = viewer.shadowRoot.querySelector('#logo');
-                    if (logo) {
-                        logo.remove();
-                        clearInterval(interval);
-                        return;
-                    }
-                }
-                if (attempts > 100) clearInterval(interval);
-            }, 100);
-        });
-    };
-    removeSplineLogos();
-    setTimeout(removeSplineLogos, 2000);
+    // 2. Spline Logo Hidden via CSS ::part(logo) in css/global.css
+    // Avoiding JS shadowRoot element removal prevents race conditions in Spline runtime init.
 
     // 3. Spline Scroll-Jacking & Rendering FPS Optimizer
     const passThroughScroll = (e) => { e.stopPropagation(); };

@@ -20,7 +20,9 @@
     rel="stylesheet" />
   <script src="https://mcp.figma.com/mcp/html-to-design/capture.js" async></script>
   <link rel="preconnect" href="https://prod.spline.design" crossorigin />
-  <script type="module" src="https://unpkg.com/@splinetool/viewer@1.12.86/build/spline-viewer.js"></script>
+  <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin />
+  <link rel="preload" href="https://prod.spline.design/opIVHlqzXj6HBHar/scene.splinecode" as="fetch" crossorigin />
+  <script type="module" src="https://cdn.jsdelivr.net/npm/@splinetool/viewer@1.12.86/build/spline-viewer.js"></script>
   <script src="hero-headlines.js"></script>
   <link rel="stylesheet" href="css/global.css">
   <!-- Privacy-friendly analytics by Plausible -->
@@ -82,11 +84,14 @@
 
   <!-- HERO -->
   <section class="hero">
-    <!-- 3D background: Spline scene -->
+    <!-- 3D background: Spline scene with seamless video fallback -->
     <div class="hero-video-bg">
       <spline-viewer aria-label="Interactive 3D liquid glass background" role="img"
         url="https://prod.spline.design/opIVHlqzXj6HBHar/scene.splinecode" id="heroSpline"></spline-viewer>
-      <div id="heroYoutube"></div>
+      <video id="heroFallbackVideo" class="hero-fallback-video" muted loop playsinline poster="videos/fallback.png" aria-hidden="true" preload="none">
+        <source src="videos/liquid-shapes-loop.webm" type="video/webm">
+        <source src="videos/liquid-shapes-loop.mp4" type="video/mp4">
+      </video>
     </div>
     <canvas class="hero-grain" id="heroGrain"></canvas>
     <div class="hero-overlay"></div>
@@ -443,10 +448,7 @@
           <span class="tag">Available now</span>
           <span class="tag">Open to the right thing</span>
         </div>
-      <div style="margin-top: 36px; padding-top: 24px; border-top: 1px dashed rgba(0, 0, 0, 0.12); font-size: 13px; color: var(--muted); line-height: 1.6;">
-        Earlier: <a href="https://vimeo.com/4626028" target="_blank" rel="noopener" style="color: inherit; text-decoration: underline; font-weight: 500;">Script</a> (2009), winner of the Stempel Thesis Prize, an annual scholarship awarded to a MICA senior exhibiting exemplary thesis work.
       </div>
-    </div>
   </section>
 
   <!-- CONTACT -->
