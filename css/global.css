@@ -689,6 +689,10 @@
     }
 
     /* ── CAREER ── */
+    #career h2 {
+      margin-bottom: 56px;
+    }
+
     .career-intro {
       font-size: 18px;
       line-height: 1.75;
@@ -1013,6 +1017,16 @@
 
     #card-vhx:hover .work-card-type {
       color: #facc15 !important;
+    }
+
+    a.work-card[href="https://vimeo.com/4626028"]:hover,
+    #card-script:hover {
+      box-shadow: inset 0 0 0 1px #f87171, 0 4px 32px rgba(248, 113, 113, 0.12) !important;
+    }
+
+    a.work-card[href="https://vimeo.com/4626028"]:hover .work-card-type,
+    #card-script:hover .work-card-type {
+      color: #f87171 !important;
     }
 
     .work-card-img {
@@ -1520,6 +1534,10 @@
       .career-intro,
       .about-intro {
         font-size: 15px;
+      }
+
+      #career h2 {
+        margin-bottom: 40px;
       }
 
       .timeline-desc {

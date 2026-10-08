@@ -249,18 +249,11 @@
       { sel: '#card-boxee .work-card-stat:nth-child(1) strong', jp: '0→1' },
       { sel: '#card-boxee .work-card-stat:nth-child(2) span', jp: 'テレビUI' },
       { sel: '#card-boxee .work-card-stat:nth-child(3) span', jp: 'Samsung買収' },
-      // VHX card
-      { sel: '#card-vhx .work-card-type', jp: 'D2Cプラットフォーム · VHX' },
-      { sel: '#card-vhx .work-card-title', jp: 'クリエイター収益化ツール' },
-      { sel: '#card-vhx .work-card-desc', jp: 'VHXの決済・視聴者管理フローのデザイン — インディー映画制作者やクリエイターが独自のストリーミングビジネスを運営するためのインフラ。後にVimeoプラットフォームに統合。' },
-      { sel: '#card-vhx .work-card-stat:nth-child(1) span', jp: '動画コマース' },
-      { sel: '#card-vhx .work-card-stat:nth-child(2) span', jp: 'Vimeo買収' },
-      { sel: '#card-vhx .work-card-stat:nth-child(3) span', jp: '出荷済み' },
       // Script thesis card
-      { sel: '.work-grid .work-card:nth-child(5) .work-card-type', jp: '卒業制作 · MICA 2009' },
-      { sel: '.work-grid .work-card:nth-child(5) .work-card-title', jp: 'Script' },
-      { sel: '.work-grid .work-card:nth-child(5) .work-card-desc', jp: 'シュテンペル論文賞受賞：優れた卒業制作を発表したMICA4年生に毎年授与される奨学金。' },
-      { sel: '.work-grid .work-card:nth-child(5) .work-card-stat span', jp: 'Vimeo.com' },
+      { sel: '#card-script .work-card-type', jp: '卒業制作 · MICA 2009' },
+      { sel: '#card-script .work-card-title', jp: 'Script' },
+      { sel: '#card-script .work-card-desc', jp: 'シュテンペル論文賞受賞：優れた卒業制作を発表したMICA4年生に毎年授与される奨学金。' },
+      { sel: '#card-script .work-card-stat span', jp: 'Vimeo.com' },
       // About section
       { sel: '#about h2', html: '映像と<br>プラットフォームの深い技。' },
       { sel: '.pull-quote', jp: '「映像が私の出発点でした。プラットフォーム思考こそが刺激を与えてくれるものです。画面、ヘッドセット、ホログラム — 表面は常に変わり続け、私はその先端にいたいと思っています。」' },
@@ -280,7 +273,6 @@
       { sel: '.tool-tag:nth-child(9)', jp: 'ライガーを描く' },
       // Career section
       { sel: '#career > h2', jp: 'ここに至るまで。' },
-      { sel: '.career-intro', jp: '私のデザインの旅は小さなハードウェアスタートアップから始まり、大規模なストリーミングプラットフォームへと発展しました。すべてのステップで多くを学びました。2度の買収を経ても、プロダクトと共に歩み、私たちの仕事が人々に届き続けるようにしました。' },
       // Timeline – Boxee
       { sel: '.timeline-item:nth-child(1) .timeline-period', jp: '2010年7月 – 2013年7月' },
       { sel: '.timeline-item:nth-child(1) .timeline-role', jp: 'デザイナー · ニューヨーク、NY' },
