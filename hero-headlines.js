@@ -70,6 +70,49 @@ document.addEventListener('DOMContentLoaded', () => {
     
     viewers.forEach(v => applyFilters(v, activeConfig));
 
+    // 1.0 Spline Shadow DOM Hygiene & Logo Removal
+    function cleanSplineShadow(viewer) {
+        if (!viewer || !viewer.shadowRoot) return;
+        const shadow = viewer.shadowRoot;
+        const logo = shadow.querySelector('#logo') || shadow.querySelector('a[href*="spline.design"]');
+        if (logo) logo.remove();
+        const hints = shadow.querySelector('#hints');
+        if (hints) hints.remove();
+
+        if (!shadow.querySelector('#spline-clean-styles')) {
+            const style = document.createElement('style');
+            style.id = 'spline-clean-styles';
+            style.textContent = `
+                #logo, #hints, a[href*="spline.design"] {
+                    display: none !important;
+                    opacity: 0 !important;
+                    visibility: hidden !important;
+                    pointer-events: none !important;
+                    width: 0 !important;
+                    height: 0 !important;
+                    max-width: 0 !important;
+                    max-height: 0 !important;
+                    position: absolute !important;
+                    left: -9999px !important;
+                }
+            `;
+            shadow.appendChild(style);
+        }
+    }
+
+    viewers.forEach(viewer => {
+        cleanSplineShadow(viewer);
+        if (viewer.shadowRoot) {
+            const obs = new MutationObserver(() => cleanSplineShadow(viewer));
+            obs.observe(viewer.shadowRoot, { childList: true, subtree: true });
+        }
+    });
+
+    const logoInterval = setInterval(() => {
+        viewers.forEach(cleanSplineShadow);
+    }, 50);
+    setTimeout(() => clearInterval(logoInterval), 12000);
+
     // 1.1 Spline scene load watchdog & graceful video fallback
     const splineEl = document.getElementById('heroSpline');
     const fallbackVideoEl = document.getElementById('heroFallbackVideo');
@@ -91,16 +134,134 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
+    function startSplineAnimation(viewer) {
+        if (!viewer) return;
+        let attempts = 0;
+        const checkApp = setInterval(() => {
+            attempts++;
+            const app = viewer._spline;
+            if (app && app._scene && app._scene.children && app._scene.children[0]) {
+                clearInterval(checkApp);
+                initSplineLoop(app);
+            } else if (attempts > 60) {
+                clearInterval(checkApp);
+            }
+        }, 100);
+
+        function initSplineLoop(app) {
+            const s1 = app._scene.children[0];
+            const mesh = s1.children.find(c => c.name === 'Shape Blend');
+            if (!mesh) return;
+
+            const meshBaseRot = { x: mesh.rotation.x, y: mesh.rotation.y, z: mesh.rotation.z };
+            const meshBasePos = { x: mesh.position.x, y: mesh.position.y, z: mesh.position.z };
+
+            const blobNames = ['Blob 1', 'Blob 2', 'Blob 3', 'Blob 4', 'Blob 5'];
+            const blobs = blobNames.map(name => {
+                const b = mesh.children.find(c => c.name === name);
+                return b ? {
+                    obj: b,
+                    basePos: { x: b.position.x, y: b.position.y, z: b.position.z },
+                    baseRot: { x: b.rotation.x, y: b.rotation.y, z: b.rotation.z }
+                } : null;
+            }).filter(Boolean);
+
+            const fd = mesh.children.find(c => c.name === 'Follow Drops');
+            const drops = fd ? ['cursor', 'Drop 1', 'Drop 2', 'Drop 3', 'Drop 4'].map(n => fd.children.find(c => c.name === n)).filter(Boolean) : [];
+            const dropBase = drops.map(d => ({ x: d.position.x, y: d.position.y, z: d.position.z }));
+
+            let targetMouseX = 0, targetMouseY = 0;
+            let currentMouseX = 0, currentMouseY = 0;
+
+            window.addEventListener('mousemove', (e) => {
+                targetMouseX = (e.clientX / window.innerWidth - 0.5) * 2;
+                targetMouseY = (e.clientY / window.innerHeight - 0.5) * 2;
+            }, { passive: true });
+
+            let isHeroVisible = true;
+            const heroEl = document.querySelector('.hero');
+            if (heroEl && 'IntersectionObserver' in window) {
+                const obs = new IntersectionObserver((entries) => {
+                    isHeroVisible = entries[0].isIntersecting;
+                }, { threshold: 0 });
+                obs.observe(heroEl);
+            }
+
+            let startTime = performance.now();
+
+            function renderFrame() {
+                if (!isHeroVisible) {
+                    requestAnimationFrame(renderFrame);
+                    return;
+                }
+
+                const now = performance.now();
+                const t = (now - startTime) * 0.001;
+
+                currentMouseX += (targetMouseX - currentMouseX) * 0.06;
+                currentMouseY += (targetMouseY - currentMouseY) * 0.06;
+
+                const reducedMotion = heroMotionQuery.matches;
+
+                if (!reducedMotion) {
+                    // 1. Organic liquid undulation across blobs
+                    blobs.forEach((b, i) => {
+                        const speed = 0.5 + (i * 0.15);
+                        const phase = i * 1.25;
+                        b.obj.position.x = b.basePos.x + Math.sin(t * speed + phase) * 14;
+                        b.obj.position.y = b.basePos.y + Math.cos(t * (speed * 0.9) + phase) * 14;
+                        b.obj.rotation.z = b.baseRot.z + Math.sin(t * 0.35 + phase) * 0.12;
+                    });
+
+                    // 2. Liquid cursor & trailing drops
+                    if (drops.length > 0) {
+                        const dropTargetX = currentMouseX * 120;
+                        const dropTargetY = -currentMouseY * 80;
+                        drops.forEach((drop, idx) => {
+                            const lag = 0.12 / (1 + idx * 0.4);
+                            const b = dropBase[idx];
+                            drop.position.x += (b.x + dropTargetX - drop.position.x) * lag;
+                            drop.position.y += (b.y + dropTargetY - drop.position.y) * lag;
+                        });
+                    }
+
+                    // 3. Subtle floating rotation and mouse tilt on the overall liquid mesh
+                    mesh.rotation.y = meshBaseRot.y + Math.sin(t * 0.2) * 0.12 + currentMouseX * 0.18;
+                    mesh.rotation.x = meshBaseRot.x + Math.cos(t * 0.25) * 0.08 - currentMouseY * 0.14;
+                    mesh.position.y = meshBasePos.y + Math.sin(t * 0.7) * 10;
+                } else {
+                    mesh.rotation.y = meshBaseRot.y + currentMouseX * 0.05;
+                    mesh.rotation.x = meshBaseRot.x - currentMouseY * 0.05;
+                }
+
+                cleanSplineShadow(viewer);
+                app.requestRender();
+                requestAnimationFrame(renderFrame);
+            }
+
+            requestAnimationFrame(renderFrame);
+        }
+    }
+
+    function onSplineReady() {
+        if (splineLoaded) return;
+        splineLoaded = true;
+        splineEl.style.opacity = '1';
+        if (fallbackVideoEl) {
+            fallbackVideoEl.classList.remove('is-active');
+        }
+        cleanSplineShadow(splineEl);
+        startSplineAnimation(splineEl);
+    }
+
     if (splineEl) {
         splineEl.setAttribute('events-target', 'global');
 
-        splineEl.addEventListener('load-complete', () => {
-            splineLoaded = true;
-            splineEl.style.opacity = '1';
-            if (fallbackVideoEl) {
-                fallbackVideoEl.classList.remove('is-active');
-            }
-        });
+        if (splineEl._loaded) {
+            onSplineReady();
+        } else {
+            splineEl.addEventListener('load-complete', onSplineReady);
+        }
 
         splineEl.addEventListener('error', activateHeroFallback);
 
@@ -110,16 +271,12 @@ document.addEventListener('DOMContentLoaded', () => {
             activateHeroFallback();
         }, true);
 
-        // Fail-safe watchdog: if Spline has not finished rendering within 6s, activate fallback
+        // Fail-safe watchdog: if Spline has not finished rendering within 5s, activate fallback
         setTimeout(() => {
             if (!splineLoaded) {
-                const shadow = splineEl.shadowRoot;
-                const canvas = shadow ? shadow.querySelector('canvas') : null;
-                if (!canvas || canvas.width === 0 || canvas.height === 0) {
-                    activateHeroFallback();
-                }
+                activateHeroFallback();
             }
-        }, 6000);
+        }, 5000);
     }
 
     // 1.2 Cursor Mask Preview Engine

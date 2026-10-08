@@ -88,6 +88,26 @@
     <div class="hero-video-bg">
       <spline-viewer aria-label="Interactive 3D liquid glass background" role="img"
         url="https://prod.spline.design/opIVHlqzXj6HBHar/scene.splinecode" id="heroSpline" events-target="global"></spline-viewer>
+      <script>
+        (function purgeSplineLogo() {
+          function purge() {
+            var v = document.getElementById('heroSpline');
+            if (v && v.shadowRoot) {
+              var l = v.shadowRoot.getElementById('logo') || v.shadowRoot.querySelector('a[href*="spline.design"]');
+              if (l) l.remove();
+              if (!v.shadowRoot.getElementById('hide-spline-logo')) {
+                var s = document.createElement('style');
+                s.id = 'hide-spline-logo';
+                s.textContent = '#logo, #hints, a[href*="spline.design"] { display: none !important; opacity: 0 !important; visibility: hidden !important; pointer-events: none !important; }';
+                v.shadowRoot.appendChild(s);
+              }
+            }
+          }
+          var timer = setInterval(purge, 40);
+          setTimeout(function() { clearInterval(timer); }, 12000);
+          purge();
+        })();
+      </script>
       <video id="heroFallbackVideo" class="hero-fallback-video" muted loop playsinline poster="videos/fallback.png" aria-hidden="true" preload="none">
         <source src="videos/liquid-shapes-loop.webm" type="video/webm">
         <source src="videos/liquid-shapes-loop.mp4" type="video/mp4">
