@@ -1,9 +1,14 @@
 
-    // ── Hero headline (stable, no rotation) ──
+    // ── Hero headline rotation ──
     (function () {
-      const headlines = window.heroHeadlines || [
-        { lines: ['15+ years designing', 'how people'], em: 'watch video.', jpLines: ['15年以上にわたり', '人々の映像体験を'], jpEm: '創造する。' },
-      ];
+      const headlines = (window.heroHeadlines && window.heroHeadlines.length > 0)
+        ? window.heroHeadlines
+        : [
+            { lines: ['15+ years designing', 'how people'], em: 'watch video.', jpLines: ['15年以上にわたり', '人々の映像体験を'], jpEm: '創造する。' },
+            { lines: ['Designing the future', 'of how the world'], em: 'experiences media.', jpLines: ['世界がメディアを', '体験する方法の'], jpEm: '未来を描く。' },
+            { lines: ['Transforming complex', 'streaming tech into'], em: 'intuitive products.', jpLines: ['複雑なストリーミング技術を', '直感的なプロダクトに'], jpEm: '変える。' },
+            { lines: ['The intersection of', 'craft, product,'], em: 'and storytelling.', jpLines: ['技術、製品、そして', 'ストーリーテリングの'], jpEm: '交差点。' },
+          ];
       let idx = 0;
 
       window.updateHeroHeadline = function () {
@@ -81,7 +86,7 @@
         const key = 'hlIdx';
         setInterval(function () {
           idx = (idx + 1) % headlines.length;
-          localStorage.setItem(key, (idx + 1) % headlines.length);
+          localStorage.setItem(key, idx);
           setHeadline(headlines[idx]);
           animateIn();
         }, 10000);

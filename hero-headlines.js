@@ -1,20 +1,23 @@
-// Shared hero headlines — single stable headline
+// Shared hero headlines — cycling source of truth
 window.heroHeadlines = [
   { lines: ['15+ years designing', 'how people'], em: 'watch video.', jpLines: ['15年以上にわたり', '人々の映像体験を'], jpEm: '創造する。' },
+  { lines: ['Designing the future', 'of how the world'], em: 'experiences media.', jpLines: ['世界がメディアを', '体験する方法の'], jpEm: '未来を描く。' },
+  { lines: ['Transforming complex', 'streaming tech into'], em: 'intuitive products.', jpLines: ['複雑なストリーミング技術を', '直感的なプロダクトに'], jpEm: '変える。' },
+  { lines: ['The intersection of', 'craft, product,'], em: 'and storytelling.', jpLines: ['技術、製品、そして', 'ストーリーテリングの'], jpEm: '交差点。' },
 ];
 
 /* --- SPLINE BACKGROUND VARIATIONS --- */
 // Randomly initialized on load, smoothly transitions every 30s
 window.heroBackgroundVariations = [
-  { hue: 19,  sat: 1.4,  bri: 2,    con: 2,   grainOp: 0,    grainSz: 20,  bgCol: '#0091ff', glassCol: '#000000', glassOp: 0.04, glassBlur: 8,  themeCol: '#0091ff' },
-  { hue: 80,  sat: 0.8,  bri: 1.1,  con: 1.0, grainOp: 0.25, grainSz: 140, bgCol: '#0a0a1a', glassCol: '#fafaf8', glassOp: 0,    glassBlur: 0,  themeCol: '#a1a1aa' },
-  { hue: 320, sat: 1.1,  bri: 0.9,  con: 1.1, grainOp: 0.15, grainSz: 180, bgCol: '#ffd500', glassCol: '#000000', glassOp: 0.04, glassBlur: 6,  themeCol: '#ffd500' },
-  { hue: 248, sat: 2.6,  bri: 1.25, con: 2,   grainOp: 0.21, grainSz: 240, bgCol: '#c800ff', glassCol: '#000000', glassOp: 0.19, glassBlur: 0,  themeCol: '#c800ff' },
-  { hue: 12,  sat: 3,    bri: 2,    con: 2,   grainOp: 0.22, grainSz: 20,  bgCol: '#ffffff', glassCol: '#ffffff', glassOp: 0.12, glassBlur: 9,  themeCol: '#f97316' },
-  { hue: 210, sat: 1.1,  bri: 1.05, con: 2,   grainOp: 0,    grainSz: 20,  bgCol: '#1a0a0f', glassCol: '#3b00a8', glassOp: 0.11, glassBlur: 40, themeCol: '#3b00a8' },
-  { hue: 202, sat: 2.6,  bri: 1.85, con: 2,   grainOp: 0.08, grainSz: 50,  bgCol: '#ff000d', glassCol: '#000000', glassOp: 0.04, glassBlur: 0,  themeCol: '#ff000d' },
-  { hue: 168, sat: 0,    bri: 2,    con: 2,   grainOp: 0.07, grainSz: 20,  bgCol: '#0a1a10', glassCol: '#fafaf8', glassOp: 0,    glassBlur: 0,  themeCol: '#e4e4e7' },
-  { hue: 287, sat: 2.3,  bri: 1.65, con: 1.6, grainOp: 0.13, grainSz: 20,  bgCol: '#00ff00', glassCol: '#ffffff', glassOp: 0.05, glassBlur: 8,  themeCol: '#00ff00' }
+  { hue: 19,  sat: 1.4,  bri: 1.2, con: 1.3, grainOp: 0.08, grainSz: 28, bgCol: '#001d40', glassCol: '#000000', glassOp: 0.04, glassBlur: 0, themeCol: '#0091ff' },
+  { hue: 80,  sat: 0.9,  bri: 1.1, con: 1.1, grainOp: 0.12, grainSz: 28, bgCol: '#0a0a1a', glassCol: '#fafaf8', glassOp: 0,    glassBlur: 0, themeCol: '#a1a1aa' },
+  { hue: 320, sat: 1.1,  bri: 1.0, con: 1.2, grainOp: 0.10, grainSz: 28, bgCol: '#261e00', glassCol: '#000000', glassOp: 0.04, glassBlur: 0, themeCol: '#ffd500' },
+  { hue: 248, sat: 1.8,  bri: 1.2, con: 1.3, grainOp: 0.12, grainSz: 28, bgCol: '#22002e', glassCol: '#000000', glassOp: 0.08, glassBlur: 0, themeCol: '#c800ff' },
+  { hue: 12,  sat: 1.5,  bri: 1.2, con: 1.2, grainOp: 0.10, grainSz: 28, bgCol: '#240d00', glassCol: '#ffffff', glassOp: 0.05, glassBlur: 0, themeCol: '#f97316' },
+  { hue: 210, sat: 1.1,  bri: 1.1, con: 1.2, grainOp: 0.08, grainSz: 28, bgCol: '#1a0a0f', glassCol: '#3b00a8', glassOp: 0.08, glassBlur: 0, themeCol: '#3b00a8' },
+  { hue: 202, sat: 1.6,  bri: 1.2, con: 1.3, grainOp: 0.08, grainSz: 28, bgCol: '#260204', glassCol: '#000000', glassOp: 0.04, glassBlur: 0, themeCol: '#ff000d' },
+  { hue: 168, sat: 0.8,  bri: 1.1, con: 1.1, grainOp: 0.07, grainSz: 28, bgCol: '#0a1a10', glassCol: '#fafaf8', glassOp: 0,    glassBlur: 0, themeCol: '#e4e4e7' },
+  { hue: 287, sat: 1.5,  bri: 1.2, con: 1.2, grainOp: 0.10, grainSz: 28, bgCol: '#081f00', glassCol: '#ffffff', glassOp: 0.05, glassBlur: 0, themeCol: '#00ff00' }
 ];
 
 // Helper to convert hex to rgb string for rgba usage
@@ -39,6 +42,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Inject dynamic glass overlay div over each viewer
     viewers.forEach(viewer => {
+        viewer.setAttribute('events-target', 'global');
         viewer.style.transition = 'filter 1s ease-in-out';
         viewer.parentElement.style.transition = 'background-color 1s ease-in-out';
         viewer.parentElement.style.backgroundColor = activeConfig.bgCol;
@@ -55,8 +59,8 @@ document.addEventListener('DOMContentLoaded', () => {
         viewer.parentElement.style.backgroundColor = config.bgCol;
         if (viewer.glassOverlayRef) {
             viewer.glassOverlayRef.style.backgroundColor = `rgba(${hexToRgb(config.glassCol)}, ${config.glassOp})`;
-            viewer.glassOverlayRef.style.backdropFilter = `blur(${config.glassBlur}px)`;
-            viewer.glassOverlayRef.style.webkitBackdropFilter = `blur(${config.glassBlur}px)`;
+            viewer.glassOverlayRef.style.backdropFilter = (config.glassBlur && config.glassBlur > 0) ? `blur(${config.glassBlur}px)` : 'none';
+            viewer.glassOverlayRef.style.webkitBackdropFilter = (config.glassBlur && config.glassBlur > 0) ? `blur(${config.glassBlur}px)` : 'none';
         }
         if (grainCanvas) {
             grainCanvas.style.opacity = config.grainOp;
@@ -88,9 +92,14 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     if (splineEl) {
+        splineEl.setAttribute('events-target', 'global');
+
         splineEl.addEventListener('load-complete', () => {
             splineLoaded = true;
             splineEl.style.opacity = '1';
+            if (fallbackVideoEl) {
+                fallbackVideoEl.classList.remove('is-active');
+            }
         });
 
         splineEl.addEventListener('error', activateHeroFallback);
@@ -101,7 +110,7 @@ document.addEventListener('DOMContentLoaded', () => {
             activateHeroFallback();
         }, true);
 
-        // Fail-safe watchdog: if Spline has not finished rendering within 3.5s, activate fallback
+        // Fail-safe watchdog: if Spline has not finished rendering within 6s, activate fallback
         setTimeout(() => {
             if (!splineLoaded) {
                 const shadow = splineEl.shadowRoot;
@@ -110,7 +119,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     activateHeroFallback();
                 }
             }
-        }, 3500);
+        }, 6000);
     }
 
     // 1.2 Cursor Mask Preview Engine
