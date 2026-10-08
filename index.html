@@ -19,10 +19,9 @@
   <link href="https://fonts.googleapis.com/css2?family=Lexend+Deca:wght@300;400;500;600;700&display=swap"
     rel="stylesheet" />
   <script src="https://mcp.figma.com/mcp/html-to-design/capture.js" async></script>
-  <link rel="preconnect" href="https://prod.spline.design" crossorigin />
-  <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin />
-  <link rel="preload" href="https://prod.spline.design/opIVHlqzXj6HBHar/scene.splinecode" as="fetch" crossorigin />
-  <script type="module" src="https://cdn.jsdelivr.net/npm/@splinetool/viewer@1.12.86/build/spline-viewer.js"></script>
+  <link rel="preload" href="scene.splinecode" as="fetch" crossorigin />
+  <link rel="modulepreload" href="js/spline-viewer.js" />
+  <script type="module" src="js/spline-viewer.js"></script>
   <script src="hero-headlines.js"></script>
   <link rel="stylesheet" href="css/global.css">
   <!-- Privacy-friendly analytics by Plausible -->
@@ -87,7 +86,7 @@
     <!-- 3D background: Spline scene with seamless video fallback -->
     <div class="hero-video-bg">
       <spline-viewer aria-label="Interactive 3D liquid glass background" role="img"
-        url="https://prod.spline.design/opIVHlqzXj6HBHar/scene.splinecode" id="heroSpline" events-target="global"></spline-viewer>
+        url="scene.splinecode" id="heroSpline" events-target="global"></spline-viewer>
       <script>
         (function purgeSplineLogo() {
           function purge() {
