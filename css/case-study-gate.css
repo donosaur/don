@@ -1,0 +1,328 @@
+/* ==========================================================================
+   Case Study Password Gate — Don Polistico Portfolio
+   Minimal, restrained gate for in-progress case study pages.
+   ========================================================================== */
+
+/* FOUC prevention & lock toggle */
+html.cs-locked {
+  overflow: hidden !important;
+  height: 100% !important;
+}
+
+html.cs-locked body {
+  overflow: hidden !important;
+  height: 100% !important;
+}
+
+html.cs-locked body > *:not(#cs-gate) {
+  display: none !important;
+}
+
+#cs-gate {
+  display: none;
+}
+
+html.cs-locked #cs-gate {
+  display: flex !important;
+}
+
+/* Gate Layout */
+.cs-gate {
+  position: fixed;
+  inset: 0;
+  z-index: 99999;
+  width: 100%;
+  min-height: 100dvh;
+  background: #0f1115;
+  color: #f7f7f5;
+  font-family: 'Lexend Deca', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: max(24px, env(safe-area-inset-top)) max(24px, env(safe-area-inset-right)) max(28px, env(safe-area-inset-bottom)) max(24px, env(safe-area-inset-left));
+  box-sizing: border-box;
+  opacity: 1;
+  transition: opacity 0.24s ease, visibility 0.24s ease;
+}
+
+.cs-gate.cs-gate-unlocking {
+  opacity: 0;
+  pointer-events: none;
+}
+
+/* Top Nav */
+.cs-gate-nav {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  max-width: 1100px;
+  margin: 0 auto;
+}
+
+.cs-gate-back {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 13px;
+  font-weight: 500;
+  letter-spacing: 0.02em;
+  color: rgba(255, 255, 255, 0.5);
+  text-decoration: none;
+  padding: 8px 0;
+  min-height: 44px;
+  touch-action: manipulation;
+  transition: color 0.15s ease;
+}
+
+.cs-gate-back svg {
+  width: 14px;
+  height: 14px;
+  transition: transform 0.15s ease;
+}
+
+@media (hover: hover) {
+  .cs-gate-back:hover {
+    color: #ffffff;
+  }
+  .cs-gate-back:hover svg {
+    transform: translateX(-3px);
+  }
+}
+
+.cs-gate-back:focus-visible {
+  outline: none;
+  color: #ffffff;
+  box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.35);
+  border-radius: 4px;
+}
+
+.cs-gate-back:active {
+  color: rgba(255, 255, 255, 0.8);
+}
+
+/* Center Card / Content */
+.cs-gate-center {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex: 1;
+  padding: 40px 0;
+}
+
+.cs-gate-card {
+  width: 100%;
+  max-width: 380px;
+  margin: 0 auto;
+  text-align: left;
+}
+
+.cs-gate-title {
+  font-size: 20px;
+  font-weight: 500;
+  letter-spacing: -0.01em;
+  line-height: 1.25;
+  color: #ffffff;
+  margin: 0 0 18px;
+}
+
+/* Form & Input */
+.cs-gate-form {
+  position: relative;
+  width: 100%;
+  margin: 0;
+}
+
+.cs-gate-input-row {
+  display: flex;
+  align-items: stretch;
+  gap: 8px;
+  width: 100%;
+}
+
+.cs-gate-input {
+  flex: 1;
+  min-height: 46px;
+  padding: 12px 14px;
+  font-family: inherit;
+  font-size: 16px; /* 16px prevents iOS Safari auto-zoom */
+  color: #ffffff;
+  background: #141820;
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  border-radius: 6px;
+  box-sizing: border-box;
+  outline: none;
+  transition: border-color 0.15s ease, background 0.15s ease;
+  touch-action: manipulation;
+}
+
+.cs-gate-input::placeholder {
+  color: rgba(255, 255, 255, 0.32);
+}
+
+.cs-gate-input:focus {
+  border-color: rgba(255, 255, 255, 0.45);
+  background: #171c26;
+}
+
+.cs-gate-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 46px;
+  min-width: 46px;
+  padding: 0 16px;
+  font-family: inherit;
+  font-size: 13px;
+  font-weight: 500;
+  color: #0f1115;
+  background: #f2efe9;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  touch-action: manipulation;
+  transition: background 0.15s ease, transform 0.1s ease;
+}
+
+.cs-gate-btn svg {
+  width: 14px;
+  height: 14px;
+  transition: transform 0.15s ease;
+}
+
+@media (hover: hover) {
+  .cs-gate-btn:hover {
+    background: #ffffff;
+  }
+  .cs-gate-btn:hover svg {
+    transform: translateX(2px);
+  }
+}
+
+.cs-gate-btn:active {
+  transform: scale(0.98);
+  background: #e5e1d8;
+}
+
+.cs-gate-btn:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.5);
+}
+
+/* Error message & shake */
+.cs-gate-error {
+  min-height: 20px;
+  margin: 10px 0 0;
+  font-size: 12px;
+  font-weight: 500;
+  color: #e06c52; /* desaturated terracotta */
+  letter-spacing: 0.01em;
+  opacity: 0;
+  transform: translateY(-2px);
+  transition: opacity 0.2s ease, transform 0.2s ease;
+}
+
+.cs-gate-error.is-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.cs-gate-input.is-error {
+  border-color: #e06c52 !important;
+}
+
+@keyframes csGateShake {
+  0%, 100% { transform: translateX(0); }
+  20%, 60% { transform: translateX(-6px); }
+  40%, 80% { transform: translateX(6px); }
+}
+
+.cs-gate-shake {
+  animation: csGateShake 0.35s ease;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .cs-gate-shake {
+    animation: none !important;
+  }
+  .cs-gate,
+  .cs-gate-btn,
+  .cs-gate-btn svg,
+  .cs-gate-back svg {
+    transition: none !important;
+  }
+}
+
+/* Footer info */
+.cs-gate-footer {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  width: 100%;
+  max-width: 1100px;
+  margin: 0 auto;
+  font-size: 12px;
+}
+
+.cs-gate-footer a {
+  color: rgba(255, 255, 255, 0.38);
+  text-decoration: none;
+  transition: color 0.15s ease;
+}
+
+@media (hover: hover) {
+  .cs-gate-footer a:hover {
+    color: rgba(255, 255, 255, 0.75);
+  }
+}
+
+.cs-gate-footer a:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.35);
+  border-radius: 2px;
+}
+
+/* Discreet lock button when page is unlocked */
+.nav-lock-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: transparent;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 4px;
+  color: rgba(255, 255, 255, 0.45);
+  padding: 4px 8px;
+  font-size: 11px;
+  font-family: inherit;
+  cursor: pointer;
+  touch-action: manipulation;
+  min-height: 28px;
+  gap: 5px;
+  transition: color 0.15s ease, border-color 0.15s ease;
+}
+
+@media (hover: hover) {
+  .nav-lock-btn:hover {
+    color: #ffffff;
+    border-color: rgba(255, 255, 255, 0.35);
+  }
+}
+
+.nav-lock-btn:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.35);
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border-width: 0;
+}

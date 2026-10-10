@@ -1,0 +1,621 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>VHX Monetization Tools — Don Polistico</title>
+  <meta name="description" content="Designing VHX's direct-to-consumer video tools, focused on payment flows, checkout, and audience management for independent creators. Acquired by Vimeo." />
+  <meta property="og:title" content="VHX Monetization Tools — Don Polistico" />
+  <meta property="og:description" content="Designing VHX's direct-to-consumer video tools, focused on payment flows, checkout, and audience management for independent creators. Acquired by Vimeo." />
+  <meta property="og:type" content="article" />
+  <meta property="og:url" content="https://don.polisti.co/case-study-vhx" />
+  <link rel="canonical" href="https://don.polisti.co/case-study-vhx" />
+  <meta property="og:image" content="https://don.polisti.co/images/vhx-payment.png" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <link rel="icon" type="image/png" href="images/avatar.png" />
+  <link href="https://fonts.googleapis.com/css2?family=Lexend+Deca:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/slideshow.css" />
+  <link rel="stylesheet" href="css/case-study-gate.css" />
+  <script>
+    (function () {
+      try {
+        if (new URLSearchParams(window.location.search).has('lock')) {
+          localStorage.removeItem('don_case_study_unlocked');
+        }
+        if (localStorage.getItem('don_case_study_unlocked') !== 'true') {
+          document.documentElement.classList.add('cs-locked');
+        }
+      } catch (e) {
+        document.documentElement.classList.add('cs-locked');
+      }
+    })();
+  </script>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg: #0f1115;
+      --bg-2: #16181f;
+      --bg-3: #1f222d;
+      --yellow: #facc15;
+      --yellow-dim: rgba(250, 204, 21, 0.12);
+      --white: #ffffff;
+      --muted: rgba(255, 255, 255, 0.55);
+      --border: rgba(255, 255, 255, 0.08);
+      --accent: #facc15;
+      --accent-dim: rgba(250, 204, 21, 0.1);
+    }
+
+    html { scroll-behavior: smooth; cursor: crosshair; }
+
+    body {
+      font-family: 'Lexend Deca', sans-serif;
+      background: var(--bg);
+      color: var(--white);
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* ── NAV ── */
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 20px 56px;
+      background: rgba(15, 17, 21, 0.92);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border);
+    }
+    .nav-back {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 13px;
+      font-weight: 500;
+      letter-spacing: 0.06em;
+      text-transform: lowercase;
+      color: var(--muted);
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+    .nav-back:hover { color: var(--yellow); }
+    .nav-back svg { width: 14px; height: 14px; }
+    .nav-title { font-size: 13px; font-weight: 500; color: var(--muted); }
+    .nav-cta {
+      font-size: 13px;
+      font-weight: 500;
+      letter-spacing: 0.06em;
+      text-transform: lowercase;
+      color: var(--yellow);
+      text-decoration: none;
+      transition: opacity 0.2s;
+    }
+    .nav-cta:hover { opacity: 0.7; }
+
+    /* ── HERO ── */
+    .hero {
+      padding: 140px 56px 96px;
+      border-bottom: 1px solid var(--border);
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+    .hero-eyebrow {
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.16em;
+      text-transform: lowercase;
+      color: var(--yellow);
+      margin-bottom: 24px;
+    }
+    .hero h1 {
+      font-family: 'Lexend Deca', sans-serif;
+      font-size: clamp(48px, 5.5vw, 72px);
+      font-weight: 400;
+      line-height: 1.1;
+      letter-spacing: -0.02em;
+      margin-bottom: 32px;
+      max-width: 860px;
+    }
+    .hero h1 em { font-style: italic; color: var(--yellow); }
+    .hero-sub {
+      font-size: 18px;
+      line-height: 1.75;
+      color: var(--muted);
+      max-width: 680px;
+      margin-bottom: 48px;
+    }
+    .hero-role-meta {
+      margin-bottom: 48px;
+      font-size: 14px;
+      line-height: 1.8;
+      color: var(--muted);
+      border-left: 2px solid var(--yellow);
+      padding-left: 16px;
+    }
+    .hero-role-meta span {
+      color: var(--white);
+      font-weight: 500;
+    }
+    .hero-stats {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 1px;
+      background: rgba(255, 255, 255, 0.25);
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      overflow: hidden;
+    }
+    .stat-item {
+      padding: 32px 28px;
+      background: var(--bg-2);
+    }
+    .stat-num {
+      font-family: 'Lexend Deca', sans-serif;
+      font-size: 40px;
+      font-weight: 600;
+      color: var(--white);
+      line-height: 1;
+      margin-bottom: 10px;
+    }
+    .stat-num em { color: var(--yellow); font-style: normal; }
+    .stat-label {
+      font-size: 12px;
+      font-weight: 500;
+      letter-spacing: 0.08em;
+      text-transform: lowercase;
+      color: var(--muted);
+    }
+
+    /* ── SECTION ── */
+    .section {
+      padding: 96px 56px;
+      border-bottom: 1px solid var(--border);
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+    h2 {
+      font-family: 'Lexend Deca', sans-serif;
+      font-size: clamp(32px, 3.5vw, 48px);
+      font-weight: 400;
+      line-height: 1.15;
+      letter-spacing: -0.02em;
+      margin-bottom: 24px;
+    }
+    .lead {
+      font-size: 18px;
+      line-height: 1.75;
+      color: var(--muted);
+      max-width: 680px;
+      margin-bottom: 64px;
+    }
+    .body-copy {
+      font-size: 15px;
+      line-height: 1.8;
+      color: var(--muted);
+      margin-bottom: 24px;
+      max-width: 640px;
+    }
+
+    /* ── GRIDS & CARDS ── */
+    .two-col {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 24px;
+      margin-top: 48px;
+    }
+    .col-card {
+      background: var(--bg-2);
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      padding: 40px 36px;
+    }
+    .col-card h3 {
+      font-size: 20px;
+      font-weight: 500;
+      margin-bottom: 16px;
+      color: var(--white);
+    }
+    .col-card p {
+      font-size: 14px;
+      line-height: 1.75;
+      color: var(--muted);
+    }
+
+    /* ── SCREEN SHOWCASE ── */
+    .screen-showcase {
+      margin-top: 48px;
+      background: #0b0c10;
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      overflow: hidden;
+      cursor: zoom-in;
+    }
+    .screen-showcase img {
+      width: 100%;
+      height: auto;
+      display: block;
+      transition: transform 0.25s ease;
+    }
+    .screen-showcase:hover img {
+      transform: scale(1.008);
+    }
+    .screen-caption {
+      padding: 16px 20px;
+      background: var(--bg-2);
+      border-top: 1px solid var(--border);
+      font-size: 13px;
+      color: var(--muted);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    /* ── RETROSPECTIVE ── */
+    .retro-list {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      margin-top: 48px;
+    }
+    .retro-item {
+      background: var(--bg-2);
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      padding: 28px 32px;
+    }
+    .retro-item h4 {
+      font-size: 15px;
+      font-weight: 500;
+      color: var(--yellow);
+      margin-bottom: 10px;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+    }
+    .retro-item p {
+      font-size: 14px;
+      line-height: 1.75;
+      color: var(--muted);
+    }
+
+    /* ── FOOTER NAV & FOOTER ── */
+    .footer-nav {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 64px 56px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 1px solid var(--border);
+    }
+    .footer-nav a {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 14px;
+      font-weight: 500;
+      color: var(--white);
+      text-decoration: none;
+      transition: color 0.15s;
+    }
+    .footer-nav a:hover { color: var(--yellow); }
+
+    footer {
+      padding: 32px 56px;
+      max-width: 1200px;
+      margin: 0 auto;
+      display: flex;
+      justify-content: space-between;
+      font-size: 12px;
+      color: var(--muted);
+    }
+    footer a { color: inherit; text-decoration: none; }
+    footer a:hover { color: var(--white); }
+
+    /* ── LIGHTBOX ── */
+    .lightbox {
+      display: none;
+      position: fixed;
+      inset: 0;
+      z-index: 1000;
+      background: rgba(0, 0, 0, 0.94);
+      backdrop-filter: blur(8px);
+      align-items: center;
+      justify-content: center;
+    }
+    .lightbox.open { display: flex; }
+    .lightbox-img {
+      max-width: 90vw;
+      max-height: 88vh;
+      object-fit: contain;
+      border-radius: 4px;
+      box-shadow: 0 32px 80px rgba(0, 0, 0, 0.6);
+    }
+    .lightbox-close {
+      position: fixed;
+      top: 24px; right: 32px;
+      font-size: 28px;
+      color: rgba(255, 255, 255, 0.5);
+      cursor: pointer;
+      line-height: 1;
+      transition: color 0.2s;
+      background: none; border: none;
+    }
+    .lightbox-close:hover { color: #fff; }
+
+    @media (max-width: 768px) {
+      .hide-mobile { display: none; }
+      nav { padding: 16px 24px; }
+      .hero { padding: 120px 24px 64px; }
+      .hero h1 { font-size: clamp(36px, 9vw, 56px); }
+      .hero-sub { font-size: 16px; }
+      .hero-stats { grid-template-columns: 1fr 1fr; }
+      .stat-item { padding: 24px 20px; }
+      .stat-num { font-size: 32px; }
+      .section { padding: 64px 24px; }
+      h2 { font-size: clamp(28px, 7vw, 40px); }
+      .lead { font-size: 16px; margin-bottom: 40px; }
+      .two-col { grid-template-columns: 1fr; }
+      .footer-nav { padding: 48px 24px; flex-direction: column; gap: 24px; }
+      footer { padding: 24px; flex-direction: column; gap: 8px; }
+    }
+
+    @media (max-width: 480px) {
+      nav { padding: 14px 20px; }
+      .nav-title { display: none; }
+      .hero { padding: 100px 20px 56px; }
+      .hero-stats { grid-template-columns: 1fr 1fr; }
+      .section { padding: 56px 20px; }
+      .footer-nav { padding: 40px 20px; }
+      footer { padding: 20px; }
+    }
+  </style>
+  <!-- Privacy-friendly analytics by Plausible -->
+  <script async src="https://plausible.io/js/pa-g9Sk_r1bc3V_g5rlguhbQ.js"></script>
+  <script>
+    window.plausible=window.plausible||function(){(plausible.q=plausible.q||[]).push(arguments)},plausible.init=plausible.init||function(i){plausible.o=i||{}};
+    plausible.init()
+  </script>
+</head>
+<body>
+
+  <!-- PASSWORD GATE -->
+  <div id="cs-gate" class="cs-gate" aria-modal="true" role="dialog" aria-label="Protected Case Study">
+    <div class="cs-gate-nav">
+      <a href="index.html#work" class="cs-gate-back">
+        <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
+          <path d="M13 8H3M7 4L3 8l4 4"/>
+        </svg>
+        <span>don.polisti.co</span>
+      </a>
+    </div>
+
+    <div class="cs-gate-center">
+      <div class="cs-gate-card">
+        <h1 class="cs-gate-title">Password</h1>
+
+        <form id="cs-gate-form" class="cs-gate-form" novalidate>
+          <div class="cs-gate-input-row">
+            <label for="cs-gate-input" class="sr-only">Password</label>
+            <input
+              type="password"
+              id="cs-gate-input"
+              class="cs-gate-input"
+              placeholder="Password"
+              autocomplete="current-password"
+              required
+              spellcheck="false"
+              autocapitalize="none"
+              autofocus
+            />
+            <button type="submit" class="cs-gate-btn" id="cs-gate-submit" aria-label="Submit">
+              <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
+                <path d="M3 8h10M8 3l5 5-5 5"/>
+              </svg>
+            </button>
+          </div>
+          <p id="cs-gate-error" class="cs-gate-error" role="alert" aria-live="polite"></p>
+        </form>
+      </div>
+    </div>
+
+    <div class="cs-gate-footer">
+      <a href="mailto:don@polisti.co">don@polisti.co</a>
+    </div>
+  </div>
+
+  <noscript>
+    <style>
+      html.cs-locked body > *:not(#cs-gate) { display: none !important; }
+      #cs-gate { display: flex !important; }
+      .cs-gate-form { display: none !important; }
+    </style>
+  </noscript>
+
+  <!-- NAV -->
+  <nav>
+    <a href="index.html#work" class="nav-back">
+      <svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M11 7H3M6 3L2 7l4 4"/></svg>
+      Portfolio
+    </a>
+    <span class="nav-title">VHX · Creator monetization</span>
+    <div style="display:flex;align-items:center;gap:12px;">
+      <button type="button" class="nav-lock-btn" onclick="window.lockCaseStudies && window.lockCaseStudies()" title="Lock case studies" aria-label="Lock case studies">
+        <svg viewBox="0 0 16 16" width="12" height="12" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><rect x="3" y="7" width="10" height="7" rx="1.5"/><path d="M5.5 7V4.5a2.5 2.5 0 0 1 5 0V7"/></svg>
+        <span>lock</span>
+      </button>
+      <a href="index.html#contact" class="nav-cta">Contact →</a>
+    </div>
+  </nav>
+
+  <!-- HERO -->
+  <div style="background:var(--bg);border-bottom:1px solid var(--border);">
+    <div class="hero">
+      <div class="hero-eyebrow">0→1 platform · VHX · 2015–2016</div>
+      <h1>Monetization tools for<br><em>independent</em> creators.</h1>
+      <p class="hero-sub">
+        Designing VHX's direct-to-consumer video tools, focused on payment flows, checkout, and audience management. The goal was giving independent filmmakers and creators the infrastructure to sell directly to their fans and run their own streaming channels.
+      </p>
+      <div class="hero-role-meta">
+        <span>My role:</span> Senior Product Designer &nbsp;·&nbsp;
+        <span>Scope:</span> Checkout, payment flows, customer dashboard &amp; subscriber management &nbsp;·&nbsp;
+        <span>Outcome:</span> Acquired by Vimeo
+      </div>
+      <div class="hero-stats">
+        <div class="stat-item">
+          <div class="stat-num" style="color:var(--yellow);">0→1</div>
+          <div class="stat-label">Direct-to-fan commerce</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-num" style="color:#fff;">Acquired</div>
+          <div class="stat-label">by Vimeo (2016)</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-num" style="color:var(--yellow);">100s</div>
+          <div class="stat-label">of indie releases</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-num" style="color:#fff;">OTT</div>
+          <div class="stat-label">Foundation for Vimeo OTT</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SECTION 1: THE CONTEXT -->
+  <div style="background:var(--bg-2);border-bottom:1px solid var(--border);">
+    <div class="section">
+      <div class="hero-eyebrow">The context</div>
+      <h2>Direct-to-consumer video before OTT had a playbook.</h2>
+      <p class="lead">
+        In 2015, independent filmmakers and creators were trapped between YouTube ad-splits and punitive distributor cuts. VHX built the alternative: a white-label platform where creators owned their customer relationships, pricing, and recurring revenue.
+      </p>
+
+      <div class="two-col">
+        <div class="col-card">
+          <h3>The checkout problem</h3>
+          <p>
+            Buying digital video online was historically clunky — forced account registrations, confusing DRM apps, and checkout flows built for physical goods. We needed a frictionless payment experience that converted fans in seconds without making them feel like they were leaving the creator's world.
+          </p>
+        </div>
+        <div class="col-card">
+          <h3>Subscription complexity</h3>
+          <p>
+            Creators wanted both transactional sales (rent or buy) and recurring monthly subscriptions. Designing checkout states, promo code logic, and cross-device entitlements across web, mobile, and emerging living-room devices required unified data models and simple, transparent UI.
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SECTION 2: THE INTERFACE -->
+  <div style="background:var(--bg);border-bottom:1px solid var(--border);">
+    <div class="section">
+      <div class="hero-eyebrow">The design</div>
+      <h2>Frictionless checkout &amp; clean transaction flows.</h2>
+      <p class="lead">
+        We stripped the checkout flow down to its essentials: price clarity, instant payment options, and immediate access to video playback on any screen.
+      </p>
+
+      <div class="screen-showcase" onclick="openLightbox(0)">
+        <img loading="lazy" src="images/vhx-payment.png" alt="VHX checkout and payment interface design" />
+        <div class="screen-caption">
+          <span>VHX modal checkout &amp; payment flow · Web interface</span>
+          <span style="color:var(--yellow);">Click to enlarge ↗</span>
+        </div>
+      </div>
+
+      <div class="two-col" style="margin-top: 48px;">
+        <div class="col-card">
+          <h3>Brand-first trust</h3>
+          <p>
+            Fans arrived to support a specific creator, not VHX. The modal preserved the creator's context while establishing payment security, clean pricing breakdowns, and immediate one-click purchase capabilities.
+          </p>
+        </div>
+        <div class="col-card">
+          <h3>Cross-device entitlement</h3>
+          <p>
+            Once a fan completed purchase, their access immediately synced to their account so they could start watching on their laptop and finish on their living-room TV app without entering card details again.
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SECTION 3: ACQUISITION & LEGACY -->
+  <div style="background:var(--bg-2);border-bottom:1px solid var(--border);">
+    <div class="section">
+      <div class="hero-eyebrow">Outcome &amp; impact</div>
+      <h2>From Brooklyn startup to Vimeo's enterprise backbone.</h2>
+      <p class="lead">
+        In May 2016, Vimeo acquired VHX to establish its direct-to-consumer and enterprise OTT business. The monetization mechanics, checkout patterns, and creator subscriber portals we built here became the architectural backbone of Vimeo OTT for the next decade.
+      </p>
+
+      <div class="retro-list">
+        <div class="retro-item">
+          <h4>What worked</h4>
+          <p>
+            Treating monetization as a user-experience problem rather than pure transaction plumbing. By focusing on conversion velocity and instant playback, we proved that fans would happily pay creators directly when the UX wasn't painful.
+          </p>
+        </div>
+        <div class="retro-item">
+          <h4>The through-line</h4>
+          <p>
+            The payment flows, paywall structures, and customer entitlement logic designed at VHX directly transitioned into the Vimeo OTT platform, where they scaled to support thousands of creator channels and hundreds of millions in creator payouts.
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- FOOTER NAV -->
+  <div style="background:var(--bg);">
+    <div class="footer-nav">
+      <a href="case-study-boxee.html">
+        <svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M11 7H3M6 3L2 7l4 4"/></svg>
+        Previous: Boxee Cloud DVR
+      </a>
+      <a href="case-study-vimeo.html">Next: Vimeo Streaming →</a>
+    </div>
+  </div>
+
+  <!-- FOOTER -->
+  <footer>
+    <span><span class="hide-mobile">don polistico · </span>product designer · <a href="mailto:don@polisti.co">don@polisti.co</a></span>
+    <span>© <span class="footer-year">2026</span></span>
+    <script>document.querySelectorAll('.footer-year').forEach(function(el){el.textContent=new Date().getFullYear();});</script>
+  </footer>
+
+  <!-- LIGHTBOX -->
+  <div class="lightbox" id="lightbox" onclick="handleLightboxClick(event)" hidden>
+    <button class="lightbox-close" onclick="closeLightbox()">✕</button>
+    <img loading="lazy" class="lightbox-img" id="lightbox-img" alt="">
+  </div>
+
+  <script>
+    const images = ['images/vhx-payment.png'];
+    function openLightbox(index) {
+      document.getElementById('lightbox-img').src = images[index];
+      document.getElementById('lightbox').removeAttribute('hidden');
+      document.getElementById('lightbox').classList.add('open');
+      document.body.style.overflow = 'hidden';
+    }
+    function closeLightbox() {
+      document.getElementById('lightbox').setAttribute('hidden', '');
+      document.getElementById('lightbox').classList.remove('open');
+      document.body.style.overflow = '';
+    }
+    function handleLightboxClick(e) {
+      if (e.target === document.getElementById('lightbox')) closeLightbox();
+    }
+    document.addEventListener('keydown', function(e) {
+      if (!document.getElementById('lightbox').classList.contains('open')) return;
+      if (e.key === 'Escape') closeLightbox();
+    });
+  </script>
+  <script src="js/slideshow.js"></script>
+  <script src="js/case-study-gate.js"></script>
+
+</body>
+</html>

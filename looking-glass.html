@@ -5,6 +5,21 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>looking glass — don polistico</title>
   <link href="https://fonts.googleapis.com/css2?family=Lexend+Deca:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/case-study-gate.css" />
+  <script>
+    (function () {
+      try {
+        if (new URLSearchParams(window.location.search).has('lock')) {
+          localStorage.removeItem('don_case_study_unlocked');
+        }
+        if (localStorage.getItem('don_case_study_unlocked') !== 'true') {
+          document.documentElement.classList.add('cs-locked');
+        }
+      } catch (e) {
+        document.documentElement.classList.add('cs-locked');
+      }
+    })();
+  </script>
   <script src="https://mcp.figma.com/mcp/html-to-design/capture.js" async></script>
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -902,6 +917,59 @@
 </head>
 <body>
 
+  <!-- PASSWORD GATE -->
+  <div id="cs-gate" class="cs-gate" aria-modal="true" role="dialog" aria-label="Protected Case Study">
+    <div class="cs-gate-nav">
+      <a href="index.html#work" class="cs-gate-back">
+        <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
+          <path d="M13 8H3M7 4L3 8l4 4"/>
+        </svg>
+        <span>don.polisti.co</span>
+      </a>
+    </div>
+
+    <div class="cs-gate-center">
+      <div class="cs-gate-card">
+        <h1 class="cs-gate-title">Password</h1>
+
+        <form id="cs-gate-form" class="cs-gate-form" novalidate>
+          <div class="cs-gate-input-row">
+            <label for="cs-gate-input" class="sr-only">Password</label>
+            <input
+              type="password"
+              id="cs-gate-input"
+              class="cs-gate-input"
+              placeholder="Password"
+              autocomplete="current-password"
+              required
+              spellcheck="false"
+              autocapitalize="none"
+              autofocus
+            />
+            <button type="submit" class="cs-gate-btn" id="cs-gate-submit" aria-label="Submit">
+              <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
+                <path d="M3 8h10M8 3l5 5-5 5"/>
+              </svg>
+            </button>
+          </div>
+          <p id="cs-gate-error" class="cs-gate-error" role="alert" aria-live="polite"></p>
+        </form>
+      </div>
+    </div>
+
+    <div class="cs-gate-footer">
+      <a href="mailto:don@polisti.co">don@polisti.co</a>
+    </div>
+  </div>
+
+  <noscript>
+    <style>
+      html.cs-locked body > *:not(#cs-gate) { display: none !important; }
+      #cs-gate { display: flex !important; }
+      .cs-gate-form { display: none !important; }
+    </style>
+  </noscript>
+
   <!-- ═══════════════════════════════════════
        SLIDE 10 · LOOKING GLASS HOOK
   ════════════════════════════════════════ -->
@@ -1366,5 +1434,6 @@
     <span class="slide-num" style="color:white;">15 / 15</span>
   </div>
 
+  <script src="js/case-study-gate.js"></script>
 </body>
 </html>
