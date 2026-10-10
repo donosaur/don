@@ -218,12 +218,10 @@
       // Hero
       { sel: '.hero-label', jp: 'プロダクトデザイナー · ブルックリン、ニューヨーク' },
       { sel: '.hero-cta-text', jp: '次のステージへ、話しましょう！' },
-      { sel: '.hero-stat:nth-child(1) .hero-stat-label', jp: 'クロスプラットフォーム専門家' },
-      { sel: '.hero-stat:nth-child(2) .hero-stat-label', jp: '買収された企業' },
-      { sel: '.hero-stat:nth-child(2) .hero-stat-num', jp: '2回' },
-      { sel: '.hero-stat:nth-child(3) .hero-stat-label', html: '世界中の<span class="hide-mobile-sm">到達した</span>視聴者数', enHtml: 'viewers <span class="hide-mobile-sm">reached </span>worldwide' },
-      { sel: '.hero-stat:nth-child(3) .hero-stat-num', jp: '数百万' },
-      { sel: '.hero-stat:nth-child(4) .hero-stat-label', jp: 'AIワークフロー & コンシューマーエレクトロニクス' },
+      { sel: '.hero-stat:nth-child(1) .hero-stat-label', jp: 'AIワークフロー & コンシューマーエレクトロニクス' },
+      { sel: '.hero-stat:nth-child(2) .hero-stat-label', jp: 'クロスプラットフォーム専門家' },
+      { sel: '.hero-stat:nth-child(3) .hero-stat-label', jp: '買収された企業' },
+      { sel: '.hero-stat:nth-child(3) .hero-stat-num', jp: '3回' },
       // Work section
       { sel: '#work > h2', html: 'ケーススタディと<br>ハイライト。' },
       { sel: '.work-intro', jp: '各プロジェクトは独自のデザイン課題を表しています — 新しいプラットフォーム向けのUXパターンの創造から、変革期の企業におけるデザインシステムの拡張まで。' },
