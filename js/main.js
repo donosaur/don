@@ -327,8 +327,9 @@
       { sel: '.timeline-item:nth-child(7) .timeline-desc', jp: '新しい分野の難しい問題に最もやりがいを感じます。まだデザインの教科書がないもの — プラットフォーム、プロダクト、存在しないはずのもの — を作っているなら、一緒に作りたいと思う可能性は十分にあります。' },
       { sel: '.timeline-item:nth-child(7) .tag:nth-child(1)', jp: '現在空き' },
       { sel: '.timeline-item:nth-child(7) .tag:nth-child(2)', jp: '良い出会いを待っています' },
-      // Download resume
-      { sel: '.contact-label', jp: '履歴書をダウンロード', all: true },
+      // Contact links
+      { sel: '.contact-link[href*="linkedin.com"] .contact-label', jp: 'リンクトイン' },
+      { sel: '.contact-link[download] .contact-label', jp: '履歴書をダウンロード' },
       // Contact section
       { sel: '#contact h2', jp: '話しましょう。' },
       { sel: '.contact-sub', jp: '新しい分野の難しい問題に最もやりがいを感じます — 特に、自分を成長させてくれるデザイナーたちと一緒に。動画や新技術の分野で野心的なものを作っているなら、ぜひお話ししましょう。' },
