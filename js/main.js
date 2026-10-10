@@ -239,6 +239,13 @@
       { sel: '#card-lookingglass .work-card-stat:nth-child(1) span', jp: 'モバイルアプリ' },
       { sel: '#card-lookingglass .work-card-stat:nth-child(2) span', jp: 'AI変換' },
       { sel: '#card-lookingglass .work-card-stat:nth-child(3) span', jp: '出荷済み' },
+      // VHX card
+      { sel: '#card-vhx .work-card-type', jp: 'メディア配信 · VHX' },
+      { sel: '#card-vhx .work-card-title', jp: 'クリエイター収益化ツール' },
+      { sel: '#card-vhx .work-card-desc', jp: 'VHXの決済および視聴者管理フローを設計 — 独立系映画制作者やクリエイターが独自のストリーミングビジネスを運営できるようにするインフラ。これらのパターンは後にVimeoがVHXを買収した際に引き継がれました。' },
+      { sel: '#card-vhx .work-card-stat:nth-child(1) span', jp: '動画コマース' },
+      { sel: '#card-vhx .work-card-stat:nth-child(2) span', jp: 'Vimeo買収' },
+      { sel: '#card-vhx .work-card-stat:nth-child(3) span', jp: '出荷済み' },
       // Boxee card
       { sel: '#card-boxee .work-card-type', jp: '0→1 プロダクト · Boxee' },
       { sel: '#card-boxee .work-card-title', jp: 'クラウドDVR体験' },
