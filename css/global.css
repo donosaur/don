@@ -627,16 +627,27 @@
       font-size: 16px;
       line-height: 1.8;
       color: var(--ink-2);
-      margin-bottom: 20px;
+      padding-bottom: 20px;
+      margin-bottom: 0;
     }
 
     .about-text p:last-child {
+      padding-bottom: 0;
       margin-bottom: 0;
     }
 
     .about-text>p {
       border-left: 3px solid var(--accent);
       padding-left: 28px;
+    }
+
+    .about-text a {
+      color: inherit;
+      text-decoration: underline;
+    }
+
+    .about-text a:hover {
+      color: var(--accent);
     }
 
     .about-tools h3 {
