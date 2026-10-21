@@ -778,6 +778,15 @@
       margin-bottom: 20px;
     }
 
+    .timeline-desc a {
+      color: inherit;
+      text-decoration: underline;
+    }
+
+    .timeline-desc a:hover {
+      color: var(--accent);
+    }
+
     .timeline-tags {
       display: flex;
       flex-wrap: wrap;
