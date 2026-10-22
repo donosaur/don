@@ -38,6 +38,7 @@
     if (
       path.indexOf('vimeo') !== -1 ||
       path.indexOf('looking-glass') !== -1 ||
+      path.indexOf('boxee') !== -1 ||
       path.indexOf('app-builder') !== -1
     ) {
       return TIERS.open;
