@@ -19,10 +19,13 @@
   <script>
     (function () {
       try {
+        document.documentElement.setAttribute('data-gate-tier', 'open');
         if (new URLSearchParams(window.location.search).has('lock')) {
           localStorage.removeItem('don_case_study_unlocked');
+          localStorage.removeItem('don_case_study_unlocked_open');
+          localStorage.removeItem('don_case_study_unlocked_rest');
         }
-        if (localStorage.getItem('don_case_study_unlocked') !== 'true') {
+        if (localStorage.getItem('don_case_study_unlocked_open') !== 'true') {
           document.documentElement.classList.add('cs-locked');
         }
       } catch (e) {

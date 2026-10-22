@@ -7,15 +7,43 @@
 (function () {
   'use strict';
 
-  var STORAGE_KEY = 'don_case_study_unlocked';
+  var LEGACY_STORAGE_KEY = 'don_case_study_unlocked';
 
-  // SHA-256 hash for 'opensesame123!'
-  var ALLOWED_HASHES = [
-    '2ed5b08437faf79841debfaf0df881e70936684268f81598ee8b27b1dcd74758'
-  ];
+  var TIERS = {
+    open: {
+      storageKey: 'don_case_study_unlocked_open',
+      // SHA-256 hashes for 'OpenSesame' and 'opensesame'
+      allowedHashes: [
+        '5ff0e82e56c3cf647e81f5134d3e4f839875efb69bf4d271298e11e032da5db5',
+        'd9fb92e3bbe65be1f1aad4a82eef4567f7a1ebe2cd110c8049b9698be7a70c88'
+      ],
+      allowedPlaintext: ['OpenSesame', 'opensesame']
+    },
+    rest: {
+      storageKey: 'don_case_study_unlocked_rest',
+      // SHA-256 hash for 'abracadabra!123'
+      allowedHashes: [
+        '841cadb1f453c584b0494ded12374914653bc4f6919e581014b18e4a40b8d729'
+      ],
+      allowedPlaintext: ['abracadabra!123']
+    }
+  };
 
-  // Plaintext password
-  var ALLOWED_PLAINTEXT = ['opensesame123!'];
+  function getActiveTier() {
+    var attr = document.documentElement.getAttribute('data-gate-tier');
+    if (attr && TIERS[attr]) {
+      return TIERS[attr];
+    }
+    var path = (window.location.pathname || '').toLowerCase();
+    if (
+      path.indexOf('vimeo') !== -1 ||
+      path.indexOf('looking-glass') !== -1 ||
+      path.indexOf('app-builder') !== -1
+    ) {
+      return TIERS.open;
+    }
+    return TIERS.rest;
+  }
 
   // SHA-256 helper using browser Web Crypto API
   async function computeSha256(text) {
@@ -41,15 +69,24 @@
     return hash;
   };
 
+  function clearAllUnlockedStorage() {
+    try {
+      localStorage.removeItem(LEGACY_STORAGE_KEY);
+      localStorage.removeItem(TIERS.open.storageKey);
+      localStorage.removeItem(TIERS.rest.storageKey);
+    } catch (e) {}
+  }
+
   function isUnlocked() {
     try {
+      var tier = getActiveTier();
       // Support ?lock query param to easily re-lock for testing
       var params = new URLSearchParams(window.location.search);
       if (params.has('lock')) {
-        localStorage.removeItem(STORAGE_KEY);
+        clearAllUnlockedStorage();
         return false;
       }
-      return localStorage.getItem(STORAGE_KEY) === 'true';
+      return localStorage.getItem(tier.storageKey) === 'true';
     } catch (e) {
       return false;
     }
@@ -57,7 +94,8 @@
 
   function setUnlocked() {
     try {
-      localStorage.setItem(STORAGE_KEY, 'true');
+      var tier = getActiveTier();
+      localStorage.setItem(tier.storageKey, 'true');
     } catch (e) {}
 
     var gate = document.getElementById('cs-gate');
@@ -82,9 +120,7 @@
   }
 
   function lock() {
-    try {
-      localStorage.removeItem(STORAGE_KEY);
-    } catch (e) {}
+    clearAllUnlockedStorage();
     document.documentElement.classList.add('cs-locked');
     var gate = document.getElementById('cs-gate');
     if (gate) {
@@ -102,19 +138,23 @@
     var clean = (input || '').trim();
     if (!clean) return false;
 
+    var tier = getActiveTier();
+    var allowedPlaintext = tier.allowedPlaintext;
+    var allowedHashes = tier.allowedHashes;
+
     // Direct plaintext comparison
-    if (ALLOWED_PLAINTEXT.indexOf(clean) !== -1 || ALLOWED_PLAINTEXT.indexOf(clean.toLowerCase()) !== -1) {
+    if (allowedPlaintext.indexOf(clean) !== -1 || allowedPlaintext.indexOf(clean.toLowerCase()) !== -1) {
       return true;
     }
 
     // Hash comparison
     var hash = await computeSha256(clean);
-    if (hash && ALLOWED_HASHES.indexOf(hash) !== -1) {
+    if (hash && allowedHashes.indexOf(hash) !== -1) {
       return true;
     }
 
     var lowerHash = await computeSha256(clean.toLowerCase());
-    if (lowerHash && ALLOWED_HASHES.indexOf(lowerHash) !== -1) {
+    if (lowerHash && allowedHashes.indexOf(lowerHash) !== -1) {
       return true;
     }
 
